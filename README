@@ -1,0 +1,28 @@
+Instructions for setting up the tomography codes on new machines/accounts:
+
+1) Make a new directory.  The absolute path to this directory will be called TOMROOT.
+
+2) Inside TOMROOT make directory make the following directories: DATA, Orbits, bindata.  If you are NOT using CVS, then also creat the directory EUVTom (where the C and matlab codes are)
+
+3) Get the WCSTools in the form of a file wcstools-x.x.x.tar.gz.   (x.x.x is the version number.)  Unpack it, go into the new directory and type 'make'.  The package is available from the Telescope Data Center (http://tdc-www.harvard.edu/TDC.html, http://tdc-www.harvard.edu/software/wcstools/).   Put the directory wcstools-x.x.x/ into TOMROOT.
+
+4) The codes are under the CVS revision control system.  Set the following environment variables (in .cshrc or elsewhere):
+setenv CVSROOT {$USER}@herot.engin.umich.edu:/CVS/CODES
+setenv CVS_RSH ssh
+   This requires that $USER has a  valid account on herot.  If another account name is to be used, just put that name in place '{$USER}'
+
+5) Go into the TOMROOT directory and type "cvs checkout EUVTom".  This will get the latest version of the tomography codes and put them into a new directory called EUVTom.
+
+6) Inside the EUVTom directory you need to create two files:
+   1) tomroot.newcomputer.h  
+      The only thing in this text file is a line that says: 
+      #define TOMROOT "(absolute path of TOMROOT)" [e.g., #define TOMROOT "/Users/frazin/tomography", see tomroot.iggy.h]
+   2) Makefile.newcomputer   
+      Just copy, e.g., Makefile.iggy or Makefile.ozzy and modify as needed.  Make sure the modify the "tomroot: " instructions.
+
+7) Copy Makefile.newcomputer to Makefile
+
+8) Type "make builda"  Before compiling the C codes, this will copy tomroot.newcomputer.h to tomroot.h.  
+
+9) You might need adjust WGET_COMMAND in headers.h so that it knows where to find the command 'wget'
+
