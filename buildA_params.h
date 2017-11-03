@@ -8,7 +8,7 @@
 /* #define WISPROBUILD */
 
 #if (defined WISPIRIBUILD || defined WISPROBUILD)
-#define Orb_1   /*Select Orbot Number*/
+#define Orb_1   /*Select Orbit Number, add suffix with right orbit number after "_"*/
 #endif
 
 #if (defined C2BUILD || defined C3BUILD)
@@ -30,7 +30,6 @@
 #define RMIN 2.0             /* innner radius (hollow  sphere)   */
 #define RMAX 150.            /* outer radius of computation ball */
 #endif
-
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -48,7 +47,6 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
 
 #ifdef WISPROBUILD
-
 #ifdef Orb_1
 #define RMIN 30.             /* innner radius (hollow  sphere)   */
 #define RMAX 180.            /* outer radius of computation ball */
@@ -61,10 +59,6 @@ typedef float PB_IMTYPE;
 #define RMIN 8.5             /* innner radius (hollow  sphere)   */
 #define RMAX 180.            /* outer radius of computation ball */
 #endif
-
-
-#define RMAX 215.            /* outer radius of computation ball */
-#define RMIN 2.0             /* innner radius (hollow  sphere)   */
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
