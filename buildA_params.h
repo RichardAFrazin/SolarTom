@@ -7,18 +7,32 @@
 /* #define WISPRIBUILD */
 /* #define WISPROBUILD */
 
+#if (defined WISPIRIBUILD || defined WISPROBUILD)
+#define Orb_1   /*Select Orbot Number*/
+#endif
+
 #if (defined C2BUILD || defined C3BUILD)
 /*#define NRL */      /*use for NRL        calibration */
 #define MARSEILLES   /*use for Marseilles calibration */
 #endif
 
 #ifdef WISPRIBUILD
-#define RMAX 215.            /* outer radius of computation ball */
+
+#ifdef Orb_1
+#define RMIN 7.5             /* innner radius (hollow  sphere)   */
+#define RMAX 150.            /* outer radius of computation ball */
+#endif
+#ifdef Orb_12
+#define RMIN 2.5             /* innner radius (hollow  sphere)   */
+#define RMAX 150.            /* outer radius of computation ball */
+#endif
+#ifdef Orb_24
 #define RMIN 2.0             /* innner radius (hollow  sphere)   */
-/*
+#define RMAX 150.            /* outer radius of computation ball */
+#endif
+
 #define NZ     130
-#define NCELLS  90	/* cartesian: object has NCELLS^3 elements 
-*/
+#define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
 #define NTHETA 180           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
@@ -34,12 +48,25 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
 
 #ifdef WISPROBUILD
+
+#ifdef Orb_1
+#define RMIN 30.             /* innner radius (hollow  sphere)   */
+#define RMAX 180.            /* outer radius of computation ball */
+#endif
+#ifdef Orb_12
+#define RMIN 10.0             /* innner radius (hollow  sphere)   */
+#define RMAX 180.            /* outer radius of computation ball */
+#endif
+#ifdef Orb_24
+#define RMIN 8.5             /* innner radius (hollow  sphere)   */
+#define RMAX 180.            /* outer radius of computation ball */
+#endif
+
+
 #define RMAX 215.            /* outer radius of computation ball */
 #define RMIN 2.0             /* innner radius (hollow  sphere)   */
-/*
 #define NZ     130
-#define NCELLS  90	/* cartesian: object has NCELLS^3 elements 
-*/
+#define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
 #define NTHETA 180           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
