@@ -205,7 +205,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
           /* the .79 factor is to convert from units of mean brightness
            *    to 1.e10*(center brightness)           */
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	  if ( abs(pBval[i][jj] + 999.) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
 	       1.e10 * 0.79;
