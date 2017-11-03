@@ -4,6 +4,57 @@
 /*#define EITBUILD*/
 /* #define C3BUILD */
 #define C2BUILD 
+/* #define WISPRIBUILD */
+/* #define WISPROBUILD */
+
+#if (defined C2BUILD || defined C3BUILD)
+/*#define NRL */      /*use for NRL        calibration */
+#define MARSEILLES   /*use for Marseilles calibration */
+#endif
+
+#ifdef WISPRIBUILD
+#define RMAX 215.            /* outer radius of computation ball */
+#define RMIN 2.0             /* innner radius (hollow  sphere)   */
+/*
+#define NZ     130
+#define NCELLS  90	/* cartesian: object has NCELLS^3 elements 
+*/
+#define NRAD   100 
+#define NTHETA 180           /* polar angle bins */
+#define NPHI (NTHETA * 2)    /* azimuthal angle bins */
+#define IMSIZE    2048	     /* trimmed size of WISPR images (pixels) to make them square in project v1.0 */
+#define BINFAC    4	     /* binning factor for C2 images (pixels) */
+#define DELTA     0.0	     /* delta vector */
+#define INSTR_RMIN      2.3
+#define INSTR_RMAX      90.
+#define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
+typedef float PB_IMTYPE;
+#define DATADIR     TOMROOT"DATA/wisprI/"
+#define CONFSTRING  DATADIR"list.wisprI.txt"
+#define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
+
+#ifdef WISPROBUILD
+#define RMAX 215.            /* outer radius of computation ball */
+#define RMIN 2.0             /* innner radius (hollow  sphere)   */
+/*
+#define NZ     130
+#define NCELLS  90	/* cartesian: object has NCELLS^3 elements 
+*/
+#define NRAD   100 
+#define NTHETA 180           /* polar angle bins */
+#define NPHI (NTHETA * 2)    /* azimuthal angle bins */
+#define IMSIZE    2048	     /* trimmed size of WISPR images (pixels) to make them square in project v1.0 */
+#define BINFAC    4	     /* binning factor for C2 images (pixels) */
+#define DELTA     0.0	     /* delta vector */
+#define INSTR_RMIN      9.0
+#define INSTR_RMAX      116.
+#define PIXSIZE     (104.06250*2048/IMSIZE)  /* arcsec per pixel */
+typedef float PB_IMTYPE;
+#define DATADIR     TOMROOT"DATA/wisprO/"
+#define CONFSTRING  DATADIR"list.wisprO.txt"
+#define A_OUTFILE     "wisprO...."      /* suffix of A matrix ouput files */
+
+
 #if (defined C2BUILD || defined C3BUILD)
 /*#define NRL */      /*use for NRL        calibration */
 #define MARSEILLES   /*use for Marseilles calibration */
