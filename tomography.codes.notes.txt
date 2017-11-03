@@ -1,0 +1,78 @@
+Hierarchy and notes on Rich's tomography codes. 
+
+This file does not attempt to be exhaustive, and it is dynamic, changing as I get into the codes.
+
+BUILDA.C:
+1. #include "headers.h", 
+   where global constants and all functions to be used are declared. 
+   In turn, "headers.h" also includes (among others):
+      1.a. #include "rcs_llist.h",
+           where the rcs_llist and rcs_llist_node STRUCTURES are defined,
+           and several functions named "rcs_llist_*" are declared.
+      1.b. #include "buildA_params.h",
+           where the instrumental and grid parameters for builda are set.
+      1.c. #include "solve_cv_params.h",
+           where the parameters for 'solve and friends' are set.
+2. Starts a loop over the input images, indexed by "i", in which these tasks are performed:
+   2.1 Creates pointer "rcs" to rcs_llist ??
+   2.2 Calls build_subA
+   2.3 Adds SubA to A by writing it to disk
+3. Closes files, converts A matrix RCS->CCS.
+4. Exits.
+
+BUILD_SUBA.C:
+1. Deals with headers first, to get all needed things such as carlong, 
+   for every possible instrument.
+   It looks to me that first edits here will be needed here to deal with WISPR data. 
+   Should we generate synthetic data with the header structure of WISPR?
+   I think it would be a robust approach.
+2. It deals then with geometrics, it computes: sun_ob1, spol, R12, R23, polar angle (pang).
+3. Prints out on screen some key results, such as: pang, carlong, sun_ob
+4. It then proceeds to compute the subA matrix through a double for-loop on the binned-pixel 
+   indexes (kk) and (ll), so that these two indexes advance by a step equal to BINFAC, set in 
+   "buildA_params.h". Each step of this double-for loop:
+     4.1 Goes over a double for-loop on single pixel indexes (k) and (l)
+         to span all single pixels within the BIN that: 
+         4.1.1 Gets the single pixel point from the image.
+         4.1.2 It computes the row of the SubA mattrix associated to every single pixel. 
+               All calculations are in #include "buildrow.c".
+               Somehow the computation is added to the previous one over the BIN double-loop. 
+               I guess. I did not dare to get into buildrow.c yet.
+         4.1.3 Puts into *y the average intensity of each valid pixel (pB1) of the BIN
+     4.2 Makes the part of the sparse subA array that corresponds to this BIN
+5. Exits.
+
+RCS_LLIST.C:
+1. #include "rcs_llist.h",
+   where the rcs_llist and rcs_llist_node STRUCTURES are defined,
+   and several functions named "rcs_llist_*" are declared.
+2. It then proceeds with the definition of the various "rcs_llist_*" functions.
+
+LLIST.C:
+1. #include "llist.h"
+   where the llist and llist_node STRUCTURES are defined,
+   and several functions named "llist_*" are declared.
+2. It then proceeds with the definition of the various "llist_*" functions.
+
+
+A. inspect SPICE kernels
+
+CODES TO TOUCH:
+headers.h, buildA_params.h: will need a new section for WISPR, plus other settings maybe.
+build_subA.c: will ned to deal with WISPR headers.
+buildrow.c: will need to account for LOS starting point at the instrument when inside the comp. ball.
+
+--------------------------------------------------------------
+
+My understanding of some key pieces of code:
+
+rcs = rcs_llist_create();
+Creates a pointer structure "rcs" of type "rcs_llist", 
+which contains as members two pointers: *v_j and *r, both of type "llist".
+Each "llist" pointer is in turn a structure containing as members 3 pointers:
+    *length (pointing to an integer),
+    *head and *tail, these two of type "llist_node"
+     Now, I do not understand this last type which is in turn also a structure,
+     defined in "llist.h".
+
+
