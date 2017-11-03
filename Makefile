@@ -1,5 +1,7 @@
 TOMROOT_HEADER = tomroot.iommi.h
-CC = clang 
+
+#CC = clang 
+ CC = gcc    # for Linux systems
 
 DEFINES =
 CFLAGS = -Wall -O3 -I/Users/frazin/tomography/wcstools-3.7.0/libwcs -L/Users/frazin/tomography/wcstools-3.7.0/libwcs
