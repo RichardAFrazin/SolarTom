@@ -14,8 +14,7 @@
  * by Paul Janzen and Richard Frazin Summer/Fall 1999 modified by
  *   Butala in 2004 and Frazin in 2006,7,8,2010
  *
- * Alberto comes in. October 27 - 2017.
- * This is my second comment today.
+ * Alberto M Vasquez modifies this in November/2017.
  *
  */
 
@@ -44,7 +43,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
  char orburl[MAXPATH], wget_command[MAXPATH], scratch[MAXPATH];
 #endif
 
-	/* the COR, EUVI and AIA .fts files give the Sun-Spacecraft vector in
+	/*  The COR, EUVI, AIA, and WISPR .fts files give the Sun-Spacecraft vector in
 	 *  Heliocentric Aries Ecliptic Coordinates.  This differs
 	 *  from GCI in the origin point and choice of Z-axis (ecliptic
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
