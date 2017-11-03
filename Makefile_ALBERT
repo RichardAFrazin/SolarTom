@@ -2,8 +2,7 @@ TOMROOT_HEADER = tomroot.iommi.h
 CC = gcc
 
 DEFINES =
- CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
-#CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.6.5/libwcs -L/data1/tomography/wcstools-3.6.5/libwcs
+CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
 
 #################################-I/usr/include/sys
 
