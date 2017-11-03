@@ -14,7 +14,7 @@
 
 #define BINDIR  TOMROOT"bindata/"	/*location of binary input/output files */
 
-/*#define DROP_NEG_PB */   /* If defined, then all negative data values and their associated lines of sight are ignored */
+#define DROP_NEG_PB  /* If defined, then all negative data values and their associated lines of sight are ignored */
 
 #include "solve_cv_params.h"
 
