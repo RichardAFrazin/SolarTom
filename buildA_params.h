@@ -7,9 +7,11 @@
 /* #define WISPRIBUILD */
 /* #define WISPROBUILD */
 
+/* Not using this for now
 #if (defined WISPIRIBUILD || defined WISPROBUILD)
-#define Orb_1   /*Select Orbit Number, add suffix with right orbit number after "_"*/
+#define Orb_1   /*Select Orbit Number, add suffix with right orbit number after "_"
 #endif
+*/
 
 #if (defined C2BUILD || defined C3BUILD)
 /*#define NRL */      /*use for NRL        calibration */
@@ -17,19 +19,10 @@
 #endif
 
 #ifdef WISPRIBUILD
-
-#ifdef Orb_1
-#define RMIN 7.5             /* innner radius (hollow  sphere)   */
-#define RMAX 150.            /* outer radius of computation ball */
-#endif
-#ifdef Orb_12
-#define RMIN 2.5             /* innner radius (hollow  sphere)   */
-#define RMAX 150.            /* outer radius of computation ball */
-#endif
-#ifdef Orb_24
-#define RMIN 2.0             /* innner radius (hollow  sphere)   */
-#define RMAX 150.            /* outer radius of computation ball */
-#endif
+#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller 
+                                value than the smaller FOV point at Orboit #24   */
+#define RMAX 135.            /* outer radius of computation ball, set to a ~50% larger
+                                value than the largest FOV point at Orbit #1 */
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -45,20 +38,13 @@ typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.txt"
 #define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
+#endif
 
 #ifdef WISPROBUILD
-#ifdef Orb_1
-#define RMIN 30.             /* innner radius (hollow  sphere)   */
-#define RMAX 180.            /* outer radius of computation ball */
-#endif
-#ifdef Orb_12
-#define RMIN 10.0             /* innner radius (hollow  sphere)   */
-#define RMAX 180.            /* outer radius of computation ball */
-#endif
-#ifdef Orb_24
-#define RMIN 8.5             /* innner radius (hollow  sphere)   */
-#define RMAX 180.            /* outer radius of computation ball */
-#endif
+#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller 
+                                value than the smaller FOV point at Orboit #24   */
+#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger
+                                value than the largest FOV point at Orbit #1 */
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -74,7 +60,7 @@ typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.txt"
 #define A_OUTFILE     "wisprO...."      /* suffix of A matrix ouput files */
-
+#endif
 
 #if (defined C2BUILD || defined C3BUILD)
 /*#define NRL */      /*use for NRL        calibration */
