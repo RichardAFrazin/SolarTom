@@ -26,7 +26,7 @@
 #define WGETCOMMAND "/usr/local/bin/wget --quiet -P"  /* put the wget binary and path */
 #endif
 
-#if (defined EITBUILD || defined EUVIBUILD)
+#if (defined EITBUILD || defined EUVIBUILD || defined WISPRIBUILD || defined WISPROBUILD)
 #define HOLLOW_SPHERE  /* hollow sphere geometry for EUV tomography */
 #else   /* white light tomography options */
 /*#define CYLINDRICAL*/ 		/* use for cylindrical grid */
@@ -35,7 +35,7 @@
 #endif
 
 
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
 #define THOMSON		/* VdH Thomson scattering calculation */
 #elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
 #define RADON      /* unweighted LOS integral for EUV emissivity */
