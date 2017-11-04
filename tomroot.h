@@ -1,3 +1,3 @@
 
-#define TOMROOT "/Users/frazin/tomography/"
+#define TOMROOT "/data1/tomography/"
 
