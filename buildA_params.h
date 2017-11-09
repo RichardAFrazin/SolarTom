@@ -1,34 +1,32 @@
-/*#define AIABUILD*/
-/*#define EUVIBUILD*/
-/*#define CORBUILD */
-/*#define EITBUILD*/
-/* #define C3BUILD */
-#define C2BUILD 
+/* #define AIABUILD    */
+/* #define EUVIBUILD   */
+/* #define CORBUILD    */
+/* #define EITBUILD    */
+/* #define C3BUILD     */
+   #define C2BUILD     
 /* #define WISPRIBUILD */
 /* #define WISPROBUILD */
 
 /* Not using this for now
-#if (defined WISPIRIBUILD || defined WISPROBUILD)
-#define Orb_1   /*Select Orbit Number, add suffix with right orbit number after "_"
-#endif
+   #if (defined WISPIRIBUILD || defined WISPROBUILD)
+   #define Orb_1  // Select Orbit Number, add suffix with right orbit number after "_"
+   #endif
 */
 
 #if (defined C2BUILD || defined C3BUILD)
-/*#define NRL */      /*use for NRL        calibration */
-#define MARSEILLES   /*use for Marseilles calibration */
+/* #define NRL */    // use for NRL        calibration
+#define MARSEILLES   // use for Marseilles calibration
 #endif
 
 #ifdef WISPRIBUILD
-#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller 
-                                value than the smaller FOV point at Orboit #24   */
-#define RMAX 135.            /* outer radius of computation ball, set to a ~50% larger
-                                value than the largest FOV point at Orbit #1 */
+#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point at Orboit #24 */
+#define RMAX 135.            /* outer radius of computation ball, set to a ~50% largernvalue than the largest FOV point at Orbit #1 */
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
 #define NTHETA 180           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
-#define IMSIZE    2048	     /* trimmed size of WISPR images (pixels) to make them square in project v1.0 */
+#define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN      2.3
@@ -38,19 +36,16 @@ typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.txt"
 #define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
-#endif
 
-#ifdef WISPROBUILD
-#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller 
-                                value than the smaller FOV point at Orboit #24   */
-#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger
-                                value than the largest FOV point at Orbit #1 */
+#elif defined WISPROBUILD
+#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point at Orboit #24 */
+#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger value than the largest FOV point at Orbit #1 */
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
 #define NTHETA 180           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
-#define IMSIZE    2048	     /* trimmed size of WISPR images (pixels) to make them square in project v1.0 */
+#define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN      9.0
@@ -60,18 +55,11 @@ typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.txt"
 #define A_OUTFILE     "wisprO...."      /* suffix of A matrix ouput files */
-#endif
 
-#if (defined C2BUILD || defined C3BUILD)
-/*#define NRL */      /*use for NRL        calibration */
-#define MARSEILLES   /*use for Marseilles calibration */
-#endif
-
-#ifdef C2BUILD
+#elif defined C2BUILD
 #define RMAX 20. /*8.3*/            /* outer radius of computation ball */
 #define RMIN 2. /*2.3*/            /* innner radius (hollow  sphere)   */
-#define NZ     130 
-#define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
+#define NZ     130 #define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
 #define NRAD   360 /*60*/  
 #define NTHETA 180           /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */

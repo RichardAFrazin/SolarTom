@@ -16,7 +16,7 @@
 #define PRINT_FILE_INFO		/* prints file info */
 
 
-#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
+#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD)
 #define LAMBDA  { 1.0 , 1.0, 100.0}
 #define HUBER_FLAG {0, 0, 0}
 #define FILESTR0 "euviA.171.fullcr2069" 
