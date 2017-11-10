@@ -3,8 +3,8 @@
 /* #define CORBUILD    */
 /* #define EITBUILD    */
 /* #define C3BUILD     */
-   #define C2BUILD     
-/* #define WISPRIBUILD */
+/* #define C2BUILD     */
+   #define WISPRIBUILD 
 /* #define WISPROBUILD */
 
 /* Not using this for now
@@ -14,8 +14,8 @@
 */
 
 #if (defined C2BUILD || defined C3BUILD)
-/* #define NRL */    // use for NRL        calibration
-#define MARSEILLES   // use for Marseilles calibration
+   #define NRL            // use for NRL        calibration
+/* #define MARSEILLES */  // use for Marseilles calibration
 #endif
 
 #ifdef WISPRIBUILD
@@ -57,11 +57,11 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE     "wisprO...."      /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
-#define RMAX 20. /*8.3*/            /* outer radius of computation ball */
-#define RMIN 2. /*2.3*/            /* innner radius (hollow  sphere)   */
+#define RMAX   8.3            /* outer radius of computation ball */
+#define RMIN   2.3            /* innner radius (hollow  sphere)   */
 #define NZ     130 #define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
-#define NRAD   360 /*60*/  
-#define NTHETA 180           /* polar angle bins */
+#define NRAD    60  
+#define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	/* size of C2 images (pixels) */
 #define BINFAC    3	     /* binning factor for C2 images (pixels) */
@@ -75,9 +75,9 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2MARS/2009/"
-#define CONFSTRING DATADIR"list.c2MARS.pb.2009.0315.0329.txt"
-#define A_OUTFILE     "c2mars.pb.2008.1204.1217-2.3-8.3nr60nt60" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/c2/2007.04/"
+#define CONFSTRING DATADIR"list.nrl.txt"
+#define A_OUTFILE     "c2.test" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */

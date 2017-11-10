@@ -134,6 +134,8 @@ void build_subA(char *idstring, rcs_llist *rcs,
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
+#elif (defined WISPRIBUILD || defined WISPROBUILD)
+    assert(hgetr8(header,"CORTA2",&roll_offset));
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
@@ -154,74 +156,74 @@ void build_subA(char *idstring, rcs_llist *rcs,
     assert(fwrite(&mjd, sizeof(double), 1, fid_date) == 1);
 
     carlong = carlong * M_PI / 180.0;
-    dist =
-      sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] +
-      sun_ob1[2] * sun_ob1[2];
-    dist = sqrt(dist);
+    dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
+    dist    = sqrt(dist);
 
-    for (i = 0; i < imsize; i++) {
+    for (i = 0; i < imsize; i++)
+    {
       x_image[i] = pixsize * ((float) i - center_x);
       y_image[i] = pixsize * ((float) i - center_y);
     }
  
     /* when the observed image has solar north rotated clockwise from the top,
-     *   CROTA (for EUVI) is positive.   I assume that the same convention
-     *   holds for SC_ROLL and CROTA1 */
+       CROTA (for EUVI) is positive.   I assume that the same convention
+       holds for SC_ROLL and CROTA1 */
    
-    for (i = 0; i < imsize; i++) {
-      for (jj = 0; jj < imsize; jj++) {
-        rho[i][jj] = (float)
-	  sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
-          eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
-	    + (float) (roll_offset*0.017453292519943);
-      }
+    for ( i = 0;  i < imsize;  i++) {
+    for (jj = 0; jj < imsize; jj++) {
+        rho[i][jj] = (float) sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
+        eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
+	           + (float) (roll_offset*0.017453292519943);
     }
-
+    }
     
-    for (i = 0; i < imsize; i++) {
-      for (jj = 0; jj < imsize; jj++) {
+    for ( i = 0;  i < imsize;  i++) {
+    for (jj = 0; jj < imsize; jj++) {
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
-      }
     }
-
-    for (i = 0; i < imsize; i++) {
-      for (jj = 0; jj < imsize; jj++) {
+    }
+    
+/*-------------------NEW CODE STARTS--------------------------------*/
+    
+    for ( i = 0;  i < imsize;  i++) {
+    for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
         if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
-            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
-          pBval[i][jj] = -999.0;
-#elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
-	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
+	    ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN ))
+	pBval[i][jj] = -999.0;
+#endif
+#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
+	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN )
+	pBval[i][jj] = -999.0;
+#endif
 #ifdef RING_REJECT
-	     ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
-	      (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
-#else 
-	        0 ){
+	if  ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
+	     (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN)) 
+	pBval[i][jj] = -999.0;
 #endif
-          pBval[i][jj] = -999.0;
-#endif
-        } else {
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
           /* the .79 factor is to convert from units of mean brightness
            *    to 1.e10*(center brightness)           */
-	  if ( abs(pBval[i][jj] + 999.) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *=
-#ifdef NRL
-	       1.e10 * 0.79;
-#elif (defined MARSEILLES)
-  	       0.79; /* Marseilles scaling */ 
+if ( abs(pBval[i][jj] + 999.) > QEPS)
+  {  /* check for -999 values (missing blocks) */
+   #ifdef NRL
+   pBval[i][jj] *=	 1.e10 * 0.79;
+   #endif
+   #ifdef MARSEILLES
+   pBval[i][jj] *=  	 0.79; /* Marseilles scaling */
+   #endif
+  }
 #endif
-#endif 
-
 #ifdef DROP_NEG_PB
           if (pBval[i][jj] < 0)
             pBval[i][jj] = -999.0;
 #endif
-        }  /* if/else */
-      } /* jj loop over image pixels */
-    } /* i loop over image pixels */  
+    } /* jj loop over image pixels */
+    } /*  i loop over image pixels */  
 
+/*--------------------NEW CODE ENDS---------------------------------*/
+    
     free(image);
   }   /* end of block */
 
