@@ -19,8 +19,8 @@
 #endif
 
 #ifdef WISPRIBUILD
-#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point at Orboit #24 */
-#define RMAX 135.            /* outer radius of computation ball, set to a ~50% largernvalue than the largest FOV point at Orbit #1 */
+#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point of Orbit #24 */
+#define RMAX 135.            /* outer radius of computation ball, set to a ~50% largernvalue than the largest FOV point of Orbit #1 */
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -29,8 +29,8 @@
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN      2.3
-#define INSTR_RMAX      90.
+#define INSTR_RMIN      20.  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
+#define INSTR_RMAX      30.  /* Right now I set the range that coresponds to Orbit 1*/
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
@@ -38,8 +38,8 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
-#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point at Orboit #24 */
-#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger value than the largest FOV point at Orbit #1 */
+#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point of Orbit #24 */
+#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger value than the largest FOV point of Orbit #1 */
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -48,8 +48,8 @@ typedef float PB_IMTYPE;
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN      9.0
-#define INSTR_RMAX      116.
+#define INSTR_RMIN      9.0  /* Try to emulate here what we did for WISPRI above seems impossible if one considers the full 0.5AU->0.5AU orbit. */
+#define INSTR_RMAX      116. /* So what to do?*/
 #define PIXSIZE     (104.06250*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
