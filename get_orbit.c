@@ -49,7 +49,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
 	 *  need to rotated about the x-axis. 
 	 */ 
-#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD)
+#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
  {
   char *header, *fitsdate;
   int lhead, nbhead;
@@ -69,19 +69,19 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   fprintf(stdout,"get_orbit.c: datestring from FITS file is: ");
   fprintf(stdout,"%s, modified julian date is: %.8g\n",fitsdate,*mjd);
   
-
   /*divide by 1000 to convert to km */  
   for (k = 0;k < 3;k++)
     c[k] *= 0.001;
   
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
-   *  is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000)  */ 
+   * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
   Rx = rotx(0.40909262920459);
   rotvmul(sun_ob,Rx,c);
-  
+
   free(Rx);
-  return;
-}
+
+ return;
+ }
 #endif
 
  /* solar meridian crossing times from the ephemeris */
@@ -143,7 +143,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
      "2009-11-09.85", "2009-12-07.17"
    };
 
-
  /* carrington longitude calculation for Earth */
 #if (defined C2BUILD || defined C3BUILD)
 
@@ -179,7 +178,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
  *mjd = fd2mjd(sdate);
  fprintf(stdout,"get_orbit.c: sdate is: ");
  fprintf(stdout,"%s, modified julian date is: %.8g\n",sdate,*mjd);
-
 
  sjd = fd2jd(sdate);
  abdiff = 60.0;
@@ -308,7 +306,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 
 #endif
 
-
  for (i = 0; i <= k; i++)
    fgets(bigline, 512, fid_orb);
  fclose(fid_orb);
@@ -317,7 +314,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
  sscanf(bigline + 305, "%lf %lf %lf", &ersun[0], &ersun[1], &ersun[2]);
  /* GCI earth - SOHO vector */
  sscanf(bigline + 44, "%lf %lf %lf", &erscr[0], &erscr[1], &erscr[2]);
-
 
 #if (defined C2BUILD || defined EITBUILD || defined C3BUILD)
  /* C2, C3 and EIT instruments are on SOHO */
@@ -361,7 +357,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
  *carlong = eclong + result;
  return;
 }
-
 
 void get_orbit_wrapper(int year, int month, int day,
                       int hour, int minute,

@@ -26,7 +26,6 @@
 #ifndef M_PI
 #define M_PI 3.14159265358979
 #endif
-
  
 /* pB's are assumed to be units of 1e-10 Bsun
  * all of the ray computations are done in units of Rsun (6.96e5 km) 
@@ -43,7 +42,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
-  double dsun_obs; // Extra variables added by Albert for testing purposes.
+  double dsun_obs, ddat, J2k_OBS[3];// Extra variables added by Albert for testing purposes.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
@@ -53,7 +52,6 @@ void build_subA(char *idstring, rcs_llist *rcs,
   const int binfac = BINFAC;
   double center_x, center_y;
   const double pixsize = PIXSIZE;
-
 
   /* initialization stuff */
 
@@ -123,9 +121,6 @@ void build_subA(char *idstring, rcs_llist *rcs,
 
     pbvector = (PB_IMTYPE *) image;
 
-   /* Albert printout test */
-   fprintf(stderr,"\nSo far, so good...\n\n");
-
    /* get the center pixel, XSUN and YSUN are in the Marseilles files */
 
     assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN", &center_x));
@@ -141,6 +136,9 @@ void build_subA(char *idstring, rcs_llist *rcs,
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
     assert(hgetr8(header,"CROTA2",&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
+    assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
+    assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
+    assert(hgetr8(header,"J2kZ_OBS",&ddat));   J2k_OBS[2]=ddat;
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
@@ -155,8 +153,9 @@ void build_subA(char *idstring, rcs_llist *rcs,
     /* Get the sun --> observer vector in J2000 GCI coords (km)
      * and the Carrington longitude (deg)
      */
-
+    //#ifndef WISPRIBUILD
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
+    //#endif
 
     assert(fwrite(&mjd, sizeof(double), 1, fid_date) == 1);
 
@@ -235,7 +234,6 @@ for (i = 0; i < imsize; i++) {
     free(image);
   }   /* end of block */
 
-
   dsun = 0.0;
   for (i = 0; i < 3; i++) {
     sun_ob1[i] /= RSUN;
@@ -243,9 +241,9 @@ for (i = 0; i < imsize; i++) {
   }
   dsun = sqrt(dsun);
   
-  /* Albert printout test */
+  /* Albert's test printouts */
   fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
-  fprintf(stderr,"Header's dsun: %g m\n",dsun_obs/(RSUN*1.e3));
+  fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
 
   /* solar pole vector */
   spol1[0] = cos(DELTApo) * cos(ALPHApo);
@@ -295,8 +293,11 @@ for (i = 0; i < imsize; i++) {
   /* fprintf(stderr, "spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);*/
   rotvmul(r3tmp, &R23, spol2);
   /* fprintf(stderr, "spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);*/
-  fprintf(stderr, "sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
+  fprintf(stderr, "COMPUTED sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
 	  sun_ob1[0], sun_ob1[1], sun_ob1[2]);
+  fprintf(stderr, "HEADER'S sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
+ 	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
+
   /*fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
     sun_ob2[2]);*/
   rotvmul(r3tmp, &R23, sun_ob2);

@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
 
     rcs = rcs_llist_create();
 
-    /* Albert's test printouts  
+/* Albert's test printouts  
     fprintf(stderr,"\n%p\n",rcs);
     fprintf(stderr,"\n%p\n",yy);
     fprintf(stderr,"\n%p\n",dd);
