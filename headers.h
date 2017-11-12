@@ -55,7 +55,7 @@
 
 /* constants */
 #define ARCSECRAD (M_PI / 180. / 3600.)
-#define RSUN 6.96e5		/* in km */
+#define RSUN 6.957e5		/* in km */
 #define QLIMB 0.63
 #define CONST 1.2497e-15	/* (3/16)*(1e10 * Thompson X-section) */
 #define ALPHApo (286.13 * M_PI/180.0)	/* J2000 solar pole coords */
