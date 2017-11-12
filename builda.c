@@ -167,7 +167,6 @@ int main(int argc, char **argv) {
   fid_m = fopen(fn_m, "w");
   assert(fid_m);
 
-
   n_elem_exported = 0;
   
   /* make the first number in the block file be number of images */
@@ -191,7 +190,15 @@ int main(int argc, char **argv) {
     assert(fwrite(&len_y, sizeof(int), 1, fid_block) == 1);
 
     rcs = rcs_llist_create();
-     
+
+          /* Albert printout test */
+    fprintf(stderr,"\n%p\n",rcs);
+    fprintf(stderr,"\n%p\n",yy);
+    fprintf(stderr,"\n%p\n",dd);
+    fprintf(stderr,"\nSo far, so good...\n\n");
+    fprintf(stderr,"\n%p\n",fid_log);
+    fprintf(stderr,"\n%p\n",fid_date);
+    
     build_subA(idstring, rcs, &yy, &dd, &len_yy, fid_log, fid_date);
 
     /* Need to step back one position to compensate for the extra end

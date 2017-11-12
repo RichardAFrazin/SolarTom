@@ -43,6 +43,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
+  double dsun_obs; // Extra variables added by Albert for testing purposes.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
@@ -97,7 +98,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
     float dist;
     FILE *fid_test;
     float x_image[IMSIZE], y_image[IMSIZE];
-    
+
     /* test for existence of the data file */
     fid_test = NULL;
     fid_test = fopen(filename,"r");
@@ -122,6 +123,9 @@ void build_subA(char *idstring, rcs_llist *rcs,
 
     pbvector = (PB_IMTYPE *) image;
 
+   /* Albert printout test */
+   fprintf(stderr,"\nSo far, so good...\n\n");
+
    /* get the center pixel, XSUN and YSUN are in the Marseilles files */
 
     assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN", &center_x));
@@ -135,7 +139,8 @@ void build_subA(char *idstring, rcs_llist *rcs,
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
-    assert(hgetr8(header,"CORTA2",&roll_offset));
+    assert(hgetr8(header,"CROTA2",&roll_offset));
+    assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
@@ -237,6 +242,10 @@ for (i = 0; i < imsize; i++) {
     dsun += sun_ob1[i] * sun_ob1[i];
   }
   dsun = sqrt(dsun);
+  
+  /* Albert printout test */
+  fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
+  fprintf(stderr,"Header's dsun: %g m\n",dsun_obs/(RSUN*1.e3));
 
   /* solar pole vector */
   spol1[0] = cos(DELTApo) * cos(ALPHApo);

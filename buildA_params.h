@@ -1,11 +1,11 @@
-/* #define AIABUILD    */
-/* #define EUVIBUILD   */
-/* #define CORBUILD    */
-/* #define EITBUILD    */
-/* #define C3BUILD     */
-/* #define C2BUILD     */
-   #define WISPRIBUILD 
-/* #define WISPROBUILD */
+// #define AIABUILD
+// #define EUVIBUILD
+// #define CORBUILD
+// #define EITBUILD
+// #define C3BUILD
+// #define C2BUILD 
+   #define WISPRIBUILD
+// #define WISPROBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -35,7 +35,7 @@
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.txt"
-#define A_OUTFILE     "wisprI...."      /* suffix of A matrix ouput files */
+#define A_OUTFILE     "wisprI.test"      /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point of Orbit #24 */
@@ -54,7 +54,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.txt"
-#define A_OUTFILE     "wisprO...."      /* suffix of A matrix ouput files */
+#define A_OUTFILE     "wisprO.test"      /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMAX   8.3            /* outer radius of computation ball */
