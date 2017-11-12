@@ -19,31 +19,31 @@
 #endif
 
 #ifdef WISPRIBUILD
-#define RMIN 2.0             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point of Orbit #24 */
-#define RMAX 135.            /* outer radius of computation ball, set to a ~50% largernvalue than the largest FOV point of Orbit #1 */
+#define RMIN  2.0             /* RMIN set to a somewhat smaller than the smallest Inner FOV height in Perihelion #24  */
+#define RMAX 10.0 // 185.     /* RMAX set to a ~50% larger value than the largest Outer FOV heght in Science Orbit #1 */ 
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
-#define NTHETA 180           /* polar angle bins */
+#define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN      20.  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
-#define INSTR_RMAX      30.  /* Right now I set the range that coresponds to Orbit 1*/
+#define INSTR_RMIN      3. // 20.  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
+#define INSTR_RMAX      8. // 30.  /* Right now I set the range that coresponds to Orbit 1*/
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.txt"
-#define A_OUTFILE     "wisprI.test"      /* suffix of A matrix ouput files */
+#define A_OUTFILE          "wisprI.test"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
-#define RMIN 8.5             /* innner radius (hollow  sphere), set to a slightly smaller value than the smaller FOV point of Orbit #24 */
-#define RMAX 180.            /* outer radius of computation ball, set to a ~50% larger value than the largest FOV point of Orbit #1 */
+#define RMIN 8.5             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
+#define RMAX 180.            
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
-#define NTHETA 180           /* polar angle bins */
+#define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
 #define BINFAC    4	     /* binning factor for C2 images (pixels) */
@@ -54,7 +54,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.txt"
-#define A_OUTFILE     "wisprO.test"      /* suffix of A matrix ouput files */
+#define A_OUTFILE          "wisprO.test"     /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMAX   8.3            /* outer radius of computation ball */
@@ -77,7 +77,7 @@ typedef double PB_IMTYPE;
 #endif
 #define DATADIR    TOMROOT"DATA/c2/2007.04/"
 #define CONFSTRING DATADIR"list.nrl.txt"
-#define A_OUTFILE     "c2.test" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "c2.test" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
@@ -101,7 +101,7 @@ typedef double PB_IMTYPE;
 #endif
 #define DATADIR    TOMROOT"DATA/C2MARS/2008/"
 #define CONFSTRING DATADIR"testc3_060806.txt"
-#define A_OUTFILE     "testc3_060806.txt" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "testc3_060806.txt" /* suffix of A matrix ouput files */
 
 #elif defined CORBUILD  /* for COR1 and COR2(?)*/
 #define NRL /* pB scaling */
@@ -121,9 +121,7 @@ typedef double PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/COR1/cr2106/"
 #define CONFSTRING DATADIR"test_B.txt"
-#define A_OUTFILE     "test_B" /* suffix of A matrix ouput files */
-
-
+#define A_OUTFILE         "test_B" /* suffix of A matrix ouput files */
 
 /*   FOR EUVI, EIT Only! */
 /* With this scaling (v,w in units of RSUN, y units of modified DN/s),
@@ -144,7 +142,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/EIT/2008/"
 #define CONFSTRING DATADIR"list.txt"
-#define A_OUTFILE      "crap"
+#define A_OUTFILE         "crap"
 
 #elif defined EUVIBUILD
 /* don't accept data between INNER_REJECT_RAD and OUTER_REJECT_RAD (due to optical depth) */
@@ -166,7 +164,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/EUVI/CR2084/A171/" 
 #define CONFSTRING DATADIR"list.A171.b4.little.txt"        
-#define A_OUTFILE  "CR2084.171B.20.90_noDR"
+#define A_OUTFILE         "CR2084.171B.20.90_noDR"
 /*#define DATADIR    TOMROOT"DATA/EUVI/AB.171.cr2069/" 
 #define CONFSTRING DATADIR"list.euviAB.171.rs.cr2069.txt"        
 #define A_OUTFILE  "CR2069.171ABrr20_90"*/
@@ -190,7 +188,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/AIA/094/" 
 #define CONFSTRING DATADIR"list.094.processed.binned.txt"        
-#define A_OUTFILE  "AIA.CR2106.094.nr26.irm1.26"
+#define A_OUTFILE         "AIA.CR2106.094.nr26.irm1.26"
 
 #else
 #error No build that is currently understood specified
