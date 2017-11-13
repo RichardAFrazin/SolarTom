@@ -1,8 +1,10 @@
 /*
  *    build_subA:
  * build the submatrix associated with each 2D image.
-* 
+ * 
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
+ *
+ *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *
  */
 
@@ -153,12 +155,8 @@ void build_subA(char *idstring, rcs_llist *rcs,
     /* Get the sun --> observer vector in J2000 GCI coords (km)
      * and the Carrington longitude (deg)
      */
-    //#ifndef WISPRIBUILD
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
-    //#endif
-
     assert(fwrite(&mjd, sizeof(double), 1, fid_date) == 1);
-
     carlong = carlong * M_PI / 180.0;
     dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist    = sqrt(dist);
@@ -293,17 +291,18 @@ for (i = 0; i < imsize; i++) {
   /* fprintf(stderr, "spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);*/
   rotvmul(r3tmp, &R23, spol2);
   /* fprintf(stderr, "spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);*/
-  fprintf(stderr, "COMPUTED sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
+  fprintf(stderr, "COMPUTED sun_ob1:        [%3.10g, %3.10g, %3.10g]\n",
 	  sun_ob1[0], sun_ob1[1], sun_ob1[2]);
-  fprintf(stderr, "HEADER'S sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
+  fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
  	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
-
-  /*fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
-    sun_ob2[2]);*/
+  /*
+  fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
+    sun_ob2[2]);
   rotvmul(r3tmp, &R23, sun_ob2);
-  /*fprintf(stderr, "sun_ob3: [%g, %g, %g]\n\n", r3tmp[0], r3tmp[1],
-    r3tmp[2]);*/
-
+  fprintf(stderr, "sun_ob3: [%g, %g, %g]\n\n", r3tmp[0], r3tmp[1],
+    r3tmp[2]);
+  */
+  
   fprintf(fid_log,"cl= %g deg, polar_ang= %g deg, so1=[%g, %g, %g] Rs\n", 
 	  carlong*180./((double) M_PI), pang*180./((double) M_PI),
           sun_ob1[0], sun_ob1[1], sun_ob1[2]);

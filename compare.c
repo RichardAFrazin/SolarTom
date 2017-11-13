@@ -4,6 +4,9 @@
  * CONFSTRING in buildA_params.h) and uses the spacecraft
  * coordinates derived from each to create synthetic intensities
  * as determined from a 3D reconstruction (in an input file).
+ *
+ *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
+ *
  */
 
 #include <math.h>
@@ -40,6 +43,7 @@ int main(int argc, char **argv){
   static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
+  double dsun_obs, ddat, J2k_OBS[3];// Extra variables added by Albert for testing purposes.
   Rot R12, R23, Rtmp, *Rx, *Ry, *Rz;
   int nfiles, i, ii, jj, kk, ll, mmm, hasdata, totalB;
   const int nc3 = NBINS, imsize = IMSIZE;
@@ -173,12 +177,17 @@ int main(int argc, char **argv){
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
+#elif (defined WISPRIBUILD || defined WISPROBUILD)
+    assert(hgetr8(header,"CROTA2",&roll_offset));
+    assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
+    assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
+    assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
+    assert(hgetr8(header,"J2kZ_OBS",&ddat));   J2k_OBS[2]=ddat;
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
 #endif
-
 
 #ifdef MARSEILLES /* we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore */ 
     roll_offset -= 0. ;  /* 0.5; */
@@ -202,43 +211,39 @@ int main(int argc, char **argv){
     /* Get the sun --> observer vector in J2000 GCI coords (km)
      * and the Carrington longitude (deg)
      */
-
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
     carlong = carlong * M_PI / 180.0;
-    dist =
-      sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] +
-      sun_ob1[2] * sun_ob1[2];
+    dist = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist = sqrt(dist);
  
-    for (i = 0; i < imsize; i++) {
+    for (i = 0; i < imsize; i++)
+    {
       x_image[i] = pixsize * ((float) i - center_x);
       y_image[i] = pixsize * ((float) i - center_y);
     }
  
-
     /* when the observed image has solar north rotated clockwise from the top,
      *   CROTA (for EUVI) is positive.   I assume that the same convention
      *   holds for SC_ROLL and CROTA1 */
    
-    for (i = 0; i < imsize; i++) {
-      for (jj = 0; jj < imsize; jj++) {
-        rho[i][jj] = (float)
-	  sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
-          eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
-	    + (float) (roll_offset*0.017453292519943);
-      }
+    for ( i = 0;  i < imsize;  i++) {
+    for (jj = 0; jj < imsize; jj++) {
+        rho[i][jj] = (float) sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
+        eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
+	           + (float) (roll_offset*0.017453292519943);
+    }
     }
 
-    for (i = 0; i < imsize; i++) {
-      for (jj = 0; jj < imsize; jj++) {
+    for ( i = 0;  i < imsize;  i++) {
+    for (jj = 0; jj < imsize; jj++) {
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
-      }
+    }
     }
 
     for (i = 0; i < imsize; i++) {
       for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
         if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
             ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
           pBval[i][jj] = -999.0;
@@ -263,6 +268,11 @@ int main(int argc, char **argv){
 #elif (defined MARSEILLES)
   	       0.79; /* Marseilles scaling */ 
 #endif
+#if (defined WISPRIBUILD || defined WISPROBUILD)
+          /* Add needed factor (if needed) once we decide the units of the synthetic images */
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.
+#endif	       
 #endif 
 
 #ifdef DROP_NEG_PB
@@ -283,6 +293,10 @@ int main(int argc, char **argv){
       dsun += sun_ob1[i] * sun_ob1[i];
     }
     dsun = sqrt(dsun);
+
+   /* Albert's test printouts */
+   fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
+   fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
 
     /* solar pole vector */
     spol1[0] = cos(DELTApo) * cos(ALPHApo);
@@ -333,8 +347,11 @@ fprintf(stderr, "polar angle: %g radians = %g deg\n",
     fprintf(stderr, "spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);
     rotvmul(r3tmp, &R23, spol2);
     fprintf(stderr, "spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);
-    fprintf(stderr, "sun_ob1: [%3.10g, %3.10g, %3.10g]\n",
-	    sun_ob1[0], sun_ob1[1], sun_ob1[2]);
+  fprintf(stderr, "COMPUTED sun_ob1:        [%3.10g, %3.10g, %3.10g]\n",
+	  sun_ob1[0], sun_ob1[1], sun_ob1[2]);
+  fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
+ 	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
+
     fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
           sun_ob2[2]);
     rotvmul(r3tmp, &R23, sun_ob2);
