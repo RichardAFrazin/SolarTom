@@ -673,7 +673,6 @@
 
 #endif
 
-
   /* sort the "times" */
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 

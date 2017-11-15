@@ -203,8 +203,8 @@ int main(int argc, char **argv){
     totalB = 1;
   else {
     totalB = -1;
-    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring);
-    exit(1);
+    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring); 
+   exit(1);
   }
 #endif
 
@@ -294,9 +294,9 @@ int main(int argc, char **argv){
     }
     dsun = sqrt(dsun);
 
-   /* Albert's test printouts */
-   fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
-   fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
+    /* Albert's test printouts */
+    fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
+    fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
 
     /* solar pole vector */
     spol1[0] = cos(DELTApo) * cos(ALPHApo);
