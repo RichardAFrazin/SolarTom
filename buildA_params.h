@@ -27,15 +27,15 @@
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
-#define BINFAC    4	     /* binning factor for C2 images (pixels) */
+#define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN      3. // 20.  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
-#define INSTR_RMAX      8. // 30.  /* Right now I set the range that coresponds to Orbit 1*/
+#define INSTR_RMAX      8. // 30.  /* Right now I set the range that coresponds to Orbit 1. This is not possible for all orbits and/or both instruments. */
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.txt"
-#define A_OUTFILE          "wisprI.test"     /* suffix of A matrix ouput files */
+#define A_OUTFILE          "wisprI.test.bf8"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 8.5             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
@@ -46,7 +46,7 @@ typedef float PB_IMTYPE;
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
-#define BINFAC    4	     /* binning factor for C2 images (pixels) */
+#define BINFAC    4	     /* binning factor for WISPRO images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN      9.0  /* Try to emulate here what we did for WISPRI above seems impossible if one considers the full 0.5AU->0.5AU orbit. */
 #define INSTR_RMAX      116. /* So what to do?*/

@@ -6,6 +6,8 @@
  *	rotx.m
  *	roty.m
  *	rotz.m
+ *
+ * Some comments added by A.M.Vásquex, CLASP Fall-2017.
  */
 
 #ifdef OPENBSD
@@ -16,11 +18,11 @@
 #include <math.h>
 #include "headers.h"
 
+// Define rotation matrixes Rx, Ry, Rz.
 Rot *rotx(ax)
 double ax;
 {
   Rot *foo;
-
   if ((foo = (Rot *) malloc(sizeof(Rot))) == NULL) {
     printf("malloc in rotx");
     exit(1);
@@ -41,7 +43,6 @@ Rot *roty(ay)
 double ay;
 {
   Rot *foo;
-
   if ((foo = (Rot *) malloc(sizeof(Rot))) == NULL) {
     printf("malloc in roty");
     exit(1);
@@ -62,7 +63,6 @@ Rot *rotz(az)
 double az;
 {
   Rot *foo;
-
   if ((foo = (Rot *) malloc(sizeof(Rot))) == NULL) {
     printf("malloc in rotz");
     exit(1);
@@ -79,8 +79,9 @@ double az;
   return (foo);
 }
 
+// Define matrix opperations Rot*Rot and Rot*3d-Vector
 
-/* Multiply rotation matrices: a = b * c */
+// Multiply two Rot-type matrices "b" and "c": a = b * c 
 void rotmul(a, b, c)
 Rot *a, *b, *c;
 {
@@ -92,14 +93,13 @@ Rot *a, *b, *c;
       tmp = 0.0;
       for (k = 0; k < 3; k++) {
         tmp += (*b)[i][k] * (*c)[k][j];
-      }
+      } // k
       (*a)[i][j] = tmp;
-    }
-  }
+    } // j
+  } // i
 }
 
-/* Multiply rotation matrix times vector: a = b * c, where it is assumed
-   a and c are 3-d double arrays */
+// Multiply Rot-type matrix "b" times 3-d column vector "c": a = b * c
 void rotvmul(a, b, c)
 double *a;
 Rot *b;
@@ -112,7 +112,7 @@ double *c;
     tmp = 0.0;
     for (k = 0; k < 3; k++) {
       tmp += (*b)[i][k] * (*(c + k));
-    }
+    } // k
     *(a + i) = tmp;
-  }
+  } // i
 }

@@ -8,8 +8,25 @@
  *     phi    bin 0 is same as CYLINDRICAL case)
  */
 
+<<<<<<< HEAD
 
 /* geomtest.c uses RAYDIAGNOSE definition */
+=======
+/* geomtest.c uses RAYDIAGNOSE definition */ 
+>>>>>>> da74e74e8f07d26962658edd84cacf444a3a11c7
+
+/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle SPP/WISPR
+ * as well as added comments for documentation and readability.
+ */
+
+/*  Strategy to deal with the possibility of spacecraft being within computaional grid.
+ *  t1 and t2 are the crossing times of the LOS that correspond to entering/leaving 
+ *  the computational grid. We will need to compute t3 as the time of the LOS that
+ *  corresponds to the location of the spacecraft.
+ *  If t3 is not in the [t1,t2] range nothing changes.
+ *  If t3 is within [t1,t2] then:  if sign(t3) = sign(t1)-> Update t1=t3
+ *                                 if sign(t3) = sign(t2)-> Update t2=t3
+ */
 
 /***********  BEGIN BUILDROW ***********************/
 {
@@ -46,6 +63,7 @@
    *
    * unit points AWAY from the observer, TOWARDS the Sun
    *   (recall, in coordinate system 2, the x-axis points
+<<<<<<< HEAD
    *   TOWARD the observer) */
 
 
@@ -55,6 +73,23 @@
   r3tmp[0] = dsun*sin(rho1)*sin(rho1);
   r3tmp[1] = 0.0;
   r3tmp[2] = dsun*sin(rho1)*cos(rho1) ;
+=======
+   *   TOWARD the observer) */  
+ 
+  /* this is correct if eta1 is the usual solar PA (in radians) */
+  Rx = rotx(eta1);
+
+  //--------------NRPT & UNIT--------------------------------
+  // These two calculations of NRPT and UNIT in CS-2 correspond
+  // to Eqs. (9) and (10) in Frazin & Janzen (2002), respectively.
+  // A.M.V. corrected the expressions for r3tmp[0] and r3tmp[2].
+
+//r3tmp[0] = sin(rho1) * sin(rho1) / cos(rho1);
+  r3tmp[0] = sin(rho1) * sin(rho1);
+  r3tmp[1] = 0.0;
+//r3tmp[2] = sin(rho1) ;
+  r3tmp[2] = sin(rho1) * cos(rho1);
+>>>>>>> da74e74e8f07d26962658edd84cacf444a3a11c7
   rotvmul(nrpt, Rx, r3tmp);
 
   vdhA = cos(rho1)*cos(rho1)*cos(rho1)*cos(rho1)  /* normalization for unit vector */
@@ -66,23 +101,34 @@
 
   free(Rx);
 
+  // Compute NRPT and UNIT in SC-3
   rotvmul(r3tmp, &R23, nrpt);
   r3eq(nrpt, r3tmp);
   rotvmul(r3tmp, &R23, unit);
   r3eq(unit, r3tmp);
-
+  // From now on NRPT and UNIT are given in CS-3
+  
+  // LOS' impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt));
-
+  //------------------------------------------------------
+  
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enter and leave the computation area
+<<<<<<< HEAD
    *
    *
    * junk[] are the (signed) distances from nrpt where the LOS crosses
    *    the max and min  values of the computation box for each of the 3
+=======
+   *
+   * junk[] are the (signed) distances from nrpt where the LOS crosses 
+   *    the max and min values of the computation box for each of the 3
+>>>>>>> da74e74e8f07d26962658edd84cacf444a3a11c7
    *    coordinates
    *
    * If the LOS misses the computation grid, set ontarget = 0 and
    *     exit buildrow.c .
+   *
    * If any of the endpoints specified by the junk vector
    *    hits the edge of the grid, set ontarget = 1
    */
@@ -214,7 +260,6 @@
 
 
 #if defined CARTESIAN || defined CYLINDRICAL
-
 
    if (junk[facedex[0]] < junk[facedex[1]] ){
      t1 = junk[facedex[0]];
@@ -673,7 +718,6 @@
   }
 
 #endif
-
 
   /* sort the "times" */
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);

@@ -14,8 +14,8 @@
  * by Paul Janzen and Richard Frazin Summer/Fall 1999 modified by
  *   Butala in 2004 and Frazin in 2006,7,8,2010
  *
- * Modified by Vasquez & Frazin in 2017 to include WISPR
- *
+ * Modified by A.M.Vásquez, CLASP Fall-2017, to include WISPR,
+ *                          and also comments for documentation. 
  */
 
 #include <math.h>
@@ -59,22 +59,27 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   strcat(buffer,idstring);
   assert((header = fitsrhead(buffer, &lhead, &nbhead)) != NULL);
 
+  // Get Sun_Ob [m] in the HAE CS, as pointer "c".
   assert(hgetr8(header,"HAEX_OBS",c));
   assert(hgetr8(header,"HAEY_OBS",c+1));
   assert(hgetr8(header,"HAEZ_OBS",c+2));
+  // Convert Sun_Ob HAE to [km].
+  for (k = 0;k < 3;k++)
+    c[k] *= 0.001;
+
+  // Get Sub-Spacecraft arrington Longitude [deg], as pointer "carlong".
   assert(hgetr8(header,"CRLN_OBS",carlong));
+
   fitsdate = hgetc(header,"DATE_OBS");
 
   *mjd = fd2mjd(fitsdate);
   fprintf(stdout,"get_orbit.c: datestring from FITS file is: ");
   fprintf(stdout,"%s, modified julian date is: %.8g\n",fitsdate,*mjd);
-  
-  /*divide by 1000 to convert to km */  
-  for (k = 0;k < 3;k++)
-    c[k] *= 0.001;
-  
+    
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
    * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
+
+  // Compute now Sun_Ob [km] in CS-1 (J2000), as vector "sub_ob".
   Rx = rotx(0.40909262920459);
   rotvmul(sun_ob,Rx,c);
 
@@ -327,7 +332,8 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 #endif
 
  /*calculate angle between earth and soho, projected onto equ. plane */
- /* solar pole vector */
+
+ // Solar Pole vector in CS-1:
  p[0] = cos(DELTApo) * cos(ALPHApo);
  p[1] = cos(DELTApo) * sin(ALPHApo);
  p[2] = sin(DELTApo);

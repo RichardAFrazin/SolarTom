@@ -152,9 +152,9 @@ void build_subA(char *idstring, rcs_llist *rcs,
     roll_offset -= 0.5;
 #endif
 
-    /* Get the sun --> observer vector in J2000 GCI coords (km)
-     * and the Carrington longitude (deg)
-     */
+    // Get the sun --> observer vector in J2000 GCI (CS-1) in [km]
+    // and the sub-spacecraft Carrington longitude in [deg].
+
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
     assert(fwrite(&mjd, sizeof(double), 1, fid_date) == 1);
     carlong = carlong * M_PI / 180.0;
@@ -243,7 +243,7 @@ for (i = 0; i < imsize; i++) {
   fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
   fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
 
-  /* solar pole vector */
+  // Solar pole vector in SC-1
   spol1[0] = cos(DELTApo) * cos(ALPHApo);
   spol1[1] = cos(DELTApo) * sin(ALPHApo);
   spol1[2] = sin(DELTApo);
@@ -254,7 +254,7 @@ for (i = 0; i < imsize; i++) {
   Rz = rotz(-atan2(sun_ob1[1], sun_ob1[0]));
   rotvmul(sob, Rz, sun_ob1);
   /* Zero z component of Rz * sunob */
-  Ry = roty(-atan2(sob[2], sob[0]));
+  Ry = roty(-atan2(sob[2], sob[0])); // Shouldn't it be "+" within ATAN2 ?
   /* Zero y component of spol */
   rotmul(&Rtmp, Ry, Rz);
   rotvmul(spol2, &Rtmp, spol1);
@@ -307,7 +307,7 @@ for (i = 0; i < imsize; i++) {
 	  carlong*180./((double) M_PI), pang*180./((double) M_PI),
           sun_ob1[0], sun_ob1[1], sun_ob1[2]);
 
-  /*       build Arow_long and y, delta:
+  /*  build Arow_long and y, delta:
    *  This part calculates the "matrix elements" for a given
    *  image pixel and then adds all of those elements associated
    *  with a single bin of image pixels together to make a row of AA.
@@ -322,19 +322,22 @@ for (i = 0; i < imsize; i++) {
 
   for (kk = 0; kk < imsize - modnum; kk += binfac) {
     for (ll = 0; ll < imsize - modnum; ll += binfac) {
+
+      // Make Arow_long ALL zeros to start.
       for (mmm = 0; mmm < nc3; mmm++)
         Arow_long[mmm] = 0.0;
       
       hasdata = 0;
       n_los = 0.0;
 
+      /*--------Loop LOSs within BIN---------------------------------*/     
       for (k = 0; k < binfac; k++) {
         for (l = 0; l < binfac; l++) {
           if (ll + l > (imsize - 1) || kk + k > (imsize - 1)) {
             fprintf(stderr,
                     "build_subA: image pixel out of bounds error!\n");
             fprintf(stderr, "kk = %d, ll = %d  ", kk, ll);
-            fprintf(stderr, "k = %d, l = %d\n", k, l);
+            fprintf(stderr, "k  = %d,  l = %d\n",  k,  l);
             exit(23);
           }
 
@@ -342,45 +345,53 @@ for (i = 0; i < imsize; i++) {
           if (fabs(pB1 + 999.0) > QEPS) {
 
             hasdata = 1;  /* this will be set to 0 by buildrow.c 
-                           *   if the LOS misses the grid */
+                           * if the LOS misses the grid */
             rho1 = ((double) rho[ll + l][kk + k]) * ARCSECRAD;
-            eta1 = (double) eta[ll + l][kk + k];
+            eta1 =  (double) eta[ll + l][kk + k];
 
 #include "buildrow.c"
 
             if (hasdata == 1){
                covar_factor = 1.0;
-               n_los += 1.0;
-               (*y)[*count] += pB1 / covar_factor;
+               n_los += 1.0;  // Add up the number of LOS within BIN hitting the grid
+               (*y)[*count] += pB1 / covar_factor; 
                (*delta)[*count] += DELTA;
 	    } /* if hasdata */
           }
         }		/* l bin loop */
       }			/* k bin loop */
-      if (hasdata == 1) {
-        int done_1;
-        
-        (*y)[*count] /= n_los;
+      /*------------End Loop LOSs within BIN-------------------------*/
 
+      /*---Do this if at least one LOS within BIN has hit the grid---*/
+      if (hasdata == 1) {
+        int done_1;        
+        (*y)[*count] /= n_los; 
+        // Now y[BIN] contains the average of the values of all LOSs within the BIN.
         /* make sparse array */
         jj = 0;
         done_1 = 0;
+	// Arow_long used below was computed in buildrow.c above. It contains as many
+	// elements as VOXELS are in the GRID. It contains NON-zero values (columns)
+	// that are crossed by the BIN LOSs.
+	// Arow_long[i] should contain the A-matrix element of column "i" and row "count".
+	// I need to study this in buildrow. Note that buildrow computes this element
+	// n_los times for the BIN, adding the results, so it is normalized byn_los below.
         for (i = 0; i < nc3; i++) {
           if (Arow_long[i] != 0.0) {
             if (done_1) {
-              rcs_llist_add_to_row(rcs, Arow_long[i] / n_los, i);
+              rcs_llist_add_to_row(rcs, Arow_long[i] / n_los, i);  // normalized to n_los.
             }
             else {
               done_1 = 1;
-              rcs_llist_add_new_row(rcs, Arow_long[i] / n_los, i);
+              rcs_llist_add_new_row(rcs, Arow_long[i] / n_los, i); // normalized to n_los.
             }
-          }
+          } // if arow_long[i] is NON-zero, i.e. if voxel "i" has been hit by BIN "count".
         }  /* i loop over columns */
-
-        (*count)++;
-
+        (*count)++; // Counts the number of BIN that has hit the grid 
       }	  /* if hasdata == 1 */
-    }	 /* ll */
+      /*----End actions in case at least one LOS within BIN has hit the grid---*/
+
+    }  /* ll */
   }    /* kk */
 
   return;
