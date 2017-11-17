@@ -61,8 +61,6 @@ double *a, *b, *c;
   *(a + 2) = *(b + 2) + *(c + 2);
 }
 
-
-
 int doublecompare(const void *x, const void *y) {
   if ( *((double *) x) > *((double *) y) ) {
     return(1);
