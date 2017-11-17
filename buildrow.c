@@ -67,11 +67,12 @@
   // These two calculations of NRPT and UNIT in CS-2 correspond
   // to Eqs. (9) and (10) in Frazin & Janzen (2002), respectively.
   // A.M.V. corrected the expressions for r3tmp[0] and r3tmp[2].
-
-//r3tmp[0] = sin(rho1) * sin(rho1) / cos(rho1);
+  // The error was numerically negligible (less than1  part in 1E4)
+  // for d ~ 1 AU and the EUV and Lasco FOVs. For WISPR it would have
+  // had a much larger impact (of order 1).
+  
   r3tmp[0] = sin(rho1) * sin(rho1);
   r3tmp[1] = 0.0;
-//r3tmp[2] = sin(rho1) ;
   r3tmp[2] = sin(rho1) * cos(rho1);
   rotvmul(nrpt, Rx, r3tmp);
   r3scalmul(nrpt, dsun);
