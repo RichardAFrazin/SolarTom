@@ -1,21 +1,21 @@
-/* CARTESIAN: (x,y,z), (bin 0 in each coord. is betwen -RMAX and RMAX(1 + 2/NCELLS) 
+/* CARTESIAN: (x,y,z), (bin 0 in each coord. is betwen -RMAX and RMAX(1 + 2/NCELLS)
  * CYLINDRICAL: (r, phi, z) (radial bin 0 is between r = 0 and RMAX/NRAD,
  *                           phi    bin 0 is between 0 and  2pi/NPHI,
  *                           z      bin 0 is betwen -RMAX and RMAX(1 + 2/NCELLS))
- * HOLLOW_SPHERE: (r, theta, phi) 
+ * HOLLOW_SPHERE: (r, theta, phi)
  *    (radial bin 0 is between RMIN and (RMAX-RMIN)/NRAD,
  *     theta  bin 0 is between -pi/2 and (-pi/2 + pi/NTHETA),
- *     phi    bin 0 is same as CYLINDRICAL case) 
+ *     phi    bin 0 is same as CYLINDRICAL case)
  */
 
-/* geomtest.c uses RAYDIAGNOSE definition */ 
+/* geomtest.c uses RAYDIAGNOSE definition */
 
 /* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle SPP/WISPR
  * as well as added comments for documentation and readability.
  */
 
 /*  Strategy to deal with the possibility of spacecraft being within computaional grid.
- *  t1 and t2 are the crossing times of the LOS that correspond to entering/leaving 
+ *  t1 and t2 are the crossing times of the LOS that correspond to entering/leaving
  *  the computational grid. We will need to compute t3 as the time of the LOS that
  *  corresponds to the location of the spacecraft.
  *  If t3 is not in the [t1,t2] range nothing changes.
@@ -32,7 +32,7 @@
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
 
   rayeps = 1.e-6;
-#if defined CYLINDRICAL || defined HOLLOW_SPHERE 
+#if defined CYLINDRICAL || defined HOLLOW_SPHERE
   int wrap, binrmin;
   double rr, phiphi;
 #endif
@@ -42,7 +42,7 @@
 #elif defined CYLINDRICAL
   deltagrid = (2 * rmax) / (double) NZ;
   grideps = 1.e-6*MIN((rmax / (double) NRAD), deltagrid);
-#elif defined HOLLOW_SPHERE 
+#elif defined HOLLOW_SPHERE
   deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
   grideps = 1.e-6*deltagrid;
 #endif
@@ -54,12 +54,12 @@
 #endif
 
   /* unit is the LOS unit vector
-   * nrpt is the nearest point vector 
+   * nrpt is the nearest point vector
    *
    * unit points AWAY from the observer, TOWARDS the Sun
    *   (recall, in coordinate system 2, the x-axis points
-   *   TOWARD the observer) */  
- 
+   *   TOWARD the observer) */
+
   /* this is correct if eta1 is the usual solar PA (in radians) */
   Rx = rotx(eta1);
 
@@ -67,17 +67,13 @@
   // These two calculations of NRPT and UNIT in CS-2 correspond
   // to Eqs. (9) and (10) in Frazin & Janzen (2002), respectively.
   // A.M.V. corrected the expressions for r3tmp[0] and r3tmp[2].
-  // The error was numerically negligible (less than1  part in 1E4)
-  // for d ~ 1 AU and the EUV and Lasco FOVs. For WISPR it would have
-  // had a much larger impact (of order 1).
-  
-  r3tmp[0] = sin(rho1) * sin(rho1);
-  r3tmp[1] = 0.0;
-  r3tmp[2] = sin(rho1) * cos(rho1);
-  rotvmul(nrpt, Rx, r3tmp);
-  r3scalmul(nrpt, dsun);
 
-  g1[0] = -cos(rho1);
+  r3tmp[0] = dsun*sin(rho1)*sin(rho1);
+  r3tmp[1] = 0.0;
+  r3tmp[2] = dsun*sin(rho1)*cos(rho1);
+  rotvmul(nrpt, Rx, r3tmp);
+
+  g1[0] = - cos(rho1);
   g1[1] = 0.0;
   g1[2] = sin(rho1);
   rotvmul(unit, Rx, g1);
@@ -90,18 +86,18 @@
   rotvmul(r3tmp, &R23, unit);
   r3eq(unit, r3tmp);
   // From now on NRPT and UNIT are given in CS-3
-  
+
   // LOS' impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt));
   //------------------------------------------------------
-  
+
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enter and leave the computation area
    *
-   * junk[] are the (signed) distances from nrpt where the LOS crosses 
+   * junk[] are the (signed) distances from nrpt where the LOS crosses
    *    the max and min values of the computation box for each of the 3
    *    coordinates
-   * 
+   *
    * If the LOS misses the computation grid, set ontarget = 0 and
    *     exit buildrow.c .
    *
@@ -133,14 +129,14 @@
          (fabs(g1[1]) < rmax + grideps) &&
          (fabs(g1[2]) < rmax + grideps) ) {
             ontarget = 1;
-	    if ( facedex[0] < 0){ 
+	    if ( facedex[0] < 0){
 	        facedex[0] = jij;
             } else {
 	        facedex[1] = jij;
             }
 #ifdef  RAYDIAGNOSE
       fprintf(stderr,"intersection with computation cube face %d\n",i);
-#endif 
+#endif
     }
   }
   if (ontarget == 0)
@@ -163,7 +159,7 @@
   }
 
   junk[2] =  1.e12;	/* these will not contribute */
-  junk[3] =  1.e12;	
+  junk[3] =  1.e12;
 
   for (jij = 4; jij < 6; jij += 2) {
     if ( fabs(unit[jij/2]) > rayeps ) {
@@ -186,12 +182,12 @@
 #ifdef  RAYDIAGNOSE
         fprintf(stderr,"%d: z = %1.10g, rr = %1.10g\n",jij, g1[2],sqrt(g1[0]*g1[0] + g1[1]*g1[1]) );
         fflush(stderr);
-#endif 
+#endif
 
-    if ( (fabs(g1[2]) < rmax + grideps) && 
+    if ( (fabs(g1[2]) < rmax + grideps) &&
          (sqrt(g1[0]*g1[0] + g1[1]*g1[1]) < rmax + grideps) ){
             ontarget = 1;
-	    if ( facedex[0] < 0){ 
+	    if ( facedex[0] < 0){
 	        facedex[0] = jij;
             } else {
 	        facedex[1] = jij;
@@ -200,9 +196,9 @@
             fprintf(stderr,"cylinder boundary %d: %1.10g, %1.10g, %1.10g\n",
 		    jij,g1[0],g1[1],g1[2]);
             fflush(stderr);
-#endif 
+#endif
     }
-  }  
+  }
   if ( ontarget == 0)
       goto salida;
 
@@ -212,12 +208,12 @@
   if (impact > rmax ){
     /* Is the LOS outside of computation sphere?  If so, just
          treat it has having no data (see build_subA.c)*/
-    ontarget = 0;    
+    ontarget = 0;
     goto salida;
   }
 
     /* the LOS enters the sphere at the point nrpt + unit*gam,
-     *  where gam = sqrt(rmax^2 - nrpt'*nrpt), 
+     *  where gam = sqrt(rmax^2 - nrpt'*nrpt),
      *
      * los first enters the sphere at this (signed) distance from nprt */
 
@@ -274,7 +270,7 @@
   binbin[4] = floor((los1[2] + rmax) / deltagrid);
   binbin[5] = floor((los2[2] + rmax) / deltagrid);
 
-  /* sometime small errors put the end point just 
+  /* sometime small errors put the end point just
    *  outside the box */
   for (jij = 0; jij < 6; jij++){
     if (binbin[jij] == NCELLS)
@@ -288,7 +284,7 @@
   rtmp = sqrt(los2[0]*los2[0] + los2[1]*los2[1]);
   binbin[1] = floor(rtmp * ((double) NRAD) / rmax);
 
-  /* sometime small errors put the end point just 
+  /* sometime small errors put the end point just
    *  outside the computional cylinder */
   if (binbin[0] == NRAD)
     binbin[0] = NRAD - 1;
@@ -311,7 +307,7 @@
   /* set the wrap parameter */
   wrap = 0;
   if ( fabs(rtmp - ptmp) > M_PI )
-     wrap = 1;  
+     wrap = 1;
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"exit phi = %3.6g deg ==> wrap = %d\n", rtmp*180./M_PI,wrap);
 #endif
@@ -319,7 +315,7 @@
   binbin[4] = floor((los1[2] + rmax) / deltagrid);
   binbin[5] = floor((los2[2] + rmax) / deltagrid);
 
-  /* sometime small errors put the end point just 
+  /* sometime small errors put the end point just
    *  outside the computional cylinder */
   if (binbin[4] == NZ)
     binbin[4] = NZ - 1;
@@ -333,23 +329,23 @@
   if (impact <= (double) RMIN){
      binbin[1] = 0;
   }
-    
+
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
   binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
-#ifdef RAYDIAGNOSE    
+#ifdef RAYDIAGNOSE
   fprintf(stderr,"entry theta = %g deg, ",rtmp*180./M_PI);
 #endif
 
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
-#ifdef RAYDIAGNOSE  
+#ifdef RAYDIAGNOSE
   fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap);
 #endif
-  
+
   rtmp = atan2(los1[1], los1[0]);
   if (rtmp < 0.) rtmp += 2.*M_PI;
   binbin[4] = floor(rtmp * ((double) NPHI)/2./M_PI);
-#ifdef RAYDIAGNOSE    
+#ifdef RAYDIAGNOSE
   fprintf(stderr,"entry phi = %g deg, ",rtmp*180./M_PI);
 #endif
   ptmp = atan2(los2[1], los2[0]);
@@ -358,7 +354,7 @@
   wrap = 0;
   if ( fabs(rtmp - ptmp) > M_PI )
         wrap = 1;
-#ifdef RAYDIAGNOSE  
+#ifdef RAYDIAGNOSE
   fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",
       ptmp*180/M_PI, wrap);
 #endif
@@ -371,7 +367,7 @@
   t[1] = t2;
   tdex = 2;
 
-#ifdef RAYDIAGNOSE  
+#ifdef RAYDIAGNOSE
   fprintf(stderr,"entry distance t1 = %g, exit distance t2 = %g,\n",t1,t2);
   fprintf(stderr,"nrpt = %1.10g %1.10g %1.10g\n",nrpt[0],nrpt[1],nrpt[2]);
   fprintf(stderr,"unit = %1.10g %1.10g %1.10g\n",unit[0],unit[1],unit[2]);
@@ -414,7 +410,7 @@
       fprintf(stderr,"(%d,%g)",jij,ttmp);
       fflush(stderr);
 #endif
-    } 
+    }
     ttmp =
       (-gam + sqrt(gam*gam - 4.*vdhA*rtmp)) / (2.*vdhA);
     if ((ttmp > t1) && (ttmp < t2)) {
@@ -427,7 +423,7 @@
     }
   }
 
-  /* angular bin crossings */ 
+  /* angular bin crossings */
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
@@ -496,7 +492,7 @@
   fprintf(stderr,"\nZ Bins: bin crossings: ");
   fflush(stderr);
 #endif
-  for (jij = MIN(binbin[4], binbin[5]); 
+  for (jij = MIN(binbin[4], binbin[5]);
        jij < MAX(binbin[4], binbin[5]); jij++) {
     ptmp = (jij + 1) * deltagrid - rmax;
     ttmp = (ptmp - nrpt[2]) / unit[2] ;
@@ -514,14 +510,14 @@
       exit(32);
     }
   }
-  
+
 #elif defined HOLLOW_SPHERE
  /*radial bin crossings */
-	
+
   if (impact <= ((double) RMIN)){
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
-     binrmin = floor( (impact - (double) RMIN)*((double) NRAD) / 
+     binrmin = floor( (impact - (double) RMIN)*((double) NRAD) /
 	      (rmax - (double) RMIN));
   }
 
@@ -554,7 +550,7 @@
 	}
   }
 
-  /* polar angle bin crossings 
+  /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
    *   and negative angles.  The times are the same and only
@@ -604,7 +600,7 @@
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
   fflush(stderr);
 #endif
- 
+
   if (wrap == 0) {
     for (jij = MIN(binbin[4], binbin[5]);
          jij < MAX(binbin[4], binbin[5]); jij++) {
@@ -613,7 +609,7 @@
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
-#ifdef RAYDIAGNOSE   
+#ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
@@ -630,7 +626,7 @@
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
-#ifdef RAYDIAGNOSE 
+#ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
@@ -647,19 +643,19 @@
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
-#ifdef RAYDIAGNOSE 
+#ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
       } else {
-        fprintf(stderr, "wrap = 1: out of bounds!!\n"); 
+        fprintf(stderr, "wrap = 1: out of bounds!!\n");
         fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,(jij+1)*360./ (double) NPHI);
-	exit(32); 
+	exit(32);
       }
     } /* jij loop */
   }
 
-   
+
 #elif defined (CARTESIAN)
 
   /* x bin crossings */
@@ -681,7 +677,7 @@
       t[tdex] = ttmp;
       tdex++;
     }
-  } 
+  }
   /* z bin crossings */
   for (jij = MIN(binbin[4], binbin[5]); jij < MAX(binbin[4], binbin[5]);
        jij++) {
@@ -774,7 +770,7 @@
 	      index[0],index[1],index[2],xx,yy,zz);
       fflush(stderr);
       exit(32);
-    }   
+    }
 
     vdhC = 0.;
     vdhD = 0.;
@@ -794,7 +790,7 @@
       vdhC = 4./3. - cgam*(1 + cgam*cgam/3.);
       vdhD = 5. + sgam*sgam - (cgam*cgam/sgam)*(5. - sgam*sgam)*log((1.+sgam)/cgam);
       vdhD /= 8.0;
-      Arow_long[ardex] += (float) ( (1. - QLIMB)*(2.*vdhC - vdhA*rtmp) 
+      Arow_long[ardex] += (float) ( (1. - QLIMB)*(2.*vdhC - vdhA*rtmp)
   				     +     QLIMB*(2.*vdhD - vdhB*rtmp) )*
                      arclength*CONST*RSUN*1.0e5;
     } else {
@@ -824,7 +820,7 @@
 #ifdef GEOMTEST_OUT /*see geomtest.c */
     fwrite(&ttmp, sizeof(double), 1, fid_geomtest);
     ttmp = (double) Arow_long[ardex]/(arclength*RSUN*1.e5);
-    fwrite(&ttmp, sizeof(double), 1, fid_geomtest); 
+    fwrite(&ttmp, sizeof(double), 1, fid_geomtest);
 #endif
 #endif
 
@@ -835,7 +831,7 @@ salida: ;  /* exit point for LOS's that miss the compution grid */
 
   if (ontarget == 0)
     hasdata = 0;
-  
+
 #ifdef RAYDIAGNOSE
   if (ontarget == 0){
     fprintf(stderr,"EXITING BUILDROW (ontarget = 0) \n");
