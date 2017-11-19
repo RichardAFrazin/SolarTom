@@ -44,7 +44,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3];// Extra variables added by Albert for testing purposes.
+  double dsun_obs, ddat, J2k_OBS[3], obslat;// Extra variables added by Albert for testing purposes.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
@@ -141,6 +141,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
     assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
     assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
     assert(hgetr8(header,"J2kZ_OBS",&ddat));   J2k_OBS[2]=ddat;
+    assert(hgetr8(header,"CRLT_OBS",&obslat));
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
@@ -297,7 +298,7 @@ for (i = 0; i < imsize; i++) {
                                     // as this is a clockwise rotation.
 //Ry = roty(-pang);                 // TEST !!!!! It failed, Rich's formulae are correct.
  
-  Rz = rotz(carlong); /* correct */ // Albert: "carrlong" within the "rotx" operator is correct,              
+  Rz = rotz(carlong); /* correct */ // Albert: "+carlong" within the "rotx" operator is correct,              
                                     // as this is a counter-clockwise rotation.
                                     // I believe Rich put the "/* correct */" comment because
                                     // F&J (2000) says Rz(-Carlong), which is not correct.
@@ -316,10 +317,10 @@ for (i = 0; i < imsize; i++) {
   else 
     fprintf(stderr,"Polarized Brightness image.\n");
 #endif
-  fprintf(stderr, "polar angle: %g radians = %g deg\n",
-          pang, pang * 180. / ((double) M_PI));
-  fprintf(stderr, "Carrington longitude: %1.12g radians =  %3.9g deg\n",
-          carlong, carlong * 180. / ((double) M_PI));
+  fprintf(stderr, "Polar angle: %g radians = %g deg\n", pang, pang * 180. / ((double) M_PI));
+  fprintf(stderr, "     Header's Observed Latitude = %g deg\n", obslat);
+  
+  fprintf(stderr, "Carrington longitude: %1.12g radians =  %3.9g deg\n", carlong, carlong * 180. / ((double) M_PI));
   /* fprintf(stderr, "spol1: [%g, %g, %g]\n", spol1[0], spol1[1], spol1[2]);*/
   /* fprintf(stderr, "spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);*/
   rotvmul(r3tmp, &R23, spol2);
