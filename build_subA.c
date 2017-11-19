@@ -227,8 +227,7 @@ for (i = 0; i < imsize; i++) {
         }  /* if/else */
       } /* jj loop over image pixels */
     } /* i loop over image pixels */  
-
-    
+   
     free(image);
   }   /* end of block */
 
@@ -248,35 +247,68 @@ for (i = 0; i < imsize; i++) {
   spol1[1] = cos(DELTApo) * sin(ALPHApo);
   spol1[2] = sin(DELTApo);
 
-  /* Calculate R12 matrix:  R12 = Rx(a3)Ry(a2)Rz(a1) */
+  // Calculate R12 matrix as:  R12 = Rx(c) * Ry(b) * Rz(a)
 
-  /* Zero y component of sun_ob */
-  Rz = rotz(-atan2(sun_ob1[1], sun_ob1[0]));
+  // Zero "y" component of "sun_ob1"
+  Rz = rotz(-atan2(sun_ob1[1], sun_ob1[0])); // Albert: "-atan2" within the "rotz" operator is correct,
+                                             // as this is a clockwise rotation.
   rotvmul(sob, Rz, sun_ob1);
-  /* Zero z component of Rz * sunob */
-  Ry = roty(-atan2(sob[2], sob[0])); // Shouldn't it be "+" within ATAN2 ?
-  /* Zero y component of spol */
-  rotmul(&Rtmp, Ry, Rz);
-  rotvmul(spol2, &Rtmp, spol1);
-  Rx = rotx(atan2(spol2[1], spol2[2]));
+
+  fprintf(stderr, "            Sun_ob1: [%g, %g, %g]\n", sun_ob1[0], sun_ob1[1], sun_ob1[2]);
+  fprintf(stderr, "      Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);
+
+  // Zero "z" component of "sob" ( = Rz(a) * sun_ob1 )
+  Ry = roty(-atan2(sob[2], sob[0])); // Albert: I believe it should be "+atan2" within the "roty" operator,
+                                     // as this is a counter-clockwise rotation.
+
+//Ry = roty(+atan2(sob[2], sob[0])); // TEST !!!! It failed, Rich's formulae are correct.
   
+  rotmul(&Rtmp, Ry, Rz);
+
+  rotvmul(sob, &Rtmp, sun_ob1);
+  fprintf(stderr, "Ry(b) Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);  
+
+  // Zero "y" component of spol1
+
+  rotvmul(r3tmp, &Rtmp, spol1);         // Albert: Note this is NOT spol2 yet, it is: "Ry(b) Rz(a) spol1".
+                                        // so I changed it to r3tmp here, for clarity
+  Rx = rotx(atan2(r3tmp[1], r3tmp[2])); // Albert: "+atan2" within the "rotx" operator is correct,
+                                        // as this is a counter-clockwise rotation.
+
   rotmul(&R12, Rx, &Rtmp);
   rotvmul(sun_ob2, &R12, sun_ob1);
   rotvmul(spol2, &R12, spol1);
 
+  fprintf(stderr, "        R12 Sun_ob1: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1], sun_ob2[2]);
+  fprintf(stderr, "              spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);
+  
   free(Rx);
   free(Ry);
   free(Rz);
-
-  /* Calculate R23 matrix */
+  //-----------------R12 computed------------------------------------------------------------------------
+  
+  // Calculate R12 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)
   /* solar axes in frame 2 */
-  pang = atan2(spol2[0], spol2[2]);
-  Ry = roty(pang);
-  Rz = rotz(carlong);		/* correct */
+  pang = atan2(spol2[0], spol2[2]); // Albert: This is the correct expression for the tilt angle of spol_2.
+
+  // Zero "x" component of spol2
+  Ry = roty(pang);                  // Albert: I believe it should be "-pang" within the "roty" operator,
+                                    // as this is a clockwise rotation.
+//Ry = roty(-pang);                 // TEST !!!!! It failed, Rich's formulae are correct.
+ 
+  Rz = rotz(carlong); /* correct */ // Albert: "carrlong" within the "rotx" operator is correct,              
+                                    // as this is a counter-clockwise rotation.
+                                    // I believe Rich put the "/* correct */" comment because
+                                    // F&J (2000) says Rz(-Carlong), which is not correct.
   rotmul(&R23, Rz, Ry);
+
+  rotvmul(r3tmp, &R23, spol2);
+  fprintf(stderr, "              spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);
+  
   free(Rz);
   free(Ry);
-
+  //-----------------R23 computed------------------------------------------------------------------------
+  
 #if (defined C2BUILD || defined C3BUILD)
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
@@ -296,11 +328,9 @@ for (i = 0; i < imsize; i++) {
   fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
  	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
   /*
-  fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
-    sun_ob2[2]);
+  fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1], sun_ob2[2]);
   rotvmul(r3tmp, &R23, sun_ob2);
-  fprintf(stderr, "sun_ob3: [%g, %g, %g]\n\n", r3tmp[0], r3tmp[1],
-    r3tmp[2]);
+  fprintf(stderr, "sun_ob3: [%g, %g, %g]\n\n", r3tmp[0], r3tmp[1], r3tmp[2]);
   */
   
   fprintf(fid_log,"cl= %g deg, polar_ang= %g deg, so1=[%g, %g, %g] Rs\n", 
