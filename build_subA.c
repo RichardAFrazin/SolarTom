@@ -249,7 +249,7 @@ for (i = 0; i < imsize; i++) {
 
   // Calculate R12 matrix as:  R12 = Rx(c) * Ry(b) * Rz(a)
 
-  // Zero "y" component of "sun_ob1"
+  // Rz(a) will zero the "y" component of "sun_ob1"
   Rz = rotz(-atan2(sun_ob1[1], sun_ob1[0])); // Albert: "-atan2" within the "rotz" operator is correct,
                                              // as this is a clockwise rotation.
   rotvmul(sob, Rz, sun_ob1);
@@ -257,7 +257,7 @@ for (i = 0; i < imsize; i++) {
   fprintf(stderr, "            Sun_ob1: [%g, %g, %g]\n", sun_ob1[0], sun_ob1[1], sun_ob1[2]);
   fprintf(stderr, "      Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);
 
-  // Zero "z" component of "sob" ( = Rz(a) * sun_ob1 )
+  // Ry(b) will zero the "z" component of "sob" ( = Rz(a) * sun_ob1 )
   Ry = roty(-atan2(sob[2], sob[0])); // Albert: I believe it should be "+atan2" within the "roty" operator,
                                      // as this is a counter-clockwise rotation.
 
@@ -268,7 +268,8 @@ for (i = 0; i < imsize; i++) {
   rotvmul(sob, &Rtmp, sun_ob1);
   fprintf(stderr, "Ry(b) Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);  
 
-  // Zero "y" component of spol1
+  // R12 will zero the "y" component of spol1.
+  // Also "R12 Sun_ob1" below should equal "Ry Rz Sun_ob1" above
 
   rotvmul(r3tmp, &Rtmp, spol1);         // Albert: Note this is NOT spol2 yet, it is: "Ry(b) Rz(a) spol1".
                                         // so I changed it to r3tmp here, for clarity
