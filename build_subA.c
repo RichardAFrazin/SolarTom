@@ -44,7 +44,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3], obslat;// Extra variables added by Albert for testing purposes.
+  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3];// Extra variables added by Albert for testing purposes.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
@@ -240,8 +240,8 @@ for (i = 0; i < imsize; i++) {
   dsun = sqrt(dsun);
   
   /* Albert's test printouts */
-  fprintf(stderr,"Computed dsun: %g Rsun\n",dsun);
-  fprintf(stderr,"Header's dsun: %g Rsun\n\n",dsun_obs/(RSUN*1.e3));
+  fprintf(stderr,"Computed dsun: %3.10g Rsun\n",dsun);
+  fprintf(stderr,"Header's dsun: %3.10g Rsun\n\n",dsun_obs/(RSUN*1.e3));
 
   // Solar pole vector in SC-1
   spol1[0] = cos(DELTApo) * cos(ALPHApo);
@@ -306,6 +306,9 @@ for (i = 0; i < imsize; i++) {
 
   rotvmul(r3tmp, &R23, spol2);
   fprintf(stderr, "              spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);
+
+  // Compute Sun_ob3:
+  rotvmul(sun_ob3, &R23, sun_ob2);
   
   free(Rz);
   free(Ry);
@@ -329,11 +332,15 @@ for (i = 0; i < imsize; i++) {
 	  sun_ob1[0], sun_ob1[1], sun_ob1[2]);
   fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
  	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
-  /*
-  fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1], sun_ob2[2]);
-  rotvmul(r3tmp, &R23, sun_ob2);
-  fprintf(stderr, "sun_ob3: [%g, %g, %g]\n\n", r3tmp[0], r3tmp[1], r3tmp[2]);
-  */
+  fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
+
+  fprintf(stderr, "Sub-Spacecraft Latitude  computed as ATAN(sun_ob3[2]/Sqrt{sun_ob3[0]^2+sun_ob3[1]^2)}: %3.10g deg\n",
+	  atan2(sun_ob3[2],(double)sqrt(sun_ob3[0]*sun_ob3[0]+sun_ob3[1]*sun_ob3[1])) *180./((double)M_PI) );
+  fprintf(stderr, "Sub-Spacecraft Longitude computed as ATAN{sun_ob3[1]/sun_ob3[0]}:                       %3.10g deg\n",
+	  atan2(sun_ob3[1],sun_ob3[0]) *180./((double)M_PI)  + 360.);
+  
+//fprintf(stderr, "sun_ob2: [%g, %g, %g]\n",  sun_ob2[0], sun_ob2[1], sun_ob2[2]);
+
   
   fprintf(fid_log,"cl= %g deg, polar_ang= %g deg, so1=[%g, %g, %g] Rs\n", 
 	  carlong*180./((double) M_PI), pang*180./((double) M_PI),
