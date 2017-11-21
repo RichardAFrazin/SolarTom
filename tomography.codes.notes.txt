@@ -26,7 +26,9 @@ BUILD_SUBA.C:
    It looks to me that first edits here will be needed here to deal with WISPR data. 
    Should we generate synthetic data with the header structure of WISPR?
    I think it would be a robust approach.
+   Now the work is done, and it has been implemented with this approach.
 2. It deals then with geometrics, it computes: sun_ob1, spol, R12, R23, polar angle (pang).
+   I revised all of these in detail, included notes, as well as new printout tests.
 3. Prints out on screen some key results, such as: pang, carlong, sun_ob
 4. It then proceeds to compute the subA matrix through a double for-loop on the binned-pixel 
    indexes (kk) and (ll), so that these two indexes advance by a step equal to BINFAC, set in 
@@ -42,6 +44,12 @@ BUILD_SUBA.C:
      4.2 Makes the part of the sparse subA array that corresponds to this BIN
 5. Exits.
 
+R3MISC.C:
+It defines several functions to mathematically operate with 3D-vectors and 3x3 matrices.
+
+ROTS.C:
+It defines the Rx, Ry, Rz rotation matrices, as well as the Rot*Rot and Rot*Vector operations. 
+
 RCS_LLIST.C:
 1. #include "rcs_llist.h",
    where the rcs_llist and rcs_llist_node STRUCTURES are defined,
@@ -53,7 +61,6 @@ LLIST.C:
    where the llist and llist_node STRUCTURES are defined,
    and several functions named "llist_*" are declared.
 2. It then proceeds with the definition of the various "llist_*" functions.
-
 
 A. inspect SPICE kernels
 

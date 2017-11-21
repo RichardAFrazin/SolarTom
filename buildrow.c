@@ -10,18 +10,18 @@
 
 /* geomtest.c uses RAYDIAGNOSE definition */
 
-/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle SPP/WISPR
- * as well as added comments for documentation and readability.
+/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle WISPR, 
+ * added comments for documentation and did cosmetic edits for readability.
  */
 
-/*  Strategy to deal with the possibility of spacecraft being within computaional grid.
- *  t1 and t2 are the crossing times of the LOS that correspond to entering/leaving
- *  the computational grid. We will need to compute t3 as the time of the LOS that
- *  corresponds to the location of the spacecraft.
- *  If t3 is not in the [t1,t2] range nothing changes.
- *  If t3 is within [t1,t2] then:  if sign(t3) = sign(t1)-> Update t1=t3
- *                                 if sign(t3) = sign(t2)-> Update t2=t3
- */
+//  Strategy to deal with the possibility of spacecraft being within computaional grid,
+//  by A.M.Vasquez.
+//  As t1 and t2 are the crossing times of the LOS that correspond to entering/leaving
+//  the computational grid, we will need to compute t3 as the time of the LOS that
+//  corresponds to the location of the spacecraft, then:
+//  If t3 is not in the [t1,t2] range, then no new actions are needed.
+//  If t3 is within [t1,t2] then: if sign(t3) = sign(t1)-> Update t1=t3
+//                                if sign(t3) = sign(t2)-> Update t2=t3
 
 /***********  BEGIN BUILDROW ***********************/
 {
@@ -47,7 +47,6 @@
   grideps = 1.e-6*deltagrid;
 #endif
 
-
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"ENTERING BUILDROW: rho1 = %1.12g, eta1 = %1.12g\n",rho1, eta1);
   fflush(stderr);
@@ -63,10 +62,13 @@
   /* this is correct if eta1 is the usual solar PA (in radians) */
   Rx = rotx(eta1);
 
-  //--------------NRPT & UNIT--------------------------------
+  //-----------------NRPT & UNIT-------------------------------------
   // These two calculations of NRPT and UNIT in CS-2 correspond
   // to Eqs. (9) and (10) in Frazin & Janzen (2002), respectively.
   // A.M.V. corrected the expressions for r3tmp[0] and r3tmp[2].
+  // The error was an incorrect multiplicative factor 1/cos(rho1).
+  // While being of order 1e-6 for EUV instruments, and of order 1e-4
+  // for LASCO-C2, it would have been of order 1E-1 to 1E0 for WISPR.
 
   r3tmp[0] = dsun*sin(rho1)*sin(rho1);
   r3tmp[1] = 0.0;
@@ -92,7 +94,7 @@
   //------------------------------------------------------
 
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
-   * los1 and los2 mark where the LOS enter and leave the computation area
+   * los1 and los2 mark where the LOS enters and leaves the computation area
    *
    * junk[] are the (signed) distances from nrpt where the LOS crosses
    *    the max and min values of the computation box for each of the 3
@@ -107,40 +109,56 @@
 
 #ifdef CARTESIAN
 
-  for (jij = 0; jij < 6; jij += 2) {
-    if ( fabs(unit[jij/2]) > rayeps ) {
-      junk[jij] = (-rmax - nrpt[jij / 2]) / unit[jij / 2];
-      junk[jij + 1] = (rmax - nrpt[jij / 2]) / unit[jij / 2] ;
-    } else {
-      junk[jij] = 1.e12;
+  for (jij = 0; jij < 6; jij += 2)
+  {
+    if ( fabs(unit[jij/2]) > rayeps )
+    {
+      // If unit[a] NE 0, with a=0,1,2 then set junk[a] and junk[a+1] so that
+      // unit[a] * junk[a  ] + nrpt[a] = - rmax
+      // unit[a] * junk[a+1] + nrpt[a] = + rmax
+      junk[jij    ] = (-rmax - nrpt[jij / 2]) / unit[jij / 2] ;
+      junk[jij + 1] = (+rmax - nrpt[jij / 2]) / unit[jij / 2] ;
+    }
+    else
+    {
+      // If unit[a] ~ 0, with a=0,1,2 then set
+      // junk[a] = junk[a+1] = 1.e12, a huge number, so that
+      // neither junk[a] nor junk[a+1] will contribute to determine facedex[] below.
+      // This strategy of bookkeeping is quite challenging to understand without guidance.
+      junk[jij    ] = 1.e12;
       junk[jij + 1] = 1.e12;
     }
   }
 
   ontarget = 0;
   facedex[0] = -1; /* facedex[0] contains junk[] of the 1st intersection */
-  facedex[1] = -1; /*        [2]                        2nd  */
-  for (jij = 0; jij < 6; jij++){
+  facedex[1] = -1; //        [1]                        2nd              
+
+  for (jij = 0; jij < 6; jij++)
+  {
+    // vector_g = vector_nrpt + junk[jij] * vector_unit. 
     g1[0] = nrpt[0] + junk[jij]*unit[0];
     g1[1] = nrpt[1] + junk[jij]*unit[1];
     g1[2] = nrpt[2] + junk[jij]*unit[2];
 
     if ( (fabs(g1[0]) < rmax + grideps) &&
-         (fabs(g1[1]) < rmax + grideps) &&
-         (fabs(g1[2]) < rmax + grideps) ) {
+	 (fabs(g1[1]) < rmax + grideps) &&
+         (fabs(g1[2]) < rmax + grideps)   )
+      {
             ontarget = 1;
 	    if ( facedex[0] < 0){
 	        facedex[0] = jij;
             } else {
 	        facedex[1] = jij;
             }
-#ifdef  RAYDIAGNOSE
+      #ifdef  RAYDIAGNOSE
       fprintf(stderr,"intersection with computation cube face %d\n",i);
-#endif
-    }
+      #endif
+      }
   }
+
   if (ontarget == 0)
-    goto salida;
+  goto salida;
 
 #elif defined CYLINDRICAL
 
@@ -229,7 +247,6 @@
    t2 = junk[1];
 
 #endif
-
 
 #if defined CARTESIAN || defined CYLINDRICAL
 
