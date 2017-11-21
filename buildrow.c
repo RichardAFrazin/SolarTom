@@ -10,7 +10,7 @@
 
 /* geomtest.c uses RAYDIAGNOSE definition */
 
-/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle WISPR, 
+/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle WISPR,
  * added comments for documentation and did cosmetic edits for readability.
  */
 
@@ -124,7 +124,6 @@
       // If unit[a] ~ 0, with a=0,1,2 then set
       // junk[a] = junk[a+1] = 1.e12, a huge number, so that
       // neither junk[a] nor junk[a+1] will contribute to determine facedex[] below.
-      // This strategy of bookkeeping is quite challenging to understand without guidance.
       junk[jij    ] = 1.e12;
       junk[jij + 1] = 1.e12;
     }
@@ -132,17 +131,17 @@
 
   ontarget = 0;
   facedex[0] = -1; /* facedex[0] contains junk[] of the 1st intersection */
-  facedex[1] = -1; //        [1]                        2nd              
+  facedex[1] = -1; //        [1]                        2nd
 
   for (jij = 0; jij < 6; jij++)
   {
-    // vector_g = vector_nrpt + junk[jij] * vector_unit. 
+    // vector_g = vector_nrpt + junk[jij] * vector_unit.
     g1[0] = nrpt[0] + junk[jij]*unit[0];
     g1[1] = nrpt[1] + junk[jij]*unit[1];
     g1[2] = nrpt[2] + junk[jij]*unit[2];
 
     if ( (fabs(g1[0]) < rmax + grideps) &&
-	 (fabs(g1[1]) < rmax + grideps) &&
+         (fabs(g1[1]) < rmax + grideps) &&
          (fabs(g1[2]) < rmax + grideps)   )
       {
             ontarget = 1;
@@ -152,7 +151,7 @@
 	        facedex[1] = jij;
             }
       #ifdef  RAYDIAGNOSE
-      fprintf(stderr,"intersection with computation cube face %d\n",i);
+      fprintf(stderr,"intersection with computation cube face %d\n",jij);
       #endif
       }
   }
