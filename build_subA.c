@@ -413,8 +413,8 @@ for (i = 0; i < imsize; i++) {
 	// elements as VOXELS are in the GRID. It contains NON-zero values (columns)
 	// that are crossed by the BIN LOSs.
 	// Arow_long[i] should contain the A-matrix element of column "i" and row "count".
-	// I need to study this in buildrow. Note that buildrow computes this element
-	// n_los times for the BIN, adding the results, so it is normalized byn_los below.
+	// Note that buildrow computes this element n_los times for the BIN, adding the results,
+	// with each call. It is normalized by n_los below to get an averaged value for the BIN.
         for (i = 0; i < nc3; i++) {
           if (Arow_long[i] != 0.0) {
             if (done_1) {

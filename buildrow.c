@@ -107,8 +107,9 @@
    *    hits the edge of the grid, set ontarget = 1
    */
 
+// Compute t1,t2 for CARTESIAN COORDINATES,
+// as well as facedex[0,1]: faces of entry/exit.
 #ifdef CARTESIAN
-
   for (jij = 0; jij < 6; jij += 2)
   {
     if ( fabs(unit[jij/2]) > rayeps )
@@ -128,14 +129,12 @@
       junk[jij + 1] = 1.e12;
     }
   }
-
   ontarget = 0;
   facedex[0] = -1; /* facedex[0] contains junk[] of the 1st intersection */
   facedex[1] = -1; //        [1]                        2nd
-
   for (jij = 0; jij < 6; jij++)
   {
-    // vector_g = vector_nrpt + junk[jij] * vector_unit.
+    // vector_g1 = vector_nrpt + junk[jij] * vector_unit.
     g1[0] = nrpt[0] + junk[jij]*unit[0];
     g1[1] = nrpt[1] + junk[jij]*unit[1];
     g1[2] = nrpt[2] + junk[jij]*unit[2];
@@ -155,16 +154,15 @@
       #endif
       }
   }
-
   if (ontarget == 0)
   goto salida;
 
+// Compute t1,t2 for CYLINDRICAL COORDINATES:
+// as well as facedex[0,1]: faces of entry/exit.
 #elif defined CYLINDRICAL
-
   vdhA = (unit[0]*unit[0] + unit[1]*unit[1]);
   gam = 2.0 * (unit[0] * nrpt[0] + unit[1] * nrpt[1]);
   rtmp = nrpt[0] * nrpt[0] + nrpt[1] * nrpt[1] - rmax * rmax;
-
   if ( vdhA > rayeps) {
     junk[0] =
       (-gam - sqrt(gam * gam - 4. * vdhA * rtmp)) / (2.*vdhA);
@@ -174,10 +172,8 @@
     junk[0] = 1.e12;
     junk[1] = 1.e12;
   }
-
   junk[2] =  1.e12;	/* these will not contribute */
   junk[3] =  1.e12;
-
   for (jij = 4; jij < 6; jij += 2) {
     if ( fabs(unit[jij/2]) > rayeps ) {
       junk[jij] = (-rmax - nrpt[jij / 2]) / unit[jij / 2];
@@ -187,7 +183,6 @@
       junk[jij + 1] = 1.e12;
     }
   }
-
   ontarget = 0;
   facedex[0] = -1; /* face[0] contains junk[] of the 1st intersection */
   facedex[1] = -1; /*     [2]                        2nd  */
@@ -195,12 +190,10 @@
     g1[0] = nrpt[0] + junk[jij]*unit[0];
     g1[1] = nrpt[1] + junk[jij]*unit[1];
     g1[2] = nrpt[2] + junk[jij]*unit[2];
-
 #ifdef  RAYDIAGNOSE
         fprintf(stderr,"%d: z = %1.10g, rr = %1.10g\n",jij, g1[2],sqrt(g1[0]*g1[0] + g1[1]*g1[1]) );
         fflush(stderr);
 #endif
-
     if ( (fabs(g1[2]) < rmax + grideps) &&
          (sqrt(g1[0]*g1[0] + g1[1]*g1[1]) < rmax + grideps) ){
             ontarget = 1;
@@ -217,10 +210,10 @@
     }
   }
   if ( ontarget == 0)
-      goto salida;
+  goto salida;
 
+// Compute t1,t2 for SPHERICAL COORDINATES:
 #elif defined HOLLOW_SPHERE
-
   ontarget = 1;
   if (impact > rmax ){
     /* Is the LOS outside of computation sphere?  If so, just
@@ -228,27 +221,21 @@
     ontarget = 0;
     goto salida;
   }
-
     /* the LOS enters the sphere at the point nrpt + unit*gam,
      *  where gam = sqrt(rmax^2 - nrpt'*nrpt),
-     *
      * los first enters the sphere at this (signed) distance from nprt */
-
-  junk[0] = - sqrt(rmax*rmax - impact*impact);
-      /*does the LOS hit the inner sphere (hollow part)? */
+         junk[0] = - sqrt(rmax*rmax - impact*impact);
+    /* does the LOS hit the inner sphere (hollow part)? */
   if (impact <= ((double) RMIN)){
 	 junk[1] = - sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
    } else {
 	 junk[1] =  sqrt(rmax*rmax - impact*impact);
    }
-
    t1 = junk[0];
    t2 = junk[1];
-
 #endif
 
 #if defined CARTESIAN || defined CYLINDRICAL
-
    if (junk[facedex[0]] < junk[facedex[1]] ){
      t1 = junk[facedex[0]];
      t2 = junk[facedex[1]];
@@ -256,7 +243,6 @@
      t1 = junk[facedex[1]];
      t2 = junk[facedex[0]];
    }
-
    /*  I'M NOT SURE THIS DOES ANY GOOD...
    t1 = t1 + grideps;
    if (t2 > 0){
@@ -265,14 +251,15 @@
      t2 = t2 + grideps;
    }
    */
-
 #endif
 
-   /* LOS endpoints */
-  for (jij = 0; jij < 3; jij++) {
+// LOS endpoints position vector coordinates in CS-3.
+// This is valid for all geometries.
+   for (jij = 0; jij < 3; jij++)
+   {
     los1[jij] = nrpt[jij] + t1*unit[jij];
     los2[jij] = nrpt[jij] + t2*unit[jij];
-  }
+   }
 
   /* put the bin number of LOS endpoints into binbin array -
        see CARTESIAN example for ordering */
@@ -346,30 +333,34 @@
      binbin[1] = 0;
   }
 
+  // Compute Latitude [rad] of vector los1 in CS-3:
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
+  // Compute Theta bin of vector los1, taking Theta=0 in South pole, and Theta=Pi in North pole. 
   binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry theta = %g deg, ",rtmp*180./M_PI);
 #endif
-
+  // Same Latitude/Theta computations for vector los2:
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap);
 #endif
-
+  // Compute Longitude [rad] of vector los1 in CS-3, making sure is in range [0,2pi].
   rtmp = atan2(los1[1], los1[0]);
   if (rtmp < 0.) rtmp += 2.*M_PI;
+  // Compute Phi bin of vector los1
   binbin[4] = floor(rtmp * ((double) NPHI)/2./M_PI);
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry phi = %g deg, ",rtmp*180./M_PI);
 #endif
+  // Same Longitude/Phi computations for vector los2:
   ptmp = atan2(los2[1], los2[0]);
   if (ptmp < 0.) ptmp += 2.*M_PI;
   binbin[5] = floor(ptmp * ((double) NPHI)/2./M_PI);
   wrap = 0;
   if ( fabs(rtmp - ptmp) > M_PI )
-        wrap = 1;
+    wrap = 1; // If unsigned Longitude difference between los1 and los2 is larger than Pi.
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",
       ptmp*180/M_PI, wrap);
@@ -379,6 +370,7 @@
 
   /* find the "times" of bin crossings */
 
+  // First two elements are entry and exit "times"
   t[0] = t1;
   t[1] = t2;
   tdex = 2;
@@ -527,8 +519,11 @@
     }
   }
 
+  
 #elif defined HOLLOW_SPHERE
- /*radial bin crossings */
+
+  //-----------------------------EDIT FROM HERE---------------------------------------
+  /*radial bin crossings */
 
   if (impact <= ((double) RMIN)){
      binrmin = 0;  /* binrmin = bin of minimum radius */
@@ -565,7 +560,9 @@
 #endif
 	}
   }
-
+  //------------------------EDIT TILL HERE-------------------------------
+  
+  
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
@@ -671,7 +668,6 @@
     } /* jij loop */
   }
 
-
 #elif defined (CARTESIAN)
 
   /* x bin crossings */
@@ -707,7 +703,9 @@
 
 #endif
 
-  /* sort the "times" */
+  // At this point, tdex = # of voxels that are threaded by the LOS, for all geometries.
+  
+  // Sort all the bin crossing "times", works for all geometries:
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
 #ifdef RAYDIAGNOSE
@@ -721,19 +719,26 @@
 
     /* calculate the matrix elements */
 
-  for (jij = 1; jij < tdex; jij++) {
-    ttmp = 0.5 * (t[jij] + t[jij - 1]);
-    arclength = t[jij] - t[jij - 1];
+  for (jij = 1; jij < tdex; jij++) {    // Loop through all voxels threaded by the LOS.
+
+    // ttmp and arclength, valid for all geometries: 
+    ttmp = 0.5 * (t[jij] + t[jij - 1]); // "time" of the voxel middle point (VMP) of the LOS. 
+    arclength = t[jij] - t[jij - 1];    // voxel arclength (VAL) of the LOS.
     if (arclength < 0.0) {
       fprintf(stderr, "BUILDROW: arclength < 0!!  tdex = %d\n",jij);
       fflush(stderr);
       exit(32);
     }
 
+    // Cartesian coordinates in SC-3 of the VMP.
     xx = nrpt[0] + ttmp * unit[0];
     yy = nrpt[1] + ttmp * unit[1];
     zz = nrpt[2] + ttmp * unit[2];
+    // Heliocentric height of the VMP.
     r = sqrt(xx*xx + yy*yy + zz*zz);
+
+    // Now compute "ardex": the column-index of the voxel.
+    // The calculation is done for the three geometries.    
 
 #ifdef CYLINDRICAL
 
@@ -745,6 +750,7 @@
     index[0] = floor((rr / rmax) * (double) NRAD);
     index[1] = floor((phiphi / 2.0 / M_PI) * (double) NPHI);
     index[2] = floor((zz + rmax) / deltagrid);
+
     ardex = index[2]*NRAD*NPHI + index[1]*NRAD + index[0];
 
 #elif defined HOLLOW_SPHERE
@@ -754,13 +760,15 @@
     if (index[0] == NRAD)
       index[0] = NRAD - 1;   /*these index corrections are due to finite precision */
 
-    /* theta (polar) index */
+    // theta (polar) index,
+    // rr: polar angle, taking rr=0 in South Pole, rr=Pi in North Pole. 
     rr = atan( zz / sqrt(xx*xx + yy*yy) ) + M_PI/2.;
     index[1] = floor( rr*((double) NTHETA)/M_PI );
     if (index[1] == NTHETA)
       index[1] = NTHETA - 1;
 
     /* phi (azimuthal) index */
+    // phiphi: longitude, making sure is in the range [0,2Pi]
     phiphi = atan2(yy, xx);
     if (phiphi < 0.0)
       phiphi += 2.0 * M_PI;
@@ -770,12 +778,12 @@
 
     ardex = index[2]*NRAD*NTHETA + index[1]*NRAD + index[0];
 
-
 #elif defined CARTESIAN
 
     index[0] = floor((xx + rmax) / deltagrid);
     index[1] = floor((yy + rmax) / deltagrid);
     index[2] = floor((zz + rmax) / deltagrid);
+
     ardex = index[2]*NCELLS*NCELLS + index[1]*NCELLS + index[0];
 
 #endif
@@ -788,6 +796,8 @@
       exit(32);
     }
 
+    // At this point we have the VMP "time" (ttmp), the VAL (arclength), and ardex.
+    
     vdhC = 0.;
     vdhD = 0.;
 #ifdef THOMSON     /* Thomson scattering */
