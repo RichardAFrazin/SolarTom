@@ -43,7 +43,7 @@ int main(int argc, char **argv){
   static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3];// Extra variables added by Albert for testing purposes.
+  double dsun_obs, ddat, J2k_OBS[3],obslat;// Extra variables added by Albert, mainly for testing purposes.
   Rot R12, R23, Rtmp, *Rx, *Ry, *Rz;
   int nfiles, i, ii, jj, kk, ll, mmm, hasdata, totalB;
   const int nc3 = NBINS, imsize = IMSIZE;
@@ -183,6 +183,7 @@ int main(int argc, char **argv){
     assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
     assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
     assert(hgetr8(header,"J2kZ_OBS",&ddat));   J2k_OBS[2]=ddat;
+    assert(hgetr8(header,"CRLT_OBS",&obslat));
 #elif defined EITBUILD
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
