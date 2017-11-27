@@ -792,6 +792,11 @@
   // Sort all the bin crossing "times", works for all geometries:
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
+  // Albert: I propose the following strategy here:
+  // select from t only t >= t3, and adjust tdex (reduce) if needed.
+  // That should take care of the situation correctly.
+  
+  
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
   for (jij = 0;jij < tdex;jij++)
