@@ -5,7 +5,8 @@
  *
  * Just some convenience functions
  *
- * A.M.Vasquez did a few cosmetic edits. CLASP Fall-2017.
+ * A.M.Vasquez: Did a few cosmetic edits. CLASP Fall-2017.
+ *              Also added substraction of vectors.
  *
  */
 
@@ -62,6 +63,15 @@ double *a, *b, *c;
   *(a    ) = *(b    ) + *(c    );
   *(a + 1) = *(b + 1) + *(c + 1);
   *(a + 2) = *(b + 2) + *(c + 2);
+}
+
+/* a = b - c */
+void r3sub(a, b, c)
+double *a, *b, *c;
+{
+  *(a    ) = *(b    ) - *(c    );
+  *(a + 1) = *(b + 1) - *(c + 1);
+  *(a + 2) = *(b + 2) - *(c + 2);
 }
 
 int doublecompare(const void *x, const void *y) {

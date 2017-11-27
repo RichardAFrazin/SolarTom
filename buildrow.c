@@ -30,6 +30,7 @@
   static double deltagrid, grideps, rayeps;
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
+  static double t3,dlos1,dlos2; // New variables adde by Albert
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
@@ -59,6 +60,13 @@
    *   (recall, in coordinate system 2, the x-axis points
    *   TOWARD the observer) */
 
+
+  // Note in CASE-3-D Unit MAY point AWAY from the observer and AWAY the Sun,
+  // I will ASSUME ight now this is already possible in the current code
+  // and simply not contemplated so, and hence commented so, by Rich.
+  // If so, pointing towards or away the Sun is simply characterized by
+  // r3dot(unit,sun_ob3) > 0 or < 0, respectively.
+
   /* this is correct if eta1 is the usual solar PA (in radians) */
   Rx = rotx(eta1);
 
@@ -75,9 +83,9 @@
   r3tmp[2] = dsun*sin(rho1)*cos(rho1);
   rotvmul(nrpt, Rx, r3tmp);
 
-  g1[0] = - cos(rho1);
-  g1[1] = 0.0;
-  g1[2] = sin(rho1);
+  g1[0] = -cos(rho1);
+  g1[1] =  0.0;
+  g1[2] =  sin(rho1);
   rotvmul(unit, Rx, g1);
 
   free(Rx);
@@ -91,8 +99,15 @@
 
   // LOS' impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt));
-  //------------------------------------------------------
 
+  // Added by Albert:
+  // Compute t3, the UNSIGNED "time" of the spacecraft location,
+  // solving for |t3| in: dsun² = impact² + t3²
+  t3 = sqrt(dsun*dsun - impact*impact);
+  // Its sign (in general) can only be determined
+  // after vectors los1 and los2 are known, below.
+  
+  //------------------------------------------------------
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enters and leaves the computation area
    *
@@ -214,6 +229,7 @@
 
 // Compute t1,t2 for SPHERICAL COORDINATES:
 #elif defined HOLLOW_SPHERE
+
   ontarget = 1;
   if (impact > rmax ){
     /* Is the LOS outside of computation sphere?  If so, just
@@ -221,6 +237,9 @@
     ontarget = 0;
     goto salida;
   }
+
+  goto new_code_1;
+  //----OLD CODE STARTS HERE---------------------------------------
     /* the LOS enters the sphere at the point nrpt + unit*gam,
      *  where gam = sqrt(rmax^2 - nrpt'*nrpt),
      * los first enters the sphere at this (signed) distance from nprt */
@@ -231,8 +250,40 @@
    } else {
 	 junk[1] =  sqrt(rmax*rmax - impact*impact);
    }
+   t1 = junk[0]; // Note that ALWAYS t1 < 0, which does not allow case 3-D
+   t2 = junk[1];
+  //----OLD CODE ENDS HERE------------------------------------------
+
+  new_code_1: ;
+  //----NEW CODE STARTS HERE---------------------------------------
+  // This modifies OLD code above to allow all Cases 1 and 3.
+   if (impact > ((double) RMIN))                             // Cases 1A, 3A, 3B
+    {
+     junk[0] = - sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // < 0.
+     junk[1] = - junk[0];                                               // > 0.
+    } 
+   if (dsun > ((double) RMIN))
+   {
+     if (impact <= ((double) RMIN) && r3dot(unit,sun_ob3) < 0) // Cases 1B, 3C
+     {
+     junk[0] = - sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // < 0.
+     junk[1] = - sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // < 0.
+     }
+     if (impact <= ((double) RMIN) && r3dot(unit,sun_ob3) > 0) // Case 3 D
+     {
+     junk[0] =   sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // > 0.
+     junk[1] =   sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // > 0.
+     }
+   }
+   if (dsun < ((double) RMIN)) // Cases 2
+   {
+     junk[0] =   sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // > 0.
+     junk[1] =   sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // > 0.
+   }
    t1 = junk[0];
    t2 = junk[1];
+   //----NEW CODE ENDS HERE------------------------------------------
+
 #endif
 
 #if defined CARTESIAN || defined CYLINDRICAL
@@ -261,6 +312,33 @@
     los2[jij] = nrpt[jij] + t2*unit[jij];
    }
 
+   // At this point: los1, los2 and sun_ob3, are all given in SC-3.
+
+   // Compute distances Spacecraft-los1 (dlos1) and Spacecraft-los2 (dlos2)
+   dlos1 = sqrt(r3dot(r3sub(los1,sun_ob3),r3sub(los1,sun_ob3)));
+   dlos2 = sqrt(r3dot(r3sub(los2,sun_ob3),r3sub(los2,sun_ob3)));
+
+   // Assign correct sign to t3:
+   // Cases 1A and 1B: Spacecraft outside the computational ball or at its outter boundary.
+   if ( dsun >= ((double) RMAX) ) t3 = -t3;
+   // Two Cases 2: Spacecraft inside Rmin.
+   if ( dsun  < ((double) RMIN) )
+   {
+     if (dlos1 < ((double) RMIN)) t3 =  t3; // Case 2A
+     if (dlos1 > ((double) RMIN)) t3 = -t3; // Case 2B
+    }
+   // Three Cases 3: Spacefraft inside the computational ball.
+   if ( dsun  < ((double) RMAX) && dsun  > ((double) RMIN) )
+   {
+    if (t1 < 0. && t2 > 0.) // Cases 3A & 3B
+       {
+        if (dlos1 < dlos2)        t3 = -t3; // Case 3A
+        if (dlos1 > dlos2)        t3 =  t3; // Case 3B
+       }
+    if (t1 < 0. && t2 < 0.)       t3 = -t3; // Case 3C
+    if (t1 > 0. && t2 > 0.)       t3 =  t3; // Case 3D                           
+    }
+   
   /* put the bin number of LOS endpoints into binbin array -
        see CARTESIAN example for ordering */
 
@@ -375,6 +453,12 @@
   t[1] = t2;
   tdex = 2;
 
+  // In hollow_sphere geometry, third element is the Spacecraft "time"
+#ifdef HOLLOW_SPHERE
+  t[3] = t3;
+  tdex++;
+#endif
+  
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry distance t1 = %g, exit distance t2 = %g,\n",t1,t2);
   fprintf(stderr,"nrpt = %1.10g %1.10g %1.10g\n",nrpt[0],nrpt[1],nrpt[2]);
