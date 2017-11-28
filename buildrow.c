@@ -26,11 +26,11 @@
 /***********  BEGIN BUILDROW ***********************/
 {
   static double nrpt[3], g1[3], unit[3], los1[3], los2[3];
-  static double t1, t2, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
+  static double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
   static double deltagrid, grideps, rayeps;
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
-  static double t3, abstrmin, abstrmax; // New variables added by Albert
+  static double abstrmin, abstrmax; // New variables added by Albert
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
