@@ -245,7 +245,7 @@
      * los first enters the sphere at this (signed) distance from nprt */
          junk[0] = - sqrt(rmax*rmax - impact*impact);
     /* does the LOS hit the inner sphere (hollow part)? */
-  if (impact <= ((double) RMIN)){
+   if (impact <= ((double) RMIN)){
 	 junk[1] = - sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
    } else {
 	 junk[1] =  sqrt(rmax*rmax - impact*impact);
@@ -260,7 +260,7 @@
    abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
    abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
-   if (dsun > ((double) RMAX)      // Cases 1.
+   if (dsun > ((double) RMAX))     // Cases 1.
    {
      if (impact >  ((double) 1.0)) // Cases 1A, 1B.
        {
@@ -296,17 +296,18 @@
        }
    } // Cases 2.
 
-   if (dsun < ((double) RMIN))    // Cases 3.
+   if (dsun < ((double) RMIN))      // Cases 3.
    {
-     if (impact > ((double) 1.0)) // Cases 3A, 3B.
+     if (impact > ((double) 1.0))   // Cases 3A, 3B.
        {
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
      if (impact < ((double) 1.0))
        {
-       if (r3dot(unit,sun_ob3) < 0) goto salida; // Case 3C; with ontarget=1 though, is this fine Rich?
-       if (r3dot(unit,sun_ob3) > 0)              // Case 3D.
+       if (r3dot(unit,sun_ob3) < 0) // Case 3C; with ontarget=1 though, is this fine Rich?
+	 goto salida;
+       if (r3dot(unit,sun_ob3) > 0) // Case 3D.
        {
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
