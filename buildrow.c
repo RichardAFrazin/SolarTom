@@ -103,10 +103,9 @@
   // Compute t3, the SIGNED "time" of the spacecraft location
   // solving for |t3| in: dsun² = impact² + t3²
   t3 = sqrt(dsun*dsun - impact*impact);
-  // Change sign if neede:
   if (r3dot(unit,sun_ob3) < 0)
     t3 = -t3;
-  
+
   //------------------------------------------------------
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enters and leaves the computation area
@@ -254,7 +253,7 @@
    t2 = junk[1];
   //----OLD CODE ENDS HERE------------------------------------------
 
-  new_code_1: ;
+  new_code_1:
   //----NEW CODE STARTS HERE---------------------------------------
   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations
    abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
@@ -262,12 +261,12 @@
 
    if (dsun > ((double) RMAX))     // Cases 1.
    {
-     if (impact >  ((double) 1.0)) // Cases 1A, 1B.
+     if (impact > 1.0) // Cases 1A, 1B.
        {
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact <= ((double) 1.0)) // Case 1C.
+     if (impact <= 1.0) // Case 1C.
        {
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
@@ -276,14 +275,14 @@
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)) // Cases 2.
    {
-     if (impact >  ((double) 1.0))                         // Cases 2A, 2B, 2C, 2D.
+     if (impact > 1.0)                         // Cases 2A, 2B, 2C, 2D.
        {
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact <= ((double) 1.0))                         // Cases 2E, 2F.
+     if (impact <= 1.0)                         // Cases 2E, 2F.
        {
-       if (r3dot(unit,sun_ob3) < 0)                        // Case 2E. 
+       if (r3dot(unit,sun_ob3) < 0)                        // Case 2E.
        {
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
@@ -298,26 +297,28 @@
 
    if (dsun < ((double) RMIN))      // Cases 3.
    {
-     if (impact > ((double) 1.0))   // Cases 3A, 3B.
+     if (impact > 1.0)   // Cases 3A, 3B.
        {
-       junk[0] =  abstrmin;
+       junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact < ((double) 1.0))
+     if (impact < 1.0)
        {
-       if (r3dot(unit,sun_ob3) < 0) // Case 3C; with ontarget=1 though, is this fine Rich?
-	 goto salida;
+       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
+         ontarget = 0;
+         goto salida;
+       }
        if (r3dot(unit,sun_ob3) > 0) // Case 3D.
        {
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
-       }  
+       }
    } // Cases 3
 
    // Assign the SIGNED values to t1 and t2:
    t1 = junk[0];
-   t2 = junk[1];   
+   t2 = junk[1];
    //----NEW CODE ENDS HERE------------------------------------------
 
 #endif
@@ -960,7 +961,7 @@
 
   } /*tdex loop */
 
-salida: ;  /* exit point for LOS's that miss the compution grid */
+salida:/* exit point for LOS's that miss the compution grid */
 
   if (ontarget == 0)
     hasdata = 0;
