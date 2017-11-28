@@ -30,7 +30,7 @@
   static double deltagrid, grideps, rayeps;
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
-  static double t3, abst3, dlos1, dlos2; // New variables adde by Albert
+  static double t3, abstrmin, abstrmax; // New variables added by Albert
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
@@ -95,18 +95,18 @@
   r3eq(nrpt, r3tmp);
   rotvmul(r3tmp, &R23, unit);
   r3eq(unit, r3tmp);
-  // From now on NRPT and UNIT are given in CS-3
+  // From now on NRPT and UNIT are given in CS-3, in [Rsun] units.
 
   // LOS' impact parameter = Norm(NRPT)
-  impact = sqrt(r3dot(nrpt, nrpt));
+  impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
 
-  // Added by Albert:
-  // Compute t3, the UNSIGNED "time" of the spacecraft location,
+  // Compute t3, the SIGNED "time" of the spacecraft location
   // solving for |t3| in: dsun² = impact² + t3²
-  abst3 = sqrt(dsun*dsun - impact*impact);
-  // Its sign (in general) can only be determined
-  // after vectors los1 and los2 are known, below.
-
+  t3 = sqrt(dsun*dsun - impact*impact);
+  // Change sign if neede:
+  if (r3dot(unit,sun_ob3) < 0)
+    t3 = -t3;
+  
   //------------------------------------------------------
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enters and leaves the computation area
@@ -256,32 +256,67 @@
 
   new_code_1: ;
   //----NEW CODE STARTS HERE---------------------------------------
-  // This modifies OLD code above to allow all Cases 1, 2, 3.
-   if (impact > ((double) RMIN))                             // Cases 1A, 3A, 3B
-    {
-     junk[0] = - sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // < 0.
-     junk[1] = - junk[0];                                               // > 0.
-    }
-   if (dsun > ((double) RMIN))
+  // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations
+   abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
+   abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
+
+   if (dsun > ((double) RMAX)      // Cases 1.
    {
-     if (impact <= ((double) RMIN) && r3dot(unit,sun_ob3) < 0) // Cases 1B, 3C
-     {
-     junk[0] = - sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // < 0.
-     junk[1] = - sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // < 0.
-     }
-     if (impact <= ((double) RMIN) && r3dot(unit,sun_ob3) > 0) // Case 3 D
-     {
-     junk[0] =   sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // > 0.
-     junk[1] =   sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // > 0.
-     }
-   }
-   if (dsun < ((double) RMIN)) // Cases 2
+     if (impact >  ((double) 1.0)) // Cases 1A, 1B.
+       {
+       junk[0] = -abstrmax;
+       junk[1] =  abstrmax;
+       }
+     if (impact <= ((double) 1.0)) // Case 1C.
+       {
+       junk[0] = -abstrmax;
+       junk[1] = -abstrmin;
+       }
+   } // Cases 1.
+
+   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)) // Cases 2.
    {
-     junk[0] =   sqrt(((double) RMIN)*((double) RMIN) - impact*impact); // > 0.
-     junk[1] =   sqrt(((double) RMAX)*((double) RMAX) - impact*impact); // > 0.
-   }
+     if (impact >  ((double) 1.0))                         // Cases 2A, 2B, 2C, 2D.
+       {
+       junk[0] = -abstrmax;
+       junk[1] =  abstrmax;
+       }
+     if (impact <= ((double) 1.0))                         // Cases 2E, 2F.
+       {
+       if (r3dot(unit,sun_ob3) < 0)                        // Case 2E. 
+       {
+       junk[0] = -abstrmax;
+       junk[1] = -abstrmin;
+       }
+       if (r3dot(unit,sun_ob3) > 0)                        // Case 2F.
+       {
+       junk[0] =  abstrmin;
+       junk[1] =  abstrmax;
+       }
+       }
+   } // Cases 2.
+
+   if (dsun < ((double) RMIN))    // Cases 3.
+   {
+     if (impact > ((double) 1.0)) // Cases 3A, 3B.
+       {
+       junk[0] =  abstrmin;
+       junk[1] =  abstrmax;
+       }
+     if (impact < ((double) 1.0))
+       {
+       if (r3dot(unit,sun_ob3) < 0) goto salida; // Case 3C; with ontarget=1 though, is this fine Rich?
+       if (r3dot(unit,sun_ob3) > 0)              // Case 3D.
+       {
+       junk[0] =  abstrmin;
+       junk[1] =  abstrmax;
+       }
+       }  
+   } // Cases 3
+
+   // Assign the SIGNED values to t1 and t2:
    t1 = junk[0];
-   t2 = junk[1];
+   t2 = junk[1];   
    //----NEW CODE ENDS HERE------------------------------------------
 
 #endif
@@ -315,33 +350,9 @@
    // At this point: los1, los2 and sun_ob3, are all given in SC-3.
 
    // Compute distances Spacecraft-los1 (dlos1) and Spacecraft-los2 (dlos2)
-   dlos1 = sqrt(r3dot(r3sub(los1,sun_ob3),r3sub(los1,sun_ob3)));
-   dlos2 = sqrt(r3dot(r3sub(los2,sun_ob3),r3sub(los2,sun_ob3)));
-
-   // Assign correct sign to t3:
-   // Cases 1A and 1B: Spacecraft outside the computational ball or at its outter boundary.
-   if ( dsun >= ((double) RMAX) ) t3 = -abst3;
-   // Two Cases 2: Spacecraft inside Rmin.
-   if ( dsun  < ((double) RMIN) )
-   {
-     if (dlos1 < ((double) RMIN)) t3 =  abst3; // Case 2A
-     if (dlos1 > ((double) RMIN)) t3 = -abst3; // Case 2B
-    }
-   // Three Cases 3: Spacefraft inside the computational ball.
-   if ( dsun  < ((double) RMAX) && dsun  > ((double) RMIN) )
-   {
-    if (t1 < 0. && t2 > 0.) // Cases 3A & 3B
-       {
-        if (dlos1 < dlos2)
-           t3 = -abst3; // Case 3A
-        if (dlos1 > dlos2)
-           t3 =  abst3; // Case 3B
-       }
-    if (t1 < 0. && t2 < 0.)
-      t3 = -abst3; // Case 3C
-    if (t1 > 0. && t2 > 0.)
-      t3 =  abst3; // Case 3D
-    }
+   // not needed for now, leave it here commented out in case we need them in the future
+   // dlos1 = sqrt(r3dot(r3sub(los1,sun_ob3),r3sub(los1,sun_ob3)));
+   // dlos2 = sqrt(r3dot(r3sub(los2,sun_ob3),r3sub(los2,sun_ob3)));
 
   /* put the bin number of LOS endpoints into binbin array -
        see CARTESIAN example for ordering */
