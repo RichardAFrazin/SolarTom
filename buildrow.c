@@ -31,6 +31,7 @@
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
   static double abstrmin, abstrmax; // New variables added by Albert
+  static char case_string;
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
@@ -237,79 +238,52 @@
     goto salida;
   }
 
-  goto new_code_1;
-  //----OLD CODE STARTS HERE---------------------------------------
-    /* the LOS enters the sphere at the point nrpt + unit*gam,
-     *  where gam = sqrt(rmax^2 - nrpt'*nrpt),
-     * los first enters the sphere at this (signed) distance from nprt */
-         junk[0] = - sqrt(rmax*rmax - impact*impact);
-    /* does the LOS hit the inner sphere (hollow part)? */
-   if (impact <= ((double) RMIN)){
-	 junk[1] = - sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
-   } else {
-	 junk[1] =  sqrt(rmax*rmax - impact*impact);
-   }
-   t1 = junk[0]; // Note that ALWAYS t1 < 0, which does not allow case 3-D
-   t2 = junk[1];
-  //----OLD CODE ENDS HERE------------------------------------------
-
-  new_code_1:
-  //----NEW CODE STARTS HERE---------------------------------------
   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations
    abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
    abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
-   if (dsun > ((double) RMAX))     // Cases 1.
-   {
-     if (impact > 1.0) // Cases 1A, 1B.
-       {
+   if (dsun > ((double) RMAX)){ // Cases 1.
+     strcpy(case_string,'1');
+     if (impact > 1.0){         // Cases 1A, 1B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact <= 1.0) // Case 1C.
-       {
+     if (impact <= 1.0){        // Case 1C.
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
        }
    } // Cases 1.
 
-   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)) // Cases 2.
-   {
-     if (impact > 1.0)                         // Cases 2A, 2B, 2C, 2D.
-       {
+   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
+     strcpy(case_string,'2');
+     if (impact > 1.0){                          // Cases 2A, 2B, 2C, 2D.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact <= 1.0)                         // Cases 2E, 2F.
-       {
-       if (r3dot(unit,sun_ob3) < 0)                        // Case 2E.
-       {
+     if (impact <= 1.0){                         // Cases 2E, 2F.
+       if (r3dot(unit,sun_ob3) < 0){             // Case 2E.
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
        }
-       if (r3dot(unit,sun_ob3) > 0)                        // Case 2F.
-       {
+       if (r3dot(unit,sun_ob3) > 0){             // Case 2F.
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
        }
    } // Cases 2.
 
-   if (dsun < ((double) RMIN))      // Cases 3.
-   {
-     if (impact > 1.0)   // Cases 3A, 3B.
-       {
+   if (dsun < ((double) RMIN)){      // Cases 3.
+     strcpy(case_string,'3');
+     if (impact > 1.0){              // Cases 3A, 3B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact < 1.0)
-       {
+     if (impact < 1.0){
        if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
          ontarget = 0;
          goto salida;
        }
-       if (r3dot(unit,sun_ob3) > 0) // Case 3D.
-       {
+       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
