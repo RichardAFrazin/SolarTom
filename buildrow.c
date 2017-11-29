@@ -31,7 +31,8 @@
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
   static double abstrmin, abstrmax; // New variables added by Albert
-  static char case_string;
+  static int index0; // New variables added by Albert
+  static char case_string[]="0";
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
@@ -231,19 +232,21 @@
 #elif defined HOLLOW_SPHERE
 
   ontarget = 1;
-  if (impact > rmax ){
+  if (impact > RMAX ){
     /* Is the LOS outside of computation sphere?  If so, just
          treat it has having no data (see build_subA.c)*/
     ontarget = 0;
     goto salida;
   }
 
-  // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations
+   // Un-signed crossing times at radii RMIN and RMAX.
    abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
    abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
+   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
+   
    if (dsun > ((double) RMAX)){ // Cases 1.
-     strcpy(case_string,'1');
+     strcpy(case_string,"1");
      if (impact > 1.0){         // Cases 1A, 1B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
@@ -255,17 +258,17 @@
    } // Cases 1.
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
-     strcpy(case_string,'2');
-     if (impact > 1.0){                          // Cases 2A, 2B, 2C, 2D.
+     strcpy(case_string,"2");
+     if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
        }
-     if (impact <= 1.0){                         // Cases 2E, 2F.
-       if (r3dot(unit,sun_ob3) < 0){             // Case 2E.
+     if (impact <= 1.0){             // Cases 2E, 2F.
+       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
        }
-       if (r3dot(unit,sun_ob3) > 0){             // Case 2F.
+       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
@@ -273,7 +276,7 @@
    } // Cases 2.
 
    if (dsun < ((double) RMIN)){      // Cases 3.
-     strcpy(case_string,'3');
+     strcpy(case_string,"3");
      if (impact > 1.0){              // Cases 3A, 3B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
@@ -293,7 +296,6 @@
    // Assign the SIGNED values to t1 and t2:
    t1 = junk[0];
    t2 = junk[1];
-   //----NEW CODE ENDS HERE------------------------------------------
 
 #endif
 
@@ -446,7 +448,7 @@
 
   // In hollow_sphere geometry, third element is the Spacecraft "time"
 #ifdef HOLLOW_SPHERE
-  t[3] = t3;
+  t[2] = t3;
   tdex++;
 #endif
 
@@ -458,7 +460,6 @@
   fprintf(stderr,"point of exit  %1.10g, %1.10g, %1.10g\n",nrpt[0]+ t2*unit[0], nrpt[1]+t2*unit[1], nrpt[2]+t2*unit[2]);
   fprintf(stderr,"entry/exit bins (binbin) = %d %d %d %d %d %d\n",binbin[0],binbin[1],binbin[2],binbin[3],binbin[4],binbin[5]);
 #endif
-
 
 #ifdef CYLINDRICAL
 
@@ -779,16 +780,29 @@
 #endif
 
   // At this point, tdex = # of voxels that are threaded by the LOS, for all geometries.
-
+  // +1 (spacecraft location) for hollow_sphere.
+  
   // Sort all the bin crossing "times", works for all geometries:
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
-  // Albert: I propose the following strategy here:
-  // select from t only t >= t3, and adjust tdex (reduce) if needed.
-  // That should take care of the situation correctly.
+  // Select from t only t>t3 (cases 1 or 3), or t>=t3 (cases 2), and adjust tdex accordingly.
 
-//   t = t +  3
-//   tdex = tdex - 3
+  // Find [jij] such that t[jij]=t3
+  jij = 0;
+  while (t[jij] < t3) jij++;
+  index0 = jij;
+  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
+  
+  // If case_string NE "2" then index0 = index0 + 1
+  if (strcmp(case_string,"1") == 0 || strcmp(case_string,"3") == 0) index0++;
+
+  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_string,index0);
+  
+  // Redefine array t as the elements of the original array with index >= jij, adjust tdex.
+  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
+  for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
+  tdex   = tdex - index0;
+  fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
@@ -802,15 +816,16 @@
     /* calculate the matrix elements */
 
   for (jij = 1; jij < tdex; jij++) {    // Loop through all voxels threaded by the LOS.
-
     // ttmp and arclength, valid for all geometries:
     ttmp = 0.5 * (t[jij] + t[jij - 1]); // "time" of the voxel middle point (VMP) of the LOS.
     arclength = t[jij] - t[jij - 1];    // voxel arclength (VAL) of the LOS.
+    fprintf(stderr, "t[%d] = %g. t[%d] = %g. arclength = %g.\n",jij-1,t[jij-1],jij,t[jij],arclength);
     if (arclength < 0.0) {
       fprintf(stderr, "BUILDROW: arclength < 0!!  tdex = %d\n",jij);
       fflush(stderr);
       exit(32);
     }
+    // if (jij==tdex-1) exit(32);  // An exit for testing purposes.
 
     // Cartesian coordinates in SC-3 of the VMP.
     xx = nrpt[0] + ttmp * unit[0];
