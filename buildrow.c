@@ -14,14 +14,14 @@
  * added comments for documentation and did cosmetic edits for readability.
  */
 
-//  Strategy to deal with the possibility of spacecraft being within computaional grid,
-//  by A.M.Vasquez.
-//  As t1 and t2 are the crossing times of the LOS that correspond to entering/leaving
-//  the computational grid, we will need to compute t3 as the time of the LOS that
-//  corresponds to the location of the spacecraft, then:
-//  If t3 is not in the [t1,t2] range, then no new actions are needed.
-//  If t3 is within [t1,t2] then: if sign(t3) = sign(t1)-> Update t1=t3
-//                                if sign(t3) = sign(t2)-> Update t2=t3
+// Strategy to deal with the possibility of spacecraft being within computaional grid,
+// by A.M.Vasquez. We compute the SIGNED times of the LOS entering the computational
+// grid (t1), leaving it (t2), this itself has been much expanded to deal now in all possible
+// geometrical situations. We also compute now the signed time corresponding to the spacecraft
+// location (t3). All of these for now only implemented in hollow_sphere geometry.
+// The three times are incorported in the array t. After all crossings have also been added,
+// the array t is sorted in ascending order and then truncated to the following ranges:
+// [t1,t2] if the spacecraft is outside the grid, [t3,t2] if it is inside.
 
 /***********  BEGIN BUILDROW ***********************/
 {
@@ -103,7 +103,6 @@
   impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
 
   // Compute t3, the SIGNED "time" of the spacecraft location
-  // solving for |t3| in: dsun² = impact² + t3²
   t3 = sqrt(dsun*dsun - impact*impact);
   if (r3dot(unit,sun_ob3) < 0)
     t3 = -t3;
@@ -278,7 +277,7 @@
    if (dsun < ((double) RMIN)){      // Cases 3.
      strcpy(case_string,"3");
      if (impact > 1.0){              // Cases 3A, 3B.
-       junk[0] = -abstrmax;
+       junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
      if (impact < 1.0){
@@ -782,23 +781,20 @@
   // At this point, tdex = # of voxels that are threaded by the LOS, for all geometries.
   // +1 (spacecraft location) for hollow_sphere.
   
-  // Sort all the bin crossing "times", works for all geometries:
+  // Sort all the bin crossing "times", in ascending order, works for all geometries:
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
-  // Select from t only t>t3 (cases 1 or 3), or t>=t3 (cases 2), and adjust tdex accordingly.
-
   // Find index0 such that t[index0]=t3
-  jij = 0;
-  while (t[jij] < t3) jij++;
-  index0 = jij;
+  index0 = 0;
+  while (t[index0] < t3) index0++;
   fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
-  // If case_string NE "2" then index0 = index0 + 1
+  // If case_string NE "2" then index0 = index0 + 1, to exclude spacecraft location.
   if (strcmp(case_string,"1") == 0 || strcmp(case_string,"3") == 0) index0++;
 
   fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_string,index0);
   
-  // Redefine array t as the elements of the original array with index >= jij, adjust tdex.
+  // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
   fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
