@@ -43,7 +43,7 @@ int main(int argc, char **argv){
   static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3],obslat;// Extra variables added by Albert, mainly for testing purposes.
+  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3];// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
   Rot R12, R23, Rtmp, *Rx, *Ry, *Rz;
   int nfiles, i, ii, jj, kk, ll, mmm, hasdata, totalB;
   const int nc3 = NBINS, imsize = IMSIZE;
@@ -334,6 +334,9 @@ int main(int argc, char **argv){
     free(Rz);
     free(Ry);
 
+  // Compute Sun_ob3:
+  rotvmul(sun_ob3, &R23, sun_ob2);
+  
 #ifdef C2BUILD
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
@@ -355,10 +358,8 @@ fprintf(stderr, "polar angle: %g radians = %g deg\n",
 
     fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
           sun_ob2[2]);
-    rotvmul(r3tmp, &R23, sun_ob2);
-    fprintf(stderr, "sun_ob3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1],
-          r3tmp[2]);
 
+  fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
     /* loop over image pixels */
 
     for (kk = 0; kk < imsize; kk++) {
