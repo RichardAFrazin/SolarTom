@@ -787,7 +787,7 @@
 
   // Select from t only t>t3 (cases 1 or 3), or t>=t3 (cases 2), and adjust tdex accordingly.
 
-  // Find [jij] such that t[jij]=t3
+  // Find index0 such that t[index0]=t3
   jij = 0;
   while (t[jij] < t3) jij++;
   index0 = jij;
