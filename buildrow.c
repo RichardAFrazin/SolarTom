@@ -594,7 +594,6 @@
     }
   }
 
-
 #elif defined HOLLOW_SPHERE
 
   //-----------------------------EDIT FROM HERE---------------------------------------
@@ -603,29 +602,40 @@
   if (impact <= ((double) RMIN)){
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
-     binrmin = floor( (impact - (double) RMIN)*((double) NRAD) /
+#ifdef UNIFRAD
+    vdhA = (rmax - ((double) RMIN)) / ((double) NRAD);
+    binrmin = floor( (impact - (double) RMIN)*((double) NRAD) /
 	      (rmax - (double) RMIN));
+#elif defined NONUNIFRAD
+    binrmin = radbin(impact);
+#endif
   }
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"RADIAL Bins: binrmin= %d, bin crossings: ",binrmin);
   fflush(stderr);
 #endif
-
-  vdhA = (rmax - ((double) RMIN)) / ((double) NRAD);
+  
     /* -2 because of the bin numbering and the entry
      * point into the last bin is already marked by t1 */
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
+#ifdef UNIFRAD
     rtmp = ((double) RMIN) + (jij + 1)*vdhA;
-    ttmp = - sqrt(rtmp*rtmp - impact*impact) ;
+#elif defined NONUNIFRAD
+    //rtmp = radbound(jij,RMIN,RMAX,NRAD);
+#endif
+    ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
 	t[tdex] = ttmp;
 	tdex++;
 #ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
+	// I think that in the next line we should change: "(double) RMIN" -> "1.0"
+	// because in the new proposed scheme the LOS only stops if it hits
+	// the disk. With just that change the whole thing works.
 	if ( impact > (double) RMIN ) {
-          /* take the other root */
+          // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
 	  tdex++;

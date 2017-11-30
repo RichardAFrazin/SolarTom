@@ -26,8 +26,8 @@
 #define WGETCOMMAND "/usr/local/bin/wget --quiet -P"  /* put the wget binary and path */
 #endif
 
-#if (defined EITBUILD || defined EUVIBUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define HOLLOW_SPHERE  /* hollow sphere geometry for EUV tomography */
+#if (defined EITBUILD || defined EUVIBUILD || AIABUILD)
+#define HOLLOW_SPHERE  /* hollow sphere geometry for EUV tomography */ 
 #else   /* white light tomography options */
 /*#define CYLINDRICAL*/ 		/* use for cylindrical grid */
 /*#define CARTESIAN*/    /* cartesian grid */

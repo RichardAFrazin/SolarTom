@@ -13,6 +13,9 @@
    #endif
 */
 
+//#define   UNIFRAD
+#define NONUNIFRAD
+
 #if (defined C2BUILD || defined C3BUILD)
    #define NRL            // use for NRL        calibration
 /* #define MARSEILLES */  // use for Marseilles calibration
