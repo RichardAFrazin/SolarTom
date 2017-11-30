@@ -9,24 +9,28 @@
 
 #include "headers.h"
 
-// Compute radialbin from distance.
+// Return the radial grid bin correspoding to given a distance.
 double radbin(distance)
 double distance;
+int    bin;
 {
-  return floor(distance);
+  readradialgrid(....);
+  
+  return bin;
 }
 
-// Determine radius of cell boundary from index.
+// Return radius of radial grid cell boundary given an index.
 double radbound(index)
 int index;
+double bound;
 {
-  return (index*1.0);
+  return bound;
 }
 
 // Read RAD array from file.
 // In this way it will be more flexible, we could handle any radial grid.
-double readradialgrid()
-int index;
+void readradialgrid(grid_filename,NRAD,rad,drad)
+double rad[NRAD],drad[NRAD];
 {
-  return ();
+  // read grid_filename to load arrays: rad,drad.
 }
