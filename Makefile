@@ -20,7 +20,7 @@ INDENT_FLAGS = --style=kr --indent=spaces=2
 #####################################################################
 
 
-SRC_BUILD = get_orbit.c r3misc.c rots.c
+SRC_BUILD = get_orbit.c r3misc.c rots.c grids.c
 OBJ_BUILD = $(SRC_BUILD:%.c=%.o)
 
 SRC_SOLVE = fess_hu.c cg_quad.c sparse.c normcalc.c 
@@ -42,6 +42,8 @@ builda: $(OBJ_BUILD) builda.o build_subA.o rcs_llist.o llist.o
 compare: $(OBJ_BUILD) compare.o
 
 datetest: $(OBJ_BUILD) datetest.o
+
+print_grid: $(CC) grids.c print_grid.c -o print_grid
 
 solve_cg.o: headers.h
 solve_cg.o: CFLAGS += -UFESSMIN -DCONJGRAD

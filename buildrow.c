@@ -634,8 +634,7 @@
 	// I think that in the next line we should change: "(double) RMIN" -> "1.0"
 	// because in the new proposed scheme the LOS only stops if it hits
 	// the disk. With just that change the whole thing works.
-	if ( impact > (double) RMIN ) {
-          // take the POSITIVE root also
+	if ( impact > 1. ) { // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
 	  tdex++;
