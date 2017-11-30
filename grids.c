@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "headers.h"
+#include "buildA_params.h"
 
 #ifdef NONUNIFORMRAD
 double* rad_boundaries(int bin){
