@@ -19,7 +19,6 @@ INDENT_FLAGS = --style=kr --indent=spaces=2
 
 #####################################################################
 
-
 SRC_BUILD = get_orbit.c r3misc.c rots.c grids.c
 OBJ_BUILD = $(SRC_BUILD:%.c=%.o)
 
@@ -43,7 +42,7 @@ compare: $(OBJ_BUILD) compare.o
 
 datetest: $(OBJ_BUILD) datetest.o
 
-print_grid: $(CC) grids.c print_grid.c -o print_grid
+print_grid: $(CC) buildA_params.h grids.c print_grid.c -o print_grid
 
 solve_cg.o: headers.h
 solve_cg.o: CFLAGS += -UFESSMIN -DCONJGRAD
@@ -51,7 +50,7 @@ solve_cg.o: solve.c
 	$(CC) -c $(CFLAGS) $(DEFINES) $< -o $@
 
 callsolve_cg: $(OBJ_SOLVE) callsolve.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 solve_fess.o: headers.h
 solve_fess.o: CFLAGS += -UCONJGRAD -DFESSMIN
@@ -59,16 +58,16 @@ solve_fess.o: solve.c
 	$(CC) -c $(CFLAGS) $(DEFINES) $< -o $@
 
 callsolve_fess: $(OBJ_SOLVE) callsolve.o solve_fess.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 ###auto_cv: $(OBJ_SOLVE) auto_cv.o amoeba.o solve_cg.o
-###	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+###	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 auto_cv_brent: $(OBJ_SOLVE) auto_cv_brent.o fminbr.o cvcalc.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 cv_brent_fixed: $(OBJ_SOLVE) cv_brent_fixed.o fminbr.o cvcalc.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 row_extract: row_extract.o sparse.o
 

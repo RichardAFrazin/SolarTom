@@ -602,13 +602,7 @@
   if (impact <= ((double) RMIN)){
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
-#ifdef UNIFRAD
-    vdhA = (rmax - ((double) RMIN)) / ((double) NRAD);
-    binrmin = floor( (impact - (double) RMIN)*((double) NRAD) /
-	      (rmax - (double) RMIN));
-#elif defined NONUNIFRAD
-    binrmin = radbin(impact);
-#endif
+     binrmin = rad_bin_number(impact);
   }
 
 #ifdef RAYDIAGNOSE
@@ -619,11 +613,7 @@
     /* -2 because of the bin numbering and the entry
      * point into the last bin is already marked by t1 */
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-#ifdef UNIFRAD
-    rtmp = ((double) RMIN) + (jij + 1)*vdhA;
-#elif defined NONUNIFRAD
-    //rtmp = radbound(jij,RMIN,RMAX,NRAD);
-#endif
+    rtmp = (rad_boundaries(jij))[0];           // outer boundary of cell jij. 
     ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
 	t[tdex] = ttmp;
 	tdex++;
@@ -645,7 +635,6 @@
 	}
   }
   //------------------------EDIT TILL HERE-------------------------------
-
 
   /* polar angle bin crossings
    *
