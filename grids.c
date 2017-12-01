@@ -75,7 +75,7 @@ int bin = -1;
 
 /* make a function that prints the grid values */
 void print_grid(void){
-  char *gridfile, GRID_FILENAME="x.dat";
+  char *gridfile;
   int k;
   double *s, center, size;
   FILE *fp;
@@ -85,8 +85,6 @@ void print_grid(void){
     s = rad_bin_boundaries(k);
     center = (*s + *(s+1))/2.;
     size = *s - *(s+1);
-    //    strcpy(gridfile, "%d  %g  %g\n", k, center, size);
-    //    fprintf(fp, gridfile);
     fprintf(fp, "%d  %g  %g\n", k, center, size);    
   }
   fclose(fp);
