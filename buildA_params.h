@@ -13,8 +13,12 @@
    #endif
 */
 
-//#define NONUNIFORMRAD // Set if radial grid is not uniform
+#define NONUNIFORMRAD // Set if radial grid is not uniform
 
+#ifdef NONUNIFORMRAD
+#define GRID_FILENAME "non_uniform_grid.txt"
+#endif
+   
 #if (defined C2BUILD || defined C3BUILD)
    #define NRL            // use for NRL        calibration
 /* #define MARSEILLES */  // use for Marseilles calibration

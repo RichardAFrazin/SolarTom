@@ -30,7 +30,7 @@
   static double deltagrid, grideps, rayeps;
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
-  static double abstrmin, abstrmax; // New variables added by Albert
+  static double abstrmin, abstrmax, dtpr[2]; // New variables added by Albert
   static int index0; // New variables added by Albert
   static char case_string[]="0";
 
@@ -613,8 +613,10 @@
     /* -2 because of the bin numbering and the entry
      * point into the last bin is already marked by t1 */
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-    rtmp = (rad_bin_boundaries(jij))[0];           // outer boundary of cell jij. 
-    ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
+    //dtpr = rad_bin_boundaries(jij);           // outer boundary of cell jij.
+     //rtmp = *dtpr;
+     rtmp=3.0;
+     ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
 	t[tdex] = ttmp;
 	tdex++;
 #ifdef RAYDIAGNOSE
