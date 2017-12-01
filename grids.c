@@ -14,7 +14,7 @@
 #include "buildA_params.h"
 
 #ifdef NONUNIFORMRAD
-double* rad_boundaries(int bin){
+double* rad_bin_boundaries(int bin){
 static  double s[2];  // [outer, inner]
   int j;
   double q1, q2, p, drmin = 0.25, drmax = 4.;
@@ -82,11 +82,12 @@ void print_grid(void){
   strcpy(gridfile, GRID_FILENAME);
   fp = fopen(gridfile, "w");
   for (k=0; k<NRAD; k++){
-    s = rad_boundaries(k);
+    s = rad_bin_boundaries(k);
     center = (*s + *(s+1))/2.;
     size = *s - *(s+1);
-    strcpy(gridfile, "%d  %g  %g\n", k, center, size);
-    fprintf(fp, gridfile);
+    //    strcpy(gridfile, "%d  %g  %g\n", k, center, size);
+    //    fprintf(fp, gridfile);
+    fprintf(fp, "%d  %g  %g\n", k, center, size);    
   }
   fclose(fp);
 }
