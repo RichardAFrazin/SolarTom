@@ -13,7 +13,7 @@
    #endif
 */
 
-#define NONUNIFORMRAD // Set if radial grid is not uniform
+//#define NONUNIFORMRAD // Set if radial grid is not uniform
 
 #if (defined C2BUILD || defined C3BUILD)
    #define NRL            // use for NRL        calibration

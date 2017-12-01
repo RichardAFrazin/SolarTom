@@ -57,9 +57,9 @@ int rad_bin_number(double dist){  // returns radial bin index given distance
 
 #else
 
-double* rad_boundaries(int bin){
+double* rad_bin_boundaries(int bin){
 double dr, s[2];  // [outer, inner]
- dr = (rmax - ((double) RMIN)) / ((double) NRAD);
+  dr   = (RMAX - ((double) RMIN)) / ((double) NRAD);
   s[1] = ((double) RMIN) + dr*(bin  );
   s[0] = ((double) RMIN) + dr*(bin+1);
   return(s);
