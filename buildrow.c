@@ -596,9 +596,8 @@
 
 #elif defined HOLLOW_SPHERE
 
-  //-----------------------------EDIT FROM HERE---------------------------------------
-  /*radial bin crossings */
 
+  /*radial bin crossings */
   if (impact <= ((double) RMIN)){
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
@@ -611,11 +610,10 @@
   fflush(stderr);
 #endif
   
-    /* -2 because of the bin numbering and the entry
-     * point into the last bin is already marked by t1 */
+  /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-        dtpr = rad_bin_boundaries(jij);           // outer boundary of cell jij.
-        rtmp = *dtpr;
+        dtpr = rad_bin_boundaries(jij);  
+        rtmp = *dtpr; // outer boundary of cell jij.
  fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
         ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
         t[tdex] = ttmp;
@@ -624,9 +622,10 @@
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
-	// I think that in the next line we should change: "(double) RMIN" -> "1.0"
+	// In the next line we changed: "(double) RMIN" -> "1.0"
 	// because in the new proposed scheme the LOS only stops if it hits
-	// the disk. With just that change the whole thing works.
+	// the disk. With just that change the whole thing works as t array
+	// is filtered out below for any t<t3.
 	if ( impact > 1. ) { // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
@@ -637,7 +636,7 @@
 #endif
 	}
   }
-  //------------------------EDIT TILL HERE-------------------------------
+
   exit(-1);
   /* polar angle bin crossings
    *
@@ -850,7 +849,9 @@
 #elif defined HOLLOW_SPHERE
 
     /* r index */
-    index[0] = floor((double) NRAD *(r - (double) RMIN)/(rmax - (double) RMIN)) ;
+   //index[0] = floor((double) NRAD *(r - (double) RMIN)/(rmax - (double) RMIN)) ;
+   // previous line now changed to:
+    index[0] = rad_bin_number(r);
     if (index[0] == NRAD)
       index[0] = NRAD - 1;   /*these index corrections are due to finite precision */
 
@@ -870,6 +871,9 @@
     if (index[2] == NPHI)
       index[2] = NPHI - 1;
 
+    // In the following formula for "ardex", voxels are numbered
+    // starting at [irad,ith,iph]=[0,0,0] and then ordered:
+    // first by rad, then by theta, finally by phi.
     ardex = index[2]*NRAD*NTHETA + index[1]*NRAD + index[0];
 
 #elif defined CARTESIAN
