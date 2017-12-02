@@ -17,6 +17,8 @@
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
+#else
+#define GRID_FILENAME "uniform_grid.txt"
 #endif
    
 #if (defined C2BUILD || defined C3BUILD)

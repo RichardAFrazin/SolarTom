@@ -1,7 +1,6 @@
-
 #include "grids.c"
 
-void main(void){
+void main(){
   print_grid();
-  return();
+  return;
 }

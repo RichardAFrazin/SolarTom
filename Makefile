@@ -1,4 +1,4 @@
-TOMROOT_HEADER = tomroot.ALBERT.h
+sbuildTOMROOT_HEADER = tomroot.ALBERT.h
 
 #CC = clang 
  CC = gcc    # for Linux systems
@@ -42,7 +42,9 @@ compare: $(OBJ_BUILD) compare.o
 
 datetest: $(OBJ_BUILD) datetest.o
 
-print_grid: $(CC) buildA_params.h grids.c print_grid.c -o print_grid
+## print_grid: $(CC) buildA_params.h grids.c print_grid.c -o print_grid
+
+print_grid: $(OBJ_BUILD) print_grid.o
 
 solve_cg.o: headers.h
 solve_cg.o: CFLAGS += -UFESSMIN -DCONJGRAD
@@ -98,7 +100,6 @@ indent:
 clean:
 	rm -f *.o $(BIN)
 
-
 # DO NOT DELETE
 headers.h: buildA_params.h solve_cv_params.h  tomroot.h
 get_orbit.o: headers.h  buildA_params.h solve_cv_params.h
@@ -121,3 +122,5 @@ fminbr.o: headers.h buildA_params.h solve_cv_params.h
 cv_brent_fixed.o: headers.h buildA_params.h solve_cv_params.h
 auto_cv_brent.o: headers.h buildA_params.h solve_cv_params.h
 extract_block.o: headers.h buildA_params.h solve_cv_params.h 
+print_grid.o: buildA_params.h grids.c print_grid.c
+

@@ -14,29 +14,31 @@
 #include "buildA_params.h"
 
 #ifdef NONUNIFORMRAD
+
 double* rad_bin_boundaries(int bin){
 static  double s[2];  // [outer, inner]
   int j;
-  double q1, q2, p, drmin = 0.25, drmax = 4.;
+  double q1, q2, p, drmin = 0.25, drmax = 4.0;
   if ((bin < 0) || (bin >= NRAD)){
     fprintf(stderr, "rad_boundaries: invalid bin value.\n");
       exit(-1);
   }
-  p = (drmax - drmin)/NRAD;
-  q1 = RMIN + drmin;
-  q2 = RMIN;
+  p = (drmax - drmin)/(NRAD-1);
+  q1 = RMIN;
+  q2 = RMIN + drmin;
   for (j=1; j <= bin; j++){ // loop not entered if bin=0
-    q2 = q1;
-    q1 += p*j;
+    q1 = q2;
+    q2 = q1 + drmin + p*j;
   }
-  s[0] = q1; //outer
-  s[1] = q2; //inner
+  s[0] = q2; //outer
+  s[1] = q1; //inner
   return(s);
 }
 
 int rad_bin_number(double dist){  // returns radial bin index given distance
   int bin = -1;
   double ibd, obd, *s;
+  // fprintf(stderr,"Test inside rad_bin_number. dist = %g, NRAD = %d.\n",dist,NRAD);
   for (int b=0; b < NRAD; b++){
     s = rad_bin_boundaries(b);
     ibd = *(s + 1); // inner
@@ -55,18 +57,21 @@ int rad_bin_number(double dist){  // returns radial bin index given distance
   return(bin);
 }  
 
-#else
+#else // If NOT NONUNIFORMRAD, i.e. UNIFORM-RADIAL-GRID
 
 double* rad_bin_boundaries(int bin){
-double dr, s[2];  // [outer, inner]
+static double dr, s[2];  // [outer, inner]
   dr   = (RMAX - ((double) RMIN)) / ((double) NRAD);
   s[1] = ((double) RMIN) + dr*(bin  );
   s[0] = ((double) RMIN) + dr*(bin+1);
+//fprintf(stderr,"Test inside rad_bin_boundaries. Rmin = %g, Rmax = %g, NRAD = %d.\n",RMIN,RMAX,NRAD);
+//fprintf(stderr,"Test inside rad_bin_boundaries. bin = %d, r = %g, dr = %g.\n",bin,(s[0]+s[1])/2.,dr);
   return(s);
 }
 
 int rad_bin_number(double dist){
 int bin = -1;
+  // fprintf(stderr,"Test inside rad_bin_number. dist = %g, Rmin = %g, Rmax = %g, NRAD = %d.\n",dist,RMIN,RMAX,NRAD);
   bin = floor( (dist - (double) RMIN)*((double) NRAD) / (RMAX - (double) RMIN));
   return(bin);  
 }

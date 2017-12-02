@@ -26,11 +26,11 @@
 /***********  BEGIN BUILDROW ***********************/
 {
   static double nrpt[3], g1[3], unit[3], los1[3], los2[3];
-  static double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
+ static double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
   static double deltagrid, grideps, rayeps;
   static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
-  static double abstrmin, abstrmax, dtpr[2]; // New variables added by Albert
+  static double abstrmin, abstrmax, *dtpr; // New variables added by Albert
   static int index0; // New variables added by Albert
   static char case_string[]="0";
 
@@ -603,6 +603,7 @@
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
      binrmin = rad_bin_number(impact);
+     fprintf(stderr,"impact = %g, bin = %d.\n",impact,binrmin);
   }
 
 #ifdef RAYDIAGNOSE
@@ -613,11 +614,11 @@
     /* -2 because of the bin numbering and the entry
      * point into the last bin is already marked by t1 */
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-    //dtpr = rad_bin_boundaries(jij);           // outer boundary of cell jij.
-     //rtmp = *dtpr;
-     rtmp=3.0;
-     ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
-	t[tdex] = ttmp;
+        dtpr = rad_bin_boundaries(jij);           // outer boundary of cell jij.
+        rtmp = *dtpr;
+ fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
+        ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
+        t[tdex] = ttmp;
 	tdex++;
 #ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,ttmp);
@@ -637,7 +638,7 @@
 	}
   }
   //------------------------EDIT TILL HERE-------------------------------
-
+  exit(-1);
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
