@@ -602,7 +602,7 @@
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
      binrmin = rad_bin_number(impact);
-     fprintf(stderr,"impact = %g, bin = %d.\n",impact,binrmin);
+     //     fprintf(stderr,"impact = %g, bin = %d.\n",impact,binrmin);
   }
 
 #ifdef RAYDIAGNOSE
@@ -614,7 +614,7 @@
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
         dtpr = rad_bin_boundaries(jij);  
         rtmp = *dtpr; // outer boundary of cell jij.
- fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
+	// fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
         ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
         t[tdex] = ttmp;
 	tdex++;
@@ -637,7 +637,7 @@
 	}
   }
 
-  exit(-1);
+  //  exit(-1);
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
@@ -787,18 +787,18 @@
   // Find index0 such that t[index0]=t3
   index0 = 0;
   while (t[index0] < t3) index0++;
-  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
+  //  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
   // If case_string NE "2" then index0 = index0 + 1, to exclude spacecraft location.
   if (strcmp(case_string,"1") == 0 || strcmp(case_string,"3") == 0) index0++;
 
-  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_string,index0);
+  //  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_string,index0);
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
-  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
+  //  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
-  fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
+  // fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
@@ -815,7 +815,7 @@
     // ttmp and arclength, valid for all geometries:
     ttmp = 0.5 * (t[jij] + t[jij - 1]); // "time" of the voxel middle point (VMP) of the LOS.
     arclength = t[jij] - t[jij - 1];    // voxel arclength (VAL) of the LOS.
-    fprintf(stderr, "t[%d] = %g. t[%d] = %g. arclength = %g.\n",jij-1,t[jij-1],jij,t[jij],arclength);
+    //    fprintf(stderr, "t[%d] = %g. t[%d] = %g. arclength = %g.\n",jij-1,t[jij-1],jij,t[jij],arclength);
     if (arclength < 0.0) {
       fprintf(stderr, "BUILDROW: arclength < 0!!  tdex = %d\n",jij);
       fflush(stderr);
