@@ -1,5 +1,5 @@
 /* to compile: 
- * gcc geomtest.c r3misc.o rots.o -lm -o geomtest
+ * gcc geomtest.c r3misc.o rots.o grids.o -lm -o geomtest
  * note the symbolic link to this file in the directory above
  */
 
@@ -23,6 +23,7 @@ main( int argc, char **argv)
 	double dsun, pang, deltagrid, rho1, eta1, carlong;
 	Rot R12, R23, Rtmp;
 	Rot *Rx, *Ry, *Rz;
+	double sun_ob3[3];// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
 	int i, hasdata, totalB;
 	const double rmax = RMAX;
         float Arow_long[NBINS]; /* for consistency with buildrow.c */
@@ -75,8 +76,6 @@ main( int argc, char **argv)
 	spol1[1] = 0.0;
 	spol1[2] = 1.0;
 	
-
-
 	/* Calculate R12 matrix:  R12 = Rx(a3)Ry(a2)Rz(a1) */
 
 	/* Zero y component of sun_ob */
@@ -103,6 +102,10 @@ main( int argc, char **argv)
 	Ry = roty(pang);
 	Rz = rotz( carlong ); /* correct */
 	rotmul(&R23, Rz, Ry);
+
+	// Compute Sun_ob3:
+	rotvmul(sun_ob3, &R23, sun_ob2);
+
 	free(Rz);
 	free(Ry);
 
@@ -118,7 +121,8 @@ fprintf(stderr,"spol3: [%g, %g, %g]\n",r3tmp[0],r3tmp[1],r3tmp[2]);
 fprintf(stderr,"sun_ob1: [%g, %g, %g]\n",sun_ob1[0],sun_ob1[1],sun_ob1[2]);
 fprintf(stderr,"sun_ob2: [%g, %g, %g]\n",sun_ob2[0],sun_ob2[1],sun_ob2[2]);
       rotvmul(r3tmp, &R23, sun_ob2);
-fprintf(stderr,"sun_ob3: [%g, %g, %g]\n",r3tmp[0],r3tmp[1],r3tmp[2]);
+
+  fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
        
 
 #ifdef CARTESIAN

@@ -222,27 +222,49 @@ int main(int argc, char **argv){
       x_image[i] = pixsize * ((float) i - center_x);
       y_image[i] = pixsize * ((float) i - center_y);
     }
- 
+
+      /* Albert's test printouts */
+  fprintf(stderr,"Pixsize:            %3.10g ARCSEC\n",pixsize);
+  fprintf(stderr,"Center X and Y:     %3.10g, %3.10g PX\n",center_x,center_y);
+  fprintf(stderr,"Min and Max X:      %3.10g, %3.10g ARCSEC\n",x_image[0],x_image[imsize-1]);
+  fprintf(stderr,"Min and Max angles: %3.10g, %3.10g DEG\n\n",x_image[0]/3600.,x_image[imsize-1]/3600.);
+    
     /* when the observed image has solar north rotated clockwise from the top,
      *   CROTA (for EUVI) is positive.   I assume that the same convention
      *   holds for SC_ROLL and CROTA1 */
    
-    for ( i = 0;  i < imsize;  i++) {
-    for (jj = 0; jj < imsize; jj++) {
+  //    for ( i = 0;  i < imsize;  i++) {
+      for ( i = imsize-1;  i < imsize;  i++) {
+#ifdef TESTBAND
+      for (jj = imsize/2-BAND_WIDTH_PX/2; jj < imsize/2+BAND_WIDTH_PX/2; jj++) {
+#else
+      for (jj = 0; jj < imsize; jj++) {
+#endif
         rho[i][jj] = (float) sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
         eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
 	           + (float) (roll_offset*0.017453292519943);
+	  fprintf(stderr,"rho[%d][%d] = %3.10g deg\n",i,jj,rho[i][jj]/3600.);
+	  fprintf(stderr,"eta[%d][%d] = %3.10g deg\n"   ,i,jj,eta[i][jj]*57.295778);	
+      }
     }
-    }
+   
 
     for ( i = 0;  i < imsize;  i++) {
-    for (jj = 0; jj < imsize; jj++) {
+#ifdef TESTBAND
+      for (jj = imsize/2-BAND_WIDTH_PX/2; jj < imsize/2+BAND_WIDTH_PX/2; jj++) {
+#else
+      for (jj = 0; jj < imsize; jj++) {
+#endif
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
     }
     }
 
     for (i = 0; i < imsize; i++) {
+#ifdef TESTBAND
+      for (jj = imsize/2-BAND_WIDTH_PX/2; jj < imsize/2+BAND_WIDTH_PX/2; jj++) {
+#else
       for (jj = 0; jj < imsize; jj++) {
+#endif
 	/* Keep only data within certain radius range  */
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
         if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
@@ -286,8 +308,7 @@ int main(int argc, char **argv){
       
     free(image);
     }   /* end of block */
- 
-    
+     
     dsun = 0.0;
     for (i = 0; i < 3; i++) {
       sun_ob1[i] /= RSUN;
@@ -334,9 +355,9 @@ int main(int argc, char **argv){
     free(Rz);
     free(Ry);
 
-  // Compute Sun_ob3:
-  rotvmul(sun_ob3, &R23, sun_ob2);
-  
+    // Compute Sun_ob3:
+    rotvmul(sun_ob3, &R23, sun_ob2);
+
 #ifdef C2BUILD
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
@@ -351,18 +372,24 @@ fprintf(stderr, "polar angle: %g radians = %g deg\n",
     fprintf(stderr, "spol2: [%g, %g, %g]\n", spol2[0], spol2[1], spol2[2]);
     rotvmul(r3tmp, &R23, spol2);
     fprintf(stderr, "spol3: [%g, %g, %g]\n", r3tmp[0], r3tmp[1], r3tmp[2]);
-  fprintf(stderr, "COMPUTED sun_ob1:        [%3.10g, %3.10g, %3.10g]\n",
+    fprintf(stderr, "COMPUTED sun_ob1:        [%3.10g, %3.10g, %3.10g]\n",
 	  sun_ob1[0], sun_ob1[1], sun_ob1[2]);
-  fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
+    fprintf(stderr, "HEADER'S J2000 sun_obs:  [%3.10g, %3.10g, %3.10g]\n",
  	  J2k_OBS[0]/RSUN/1.e3, J2k_OBS[1]/RSUN/1.e3, J2k_OBS[2]/RSUN/1.e3);
 
     fprintf(stderr, "sun_ob2: [%g, %g, %g]\n", sun_ob2[0], sun_ob2[1],
           sun_ob2[2]);
 
-  fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
+    fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
     /* loop over image pixels */
 
-    for (kk = 0; kk < imsize; kk++) {
+
+#ifdef TESTBAND
+      for (kk = imsize/2-BAND_WIDTH_PX/2; kk < imsize/2+BAND_WIDTH_PX/2; kk++) {
+#else
+      for (kk = 0; kk < imsize; kk++) {
+#endif
+      
       for (ll = 0; ll < imsize; ll++) {
 
 	for (mmm = 0; mmm < nc3; mmm++)
@@ -371,7 +398,7 @@ fprintf(stderr, "polar angle: %g radians = %g deg\n",
          
 	if (fabs(pBval[ll][kk] + 999.0) > QEPS) {
           rho1 = ((double) rho[ll][kk]) * ARCSECRAD;
-          eta1 = (double) eta[ll][kk];
+          eta1 =  (double) eta[ll][kk];
           pBcalc[ll][kk] = 0.0;
 #include "buildrow.c"
 	} /* if pBval != -999 */

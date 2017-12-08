@@ -83,6 +83,7 @@
   r3tmp[0] = dsun*sin(rho1)*sin(rho1);
   r3tmp[1] = 0.0;
   r3tmp[2] = dsun*sin(rho1)*cos(rho1);
+
   rotvmul(nrpt, Rx, r3tmp);
 
   g1[0] = -cos(rho1);

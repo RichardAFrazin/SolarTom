@@ -162,6 +162,9 @@ void build_subA(char *idstring, rcs_llist *rcs,
     dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist    = sqrt(dist);
 
+    // Albert test printout:
+    fprintf(stderr,"Computed dist: %3.10g Rsun\n",dist/RSUN);
+
     for (i = 0; i < imsize; i++)
     {
       x_image[i] = pixsize * ((float) i - center_x);
