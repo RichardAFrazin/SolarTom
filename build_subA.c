@@ -179,13 +179,15 @@ void build_subA(char *idstring, rcs_llist *rcs,
     for (jj = 0; jj < imsize; jj++) {
         rho[i][jj] = (float) sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
         eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
-	           + (float) (roll_offset*0.017453292519943);
+	           + (float) (roll_offset*0.017453292519943);	
     }
     }
     
     for ( i = 0;  i < imsize;  i++) {
     for (jj = 0; jj < imsize; jj++) {
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
+    
+
     }
     }
     

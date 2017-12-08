@@ -13,7 +13,7 @@
    #endif
 */
 
-#define TESTBAND // Set to make compare.c compute only a full "band"
+//#define TESTBAND // Set to make compare.c compute only a full "band"
                  // of horizontal pixels of BAND_WIDTH_PX pixels around CRPIX2.
 #if defined TESTBAND
 #define BAND_WIDTH_PX 100
@@ -43,8 +43,8 @@
 #define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN    2.15// 3. // 20.  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
-#define INSTR_RMAX    8.28//8.25//8. // 30.  /* Right now I set the range that coresponds to Orbit 1. This is not possible for all orbits and/or both instruments. */
+#define INSTR_RMIN    3.992598706  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
+#define INSTR_RMAX    8.30   /* Right now I set the range that coresponds to Orbit 1. This is not possible for all orbits and/or both instruments. */
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
