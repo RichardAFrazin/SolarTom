@@ -193,14 +193,23 @@ for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
-        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
-            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+	//OLD CODE BY RICH----------------------------------------------------------
+	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
+	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+        //REPLACED BY NEW CODE BY ALBERT:
+        if (( sin(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
+            ( sin(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+       //--------------------------------------------------------------------------
           pBval[i][jj] = -999.0;
 #elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
-	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
+     // Similar corrections here:
+     //	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
+        if ( (sin(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
 #ifdef RING_REJECT
-	     ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
-	      (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
+     //	     ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
+     //	      (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
+       	     ((sin(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
+       	      (sin(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
 #else 
 	        0 ){
 #endif

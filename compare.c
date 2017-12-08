@@ -233,8 +233,8 @@ int main(int argc, char **argv){
      *   CROTA (for EUVI) is positive.   I assume that the same convention
      *   holds for SC_ROLL and CROTA1 */
    
-  //    for ( i = 0;  i < imsize;  i++) {
-      for ( i = imsize-1;  i < imsize;  i++) {
+      for ( i = 0;  i < imsize;  i++) {
+	//    for ( i = imsize-1;  i < imsize;  i++) {
 #ifdef TESTBAND
       for (jj = imsize/2-BAND_WIDTH_PX/2; jj < imsize/2+BAND_WIDTH_PX/2; jj++) {
 #else
@@ -243,8 +243,8 @@ int main(int argc, char **argv){
         rho[i][jj] = (float) sqrt((double) (x_image[i]*x_image[i] + y_image[jj]*y_image[jj]));
         eta[i][jj] = (float) atan2((double) (-x_image[i]), (double) y_image[jj]) 
 	           + (float) (roll_offset*0.017453292519943);
-	  fprintf(stderr,"rho[%d][%d] = %3.10g deg\n",i,jj,rho[i][jj]/3600.);
-	  fprintf(stderr,"eta[%d][%d] = %3.10g deg\n"   ,i,jj,eta[i][jj]*57.295778);	
+	//  fprintf(stderr,"rho[%d][%d] = %3.10g deg\n",i,jj,rho[i][jj]/3600.);
+	//  fprintf(stderr,"eta[%d][%d] = %3.10g deg\n"   ,i,jj,eta[i][jj]*57.295778);	
       }
     }
    
@@ -259,7 +259,8 @@ int main(int argc, char **argv){
     }
     }
 
-    for (i = 0; i < imsize; i++) {
+       for (i = 0; i < imsize; i++) {
+//     for ( i = 0;  i < 2;  i++) {
 #ifdef TESTBAND
       for (jj = imsize/2-BAND_WIDTH_PX/2; jj < imsize/2+BAND_WIDTH_PX/2; jj++) {
 #else
@@ -267,14 +268,23 @@ int main(int argc, char **argv){
 #endif
 	/* Keep only data within certain radius range  */
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
-        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
-            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+	//OLD CODE BY RICH----------------------------------------------------------
+	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
+	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+        //REPLACED BY NEW CODE BY ALBERT:
+        if (( sin(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
+            ( sin(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
+       //--------------------------------------------------------------------------
           pBval[i][jj] = -999.0;
 #elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD)
-	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
+     // Similar corrections here:
+     //	if ( (tan(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
+        if ( (sin(ARCSECRAD * rho[i][jj]) * dist  > INSTR_RMAX * RSUN ) ||
 #ifdef RING_REJECT
-	     ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
-	      (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
+     //	     ((tan(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
+     //	      (tan(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
+       	     ((sin(ARCSECRAD * rho[i][jj]) * dist  > INNER_REJECT_RAD * RSUN) &&
+       	      (sin(ARCSECRAD * rho[i][jj]) * dist  < OUTER_REJECT_RAD * RSUN))  ){
 #else 
 	        0 ){
 #endif
