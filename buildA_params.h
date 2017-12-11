@@ -1,10 +1,10 @@
 // #define AIABUILD
 // #define EUVIBUILD
-// #define CORBUILD
+//  #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-// #define C2BUILD 
-   #define WISPRIBUILD
+   #define C2BUILD 
+//  #define WISPRIBUILD
 // #define WISPROBUILD
 
 /* Not using this for now
@@ -52,8 +52,8 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE          "wisprI.test.bf8"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
-#define RMIN 8.5             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
-#define RMAX 180.            
+#define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
+#define RMAX  10.            
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
@@ -71,10 +71,10 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE          "wisprO.test"     /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
-#define RMAX   8.3            /* outer radius of computation ball */
-#define RMIN   2.3            /* innner radius (hollow  sphere)   */
+#define RMAX   10.            /* outer radius of computation ball */
+#define RMIN   2.0            /* innner radius (hollow  sphere)   */
 #define NZ     130 #define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
-#define NRAD    60  
+#define NRAD   100  
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	/* size of C2 images (pixels) */

@@ -1,4 +1,4 @@
-sbuildTOMROOT_HEADER = tomroot.ALBERT.h
+TOMROOT_HEADER = tomroot.ALBERT.h
 
 #CC = clang 
  CC = gcc    # for Linux systems
