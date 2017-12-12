@@ -8,3 +8,4 @@ x.c
 libXp*
 geomtest
 geomtest.dat
+Makefile
