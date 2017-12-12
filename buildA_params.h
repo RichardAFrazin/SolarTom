@@ -1,10 +1,10 @@
 // #define AIABUILD
 // #define EUVIBUILD
-//  #define CORBUILD
+// #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-   #define C2BUILD 
-//  #define WISPRIBUILD
+// #define C2BUILD 
+   #define WISPRIBUILD
 // #define WISPROBUILD
 
 /* Not using this for now
@@ -40,7 +40,7 @@
 #define NRAD   100 
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
-#define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
+#define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN    3.992598706  /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
@@ -48,8 +48,8 @@
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
-#define CONFSTRING  DATADIR"list.wisprI.txt"
-#define A_OUTFILE          "wisprI.test.bf8"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprI.bf4.txt"
+#define A_OUTFILE          "wisprI.test.bf4"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
@@ -80,8 +80,8 @@ typedef float PB_IMTYPE;
 #define IMSIZE    512	/* size of C2 images (pixels) */
 #define BINFAC    3	     /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	/* delta vector */
-#define INSTR_RMIN      2.3
-#define INSTR_RMAX      6.2
+#define INSTR_RMIN      2.1
+#define INSTR_RMAX      6.3
 #define PIXSIZE  23.8	/* arcsec per pixel */
 #ifdef NRL
 typedef float PB_IMTYPE;
@@ -89,8 +89,8 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2/2007.04/"
-#define CONFSTRING DATADIR"list.nrl.txt"
+#define DATADIR    TOMROOT"DATA/c2/pB_2002_highFreq/"
+#define CONFSTRING DATADIR"list4.txt"
 #define A_OUTFILE         "c2.test" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD

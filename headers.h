@@ -23,7 +23,7 @@
 #define ORBIT_SCRATCH_DIR TOMROOT"Orbits/" 
 #define ORBIT_URL "http://sohowww.nascom.nasa.gov/data/ancillary/orbit/predictive/"
 #ifdef ORBIT_URL
-#define WGETCOMMAND "/usr/local/bin/wget --quiet -P"  /* put the wget binary and path */
+#define WGETCOMMAND "/usr/bin/wget --quiet -P"  /* put the wget binary and path */
 #endif
 
 #if (defined EITBUILD || defined EUVIBUILD || AIABUILD)
