@@ -59,6 +59,10 @@ void build_subA(char *idstring, rcs_llist *rcs,
 
   totalB = 0;
 
+#if (defined WISPRIBUILD || defined WISPROBUILD)
+    totalB = 1;
+#endif
+
   strcpy(filename, DATADIR);
   strcat(filename, idstring);
 
@@ -328,12 +332,13 @@ for (i = 0; i < imsize; i++) {
   free(Ry);
   //-----------------R23 computed------------------------------------------------------------------------
   
-#if (defined C2BUILD || defined C3BUILD)
+#if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
   else 
     fprintf(stderr,"Polarized Brightness image.\n");
 #endif
+
   fprintf(stderr, "Polar angle: %g radians = %g deg\n", pang, pang * 180. / ((double) M_PI));
   fprintf(stderr, "     Header's Observed Latitude = %g deg\n", obslat);
   

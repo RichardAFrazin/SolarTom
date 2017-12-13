@@ -195,6 +195,10 @@ int main(int argc, char **argv){
 #endif
 
     totalB = 0; /*this avoids unused variable warning*/
+    
+#if (defined WISPRIBUILD || defined WISPROBUILD)
+    totalB = 1;
+#endif
 
 #ifdef C2BUILD  /*for C2, is it pB or total B ?*/
   strncpy(BpBcode, idstring + 3, 2); 
@@ -371,12 +375,13 @@ int main(int argc, char **argv){
     // Compute Sun_ob3:
     rotvmul(sun_ob3, &R23, sun_ob2);
 
-#ifdef C2BUILD
+#if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
   else 
     fprintf(stderr,"Polarized Brightness image.\n");
 #endif
+
 fprintf(stderr, "polar angle: %g radians = %g deg\n",
           pang, pang * 180. / ((double) M_PI));
     fprintf(stderr, "Carrington longitude: %1.12g radians =  %3.9g deg\n",
