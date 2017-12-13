@@ -48,8 +48,8 @@
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
-#define CONFSTRING  DATADIR"list.wisprI.512.Orbit24.txt"
-#define A_OUTFILE               "wisprI.512.Orbit24"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprI.512.Orbit01.txt"
+#define A_OUTFILE               "wisprI.512.Orbit01"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */

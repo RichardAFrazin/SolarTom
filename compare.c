@@ -431,7 +431,14 @@ fprintf(stderr, "polar angle: %g radians = %g deg\n",
     strcat(filename, "_");
     strcat(filename, idstring);
     filename[strlen(filename) - 4] = '\0';
+#if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
+  if (totalB == 1)
+    strcat(filename, "_BK.dat");
+  else
+    strcat(filename, "_pB.dat");
+#else
     strcat(filename, ".dat");
+#endif
     fid = fopen(filename, "wb");
     fwrite(pBcalc, sizeof(float), IMSIZE*IMSIZE, fid);
     fclose(fid);

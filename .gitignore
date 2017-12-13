@@ -10,3 +10,5 @@ geomtest
 geomtest.dat
 Makefile
 tomroot.h
+compO*
+termout*
