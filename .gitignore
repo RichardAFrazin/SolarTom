@@ -9,3 +9,4 @@ libXp*
 geomtest
 geomtest.dat
 Makefile
+tomroot.h
