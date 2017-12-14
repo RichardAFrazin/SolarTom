@@ -2,3 +2,10 @@
 nohup ./compOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit01_BK.txt  2>&1 &
 nohup ./compOrbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit12_BK.txt  2>&1 &
 nohup ./compOrbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit24_BK.txt  2>&1 &
+
+
+albert@abbey:/data1/tomography/bindata/Compare/
+convert -delay 60 -loop 0 comp*2018*BK.gif WISPR-I_Orbit-01_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp*2022*BK.gif WISPR-I_Orbit-12_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp*2025*BK.gif WISPR-I_Orbit-24_CR-2081_BK.gif
+
