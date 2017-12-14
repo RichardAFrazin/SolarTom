@@ -9,3 +9,8 @@ convert -delay 60 -loop 0 comp*2018*BK.gif WISPR-I_Orbit-01_CR-2081_BK.gif
 convert -delay 60 -loop 0 comp*2022*BK.gif WISPR-I_Orbit-12_CR-2081_BK.gif
 convert -delay 60 -loop 0 comp*2025*BK.gif WISPR-I_Orbit-24_CR-2081_BK.gif
 
+albert@abbey:/data1/tomography/bindata/Compare/pB
+convert -delay 60 -loop 0 comp*2018*pB.gif WISPR-I_Orbit-01_CR-2081_pB.gif
+convert -delay 60 -loop 0 comp*2022*pB.gif WISPR-I_Orbit-12_CR-2081_pB.gif
+convert -delay 60 -loop 0 comp*2025*pB.gif WISPR-I_Orbit-24_CR-2081_pB.gif
+
