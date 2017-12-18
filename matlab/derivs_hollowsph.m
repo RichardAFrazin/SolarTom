@@ -28,6 +28,9 @@ if (nargin ~= 5)
 end
 
 
+lplac = 0; % write 'horizontal laplacian'
+all_three = 1;  % write deriv matrices for the 3 coords
+
 nbins = nrad*ntheta*nphi;
 row_d2r = zeros(1,3*nbins); col_d2r = row_d2r; val_d2r = row_d2r; 
 row_d2phi = zeros(1,3*nbins); col_d2phi = row_d2phi; val_d2phi = row_d2phi;
@@ -226,10 +229,7 @@ szh = size(h_laplac);
 disp(['h_laplac has ',num2str(szh(1)), ...
       ' rows and ',num2str(szh(2)),' columns']);
  
-
-lplac = 1; % only write 'horizontal laplacian'
-all_three = 0;  %old code for writing all three files
-
+disp(['output directory: ', directory])
 
 if lplac 
 
