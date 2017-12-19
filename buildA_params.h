@@ -4,8 +4,8 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-   #define WISPRIBUILD
-// #define WISPROBUILD
+// #define WISPRIBUILD
+   #define WISPROBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -43,32 +43,32 @@
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    2	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN    2.0    /* Set as the range of radii that overlap over the whole image series over a full 0.5AU->0.5AU orbit*/
-#define INSTR_RMAX    90.    
+#define INSTR_RMIN     1. //2.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
+#define INSTR_RMAX  1000. // 90.    
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
-#define CONFSTRING  DATADIR"list.wisprI.512.Orbit01.txt"
-#define A_OUTFILE               "wisprI.512.Orbit01"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprI.512.Orbit01.synth.txt"
+#define A_OUTFILE               "wisprI.512.Orbit01.60images"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
-#define RMAX  10.            
+#define RMAX 214.5            
 #define NZ     130
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
 #define NRAD   100 
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
-#define IMSIZE    2048	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
+#define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
 #define BINFAC    4	     /* binning factor for WISPRO images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN      9.0  /* Try to emulate here what we did for WISPRI above seems impossible if one considers the full 0.5AU->0.5AU orbit. */
-#define INSTR_RMAX      116. /* So what to do?*/
+#define INSTR_RMIN      1.   //7.0
+#define INSTR_RMAX   1000.   //110. 
 #define PIXSIZE     (104.06250*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
-#define CONFSTRING  DATADIR"list.wisprO.txt"
-#define A_OUTFILE          "wisprO.test"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprO.512.Orbit01.txt"
+#define A_OUTFILE               "wisprO.512.Orbit01.60images"     /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMAX   10.            /* outer radius of computation ball */
