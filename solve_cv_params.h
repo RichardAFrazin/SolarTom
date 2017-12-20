@@ -1,10 +1,8 @@
 /* the various build definitions need to be set in builA_params.h */
 
-
-
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 2                      /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NMATS 2                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
 #define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
@@ -16,12 +14,14 @@
 #define PRINT_FILE_INFO		/* prints file info */
 
 
+// If LAMBDA, FILESTRO are specified in the calling sequence, those values overwrite anything stated below
+
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define LAMBDA  { 1.0 , 1.e-5}      // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
-#define HUBER_FLAG {0, 0}
-//#define FILESTR0 "wisprI.512.Orbit01.60images" //A_outfile of first A matrix
-  #define FILESTR1 "wisprO.512.Orbit01.60images"                   //A_outfile of second A matrix, or first Reg matrix
-#define FILESTR1 "hlaplac_100_90_180"
+#define LAMBDA  { 1.0 , 1.e-5, 100}       // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define HUBER_FLAG {0, 0, 0}
+#define FILESTR0 "euvi"                   // A_outfile of first A matrix
+#define FILESTR1 ""                       // A_outfile of second A matrix, or first Reg matrix
+#define FILESTR1 "hlaplac_100_90_180"     // Must always be specified.
 #define MAIN_X_INFILE  " "
 #define MAIN_X_OUTFILE " "
 

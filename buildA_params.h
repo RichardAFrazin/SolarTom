@@ -4,8 +4,8 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-// #define WISPRIBUILD
-   #define WISPROBUILD
+   #define WISPRIBUILD
+// #define WISPROBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
