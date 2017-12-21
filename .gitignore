@@ -12,3 +12,5 @@ Makefile
 tomroot.h
 compO*
 termout*
+bA*
+callsolve_cg

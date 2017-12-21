@@ -26,3 +26,16 @@ nohup ./bA_WO_Orb12_60imgs > termout.bA_WO_Orb12_60imgs.txt  2>&1 &
 
 nohup ./bA_WI_Orb01_60imgs > termout.bA_WI_Orb01_60imgs.txt  2>&1 &
 nohup ./bA_WO_Orb01_60imgs > termout.bA_WO_Orb01_60imgs.txt  2>&1 &
+
+ulimit -s unlimited
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit01.60images_l1e-5 wisprI.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit12.60images_l1e-5 wisprI.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit24.60images_l1e-5 wisprI.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit24.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit01.60images_l1e-5 wisprO.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit12.60images_l1e-5 wisprO.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit24.60images_l1e-5 wisprO.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit24.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg > termout_callsolve_wisprIO.512.Orbit24.60images_l1e-5 2>&1 &
+
+nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l1.0    euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 1.00 > termout_test_halfhollow1  2>&1 &
+nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75   euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &
+nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75_B euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &

@@ -4,8 +4,8 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-   #define WISPRIBUILD
-// #define WISPROBUILD
+// #define WISPRIBUILD
+   #define WISPROBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -37,7 +37,7 @@
 #define RMAX 214.5            /* RMAX reached by the grid */
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
-#define NRAD   100 
+#define NRAD   100
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
@@ -161,13 +161,13 @@ typedef float PB_IMTYPE;
 #elif defined EUVIBUILD
 /* don't accept data between INNER_REJECT_RAD and OUTER_REJECT_RAD (due to optical depth) */
 #define RING_REJECT
-#define RMAX 1.205
-#define RMIN 1.005
+#define RMAX 1.260
+#define RMIN 1.000
 #ifdef  RING_REJECT
-#define INNER_REJECT_RAD 0.98  /* 0.98 */ 
+#define INNER_REJECT_RAD 0.980  /* 0.98 */ 
 #define OUTER_REJECT_RAD 1.025 /* 1.025 */
 #endif
-#define NRAD 20
+#define NRAD 60
 #define NTHETA 90
 #define NPHI (NTHETA * 2)
 #define IMSIZE 1024
@@ -178,7 +178,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/EUVI/CR2084/A171/" 
 #define CONFSTRING DATADIR"list.A171.b4.little.txt"        
-#define A_OUTFILE         "CR2084.171B.20.90_noDR"
+#define A_OUTFILE         "euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1"
 /*#define DATADIR    TOMROOT"DATA/EUVI/AB.171.cr2069/" 
 #define CONFSTRING DATADIR"list.euviAB.171.rs.cr2069.txt"        
 #define A_OUTFILE  "CR2069.171ABrr20_90"*/
