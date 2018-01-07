@@ -1,4 +1,6 @@
 
+PYWFS:
+
 nohup ./compOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit01_BK.txt  2>&1 &
 nohup ./compOrbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit12_BK.txt  2>&1 &
 nohup ./compOrbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit24_BK.txt  2>&1 &
@@ -39,3 +41,53 @@ nohup ./callsolve_cg > termout_callsolve_wisprIO.512.Orbit24.60images_l1e-5 2>&1
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l1.0    euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 1.00 > termout_test_halfhollow1  2>&1 &
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75   euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75_B euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &
+
+NALAI:
+
+I re-ran builda on WISPR-I Orbit-01 in NALAI and the results have same md5sum than those from the run in PYWFS:
+nohup ./bA_WI_Orb01_60imgs_NALAI  > termout.bA_WI_Orb01_60imgs_NALAI.txt  2>&1 &
+
+Have to re-dom  ALL experiments involving WISPR-O, because in PYWFS I incorrectly used the BLANK images!!!
+
+nohup ./bA_WO_Orb24_60imgs > termout.bA_WO_Orb24_60imgs.txt  2>&1 &
+nohup ./bA_WO_Orb12_60imgs > termout.bA_WO_Orb12_60imgs.txt  2>&1 &
+nohup ./bA_WO_Orb01_60imgs > termout.bA_WO_Orb01_60imgs.txt  2>&1 &
+
+ulimit -s unlimited
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit01.60images_l1e-5 wisprO.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit12.60images_l1e-5 wisprO.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit24.60images_l1e-5 wisprO.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit24.60images_l1e-5 2>&1 &
+
+nohup ./bA_WI_CircularOrb01_60imgs > termout.bACircular_WI_Orb01_60imgs.txt  2>&1 &
+nohup ./bA_WO_CircularOrb01_60imgs > termout.bACircular_WO_Orb01_60imgs.txt  2>&1 &
+
+
+RUNNING:
+
+WISPR-I/O, hlaplac, real orbits 1, 12 and 24
+nohup ./callsolve_cg_wIO_Orb01 > termout_callsolve_wisprIO.512.Orbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg_wIO_Orb12 > termout_callsolve_wisprIO.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg_wIO_Orb24 > termout_callsolve_wisprIO.512.Orbit24.60images_l1e-5 2>&1 &
+
+WISPR-I,O,I/O, 3-reg-mat, real orbits 1 and 24
+nohup ./callsolve_cg_3regmat x_wisprI.512.Orbit01.60images_l1e-5  x_wisprI.512.Orbit01.60images_3regmat_l1e-5 wisprI.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit01.60images_3regmat__l1e-5 2>&1 &
+nohup ./callsolve_cg_3regmat x_wisprO.512.Orbit01.60images_l1e-5  x_wisprO.512.Orbit01.60images_3regmat_l1e-5 wisprO.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit01.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_wIO_Orbit01_3regmat > termout_callsolve_wisprIO.512.Orbit01.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_3regmat x_wisprI.512.Orbit24.60images_l1e-5  x_wisprI.512.Orbit24.60images_3regmat_l1e-5 wisprI.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit24.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_3regmat x_wisprO.512.Orbit24.60images_l1e-5  x_wisprO.512.Orbit24.60images_3regmat_l1e-5 wisprO.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit24.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_wIO_Orbit24_3regmat > termout_callsolve_wisprIO.512.Orbit24.60images_3regmat_l1e-5 2>&1 &
+
+WISPR-I,O,I/O, hlaplac, CIRCULAR orbit 1 
+nohup ./callsolve_cg_normal x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.CircularOrbit01.60images_l1e-5 wisprI.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprI.512.CircularOrbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg_normal x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.CircularOrbit12.60images_l1e-5 wisprO.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprO.512.CircularOrbit01.60images_l1e-5 2>&1 &
+#### CAREFUL!!! the OUTPUT x of the previous experiments says "12", it should say "01" #### 
+
+nohup ./callsolve_cg_wIO_CircOrb01 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_l1e-5 2>&1 &
+
+TO BE LAUNCHED:
+WISPR-I,O,I/O, 3-reg-mat, CIRCULAR orbit 1
+nohup ./callsolve_cg_3regmat x_wisprI.512.CircularOrbit01.60images_l1e-5  x_wisprI.512.CircularOrbit01.60images_3regmat_l1e-5 wisprI.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprI.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_3regmat x_wisprO.512.CircularOrbit01.60images_l1e-5  x_wisprO.512.CircularOrbit01.60images_3regmat_l1e-5 wisprO.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprO.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_wIO_CircularOrbit01_3regmat > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+
+--------------------------------

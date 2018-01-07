@@ -87,7 +87,10 @@ int solve(float *regularization_parameter, const int *huber_flag,
 #ifdef FILESTR3
        strcpy(matrices[3].file_id, FILESTR3);
 #endif
-  if (NMATS > 4){
+#ifdef FILESTR4
+       strcpy(matrices[4].file_id, FILESTR4);
+#endif
+  if (NMATS > 5){
        fprintf(stderr,"SOLVE: NMATS = %d!\n",NMATS);
 	   fflush(stderr);
        exit(1);

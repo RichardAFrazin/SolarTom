@@ -7,14 +7,12 @@ libXp*
 geomtest.dat
 Makefile
 tomroot.h
-
 termout*
-
 bA*
 compO*
-
 builda*
 compare
 callsolve_cg
 row_to_col
 geomtest
+commands.txt
