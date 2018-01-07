@@ -7,7 +7,7 @@
  *	roty.m
  *	rotz.m
  *
- * Some comments added by A.M.Vásquex, CLASP Fall-2017.
+ * Some comments added by A.M.Vásquez, CLASP Fall-2017.
  */
 
 #ifdef OPENBSD
@@ -18,7 +18,11 @@
 #include <math.h>
 #include "headers.h"
 
-// Define rotation matrixes Rx, Ry, Rz.
+// Albert: Define rotation matrixes Rx, Ry, Rz.
+// Note that while Rx and Rz are defined COUNTER-CLOCKWISE for angle > 0,
+// Ry is defined CLOCKWISE for angle > 0.
+// See for example: https://en.wikipedia.org/wiki/Rotation_matrix
+
 Rot *rotx(ax)
 double ax;
 {

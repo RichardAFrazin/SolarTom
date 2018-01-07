@@ -277,11 +277,10 @@ for (i = 0; i < imsize; i++) {
   fprintf(stderr, "      Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);
 
   // Ry(b) will zero the "z" component of "sob" ( = Rz(a) * sun_ob1 )
-  Ry = roty(-atan2(sob[2], sob[0])); // Albert: I believe it should be "+atan2" within the "roty" operator,
-                                     // as this is a counter-clockwise rotation.
+  Ry = roty(-atan2(sob[2], sob[0])); // Albert: The roty operator is defined in rots.c
+                                     // to be clockwise for angle > 0, the sign "-"  here
+                                     // is then correct, as this is a counter-clockwise rotation.
 
-//Ry = roty(+atan2(sob[2], sob[0])); // TEST !!!! It failed, Rich's formulae are correct.
-  
   rotmul(&Rtmp, Ry, Rz);
 
   rotvmul(sob, &Rtmp, sun_ob1);
@@ -312,9 +311,9 @@ for (i = 0; i < imsize; i++) {
   pang = atan2(spol2[0], spol2[2]); // Albert: This is the correct expression for the tilt angle of spol_2.
 
   // Zero "x" component of spol2
-  Ry = roty(pang);                  // Albert: I believe it should be "-pang" within the "roty" operator,
-                                    // as this is a clockwise rotation.
-//Ry = roty(-pang);                 // TEST !!!!! It failed, Rich's formulae are correct.
+  Ry = roty(pang);                  // Albert: The roty operator is defined in rots.c
+                                    // to be clockwise for angle > 0, the sign "+" here 
+                                    // is then correct, as this is a clockwise rotation.
  
   Rz = rotz(carlong); /* correct */ // Albert: "+carlong" within the "rotx" operator is correct,              
                                     // as this is a counter-clockwise rotation.

@@ -1,4 +1,3 @@
-
 nohup ./compOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit01_BK.txt  2>&1 &
 nohup ./compOrbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit12_BK.txt  2>&1 &
 nohup ./compOrbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit24_BK.txt  2>&1 &
@@ -39,3 +38,11 @@ nohup ./callsolve_cg > termout_callsolve_wisprIO.512.Orbit24.60images_l1e-5 2>&1
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l1.0    euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 1.00 > termout_test_halfhollow1  2>&1 &
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75   euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &
 nohup ./callsolve_cg x_euvi.A.171.cr2081.26x90_bf4_ri.000_ro1.025_l0.75_NODECON.halfhollow2 x_test_halfhollow1_l0.75_B euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1 0.75 > termout_test_halfhollow1  2>&1 &
+
+
+nohup ./comp_I_CircOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_CircularOrbit01_BK.txt  2>&1 &
+nohup ./comp_O_CircOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_CircularOrbit01_BK.txt  2>&1 &
+
+movie,input_file='list.wisprI.512.CircularOrbit01.txt',data_dir='wisprI/',table_file='table.CircularOrbit01.short.txt',/BK
+movie,input_file='list.wisprO.512.CircularOrbit01.txt',data_dir='wisprO/',table_file='table.CircularOrbit01.short.txt',/BK
+
