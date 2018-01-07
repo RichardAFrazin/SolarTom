@@ -48,13 +48,8 @@
 #define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
-<<<<<<< HEAD
-#define CONFSTRING  DATADIR"list.wisprI.512.CircularOrbit01.txt"
-#define A_OUTFILE               "wisprI.512.CircularOrbit01.60images" /* suffix of A matrix ouput files */
-=======
 #define CONFSTRING  DATADIR"list.wisprI.512.CircularOrbit01.synth.txt"
 #define A_OUTFILE               "wisprI.512.CircularOrbit01.60images"     /* suffix of A matrix ouput files */
->>>>>>> c6d4a8d22272334a0a4b4953fd1ec0e8f7bf1cb1
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
@@ -72,11 +67,7 @@ typedef float PB_IMTYPE;
 #define PIXSIZE     (104.06250*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
-<<<<<<< HEAD
-#define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbit01.txt"
-=======
 #define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbit01.synth.txt"
->>>>>>> c6d4a8d22272334a0a4b4953fd1ec0e8f7bf1cb1
 #define A_OUTFILE               "wisprO.512.CircularOrbit01.60images"     /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
