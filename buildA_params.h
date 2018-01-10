@@ -19,7 +19,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-#define NONUNIFORMRAD // Set if radial grid is not uniform
+#define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
