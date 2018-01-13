@@ -20,7 +20,7 @@
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define LAMBDA  { 1.0, 1.0 ,1.e-5, 1.e-5, 1.e-5}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define LAMBDA  {1.0, 1.0 ,1.e-4, 1.e-4, 1.e-4}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0,0,0, 0}
 //#define FILESTR0 ""
 #define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
@@ -30,8 +30,8 @@
 #define FILESTR2 "d2r_100_90_180"      // Must always be specified.
 #define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
 #define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
-#define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
-#define MAIN_X_OUTFILE "x_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-5"
+#define MAIN_X_INFILE  "x_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-5"
+#define MAIN_X_OUTFILE "x_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-4"
 
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}

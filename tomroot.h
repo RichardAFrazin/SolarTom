@@ -1,2 +1,2 @@
-#define TOMROOT "/data1/tomography_dev/"
+#define TOMROOT "/home/albert/tomography_dev/"
 
