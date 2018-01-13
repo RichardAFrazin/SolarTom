@@ -1,10 +1,10 @@
-TOMROOT_HEADER = tomroot.PYWFS.h
- 
+TOMROOT_HEADER = tomroot.ALBERT.h
+
 #CC = clang 
  CC = gcc    # for Linux systems
 
 DEFINES =
- CFLAGS = -Wall -O3 -I/home/albert/tomography/wcstools-3.7.0/libwcs -L/home/albert/tomography/wcstools-3.7.0/libwcs
+ CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
 
 #################################-I/usr/include/sys
 
