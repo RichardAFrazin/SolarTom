@@ -23,10 +23,10 @@
 #define LAMBDA  {1.0, 1.0 ,1.e-4, 1.e-4, 1.e-4}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0,0,0, 0}
 //#define FILESTR0 ""
-#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
-#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
+#define FILESTR0 "wisprI.512.CircularOrbitOffEquator01.60images"                        // A_outfile of first A matrix
+#define FILESTR1 "wisprO.512.CircularOrbitOffEquator01.60images"                        // A_outfile of second A matrix, or first Reg matrix
 //#define FILESTR2 "hlaplac_26_90_180"     // Must always be specified.
-//#define FILESTR1 "hlaplac_100_90_180"      // Must always be specified.
+//#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
 #define FILESTR2 "d2r_100_90_180"      // Must always be specified.
 #define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
 #define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
