@@ -2,7 +2,7 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 5                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NMATS 5                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
 #define NUMBER_OF_DATA_MATRICES 2	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
@@ -20,11 +20,11 @@
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define LAMBDA  {1.0, 1.0 ,1.e-4, 1.e-4, 1.e-4}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
-#define HUBER_FLAG {0,0,0,0, 0}
+#define LAMBDA  {1.0, 1.0,1.e-4, 1.e-4 ,1.e-4}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define HUBER_FLAG {0,0,0,0,0}
 //#define FILESTR0 ""
-#define FILESTR0 "wisprI.512.CircularOrbitOffEquator01.60images"                        // A_outfile of first A matrix
-#define FILESTR1 "wisprO.512.CircularOrbitOffEquator01.60images"                        // A_outfile of second A matrix, or first Reg matrix
+#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
+#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
 //#define FILESTR2 "hlaplac_26_90_180"     // Must always be specified.
 //#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
 #define FILESTR2 "d2r_100_90_180"      // Must always be specified.
