@@ -44,7 +44,3 @@ nohup ./callsolve_cg_3regmat x_wisprO.512.CircularOrbit01.60images_l1e-5  x_wisp
 
 nohup ./callsolve_cg_wIO_CircularOrbit01_3regmat > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
 
-RUNNING:
-
-nohup ./callsolve_cg_wIO_CircularOrbit01_3regmat_l1e-4 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-4 2>&1 &
-
