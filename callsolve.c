@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
     status = solve(lambda, huber_flag, &final_normx, &final_normd, &final_normt, 
 		   x_infile, x_outfile,n_optarg);
   } else if (n_optarg == 1){
-              fprintf(stderr, "Loc0\n");
+    //              fprintf(stderr, "Loc0\n");
     status = solve(lambda, huber_flag, &final_normx, &final_normd, &final_normt, 
 		   x_infile, x_outfile,n_optarg,matrix_name);
   }

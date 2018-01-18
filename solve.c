@@ -47,7 +47,7 @@ int solve(float *regularization_parameter, const int *huber_flag,
   float *rr;
   struct matrix matrices[NMATS];
   struct sparse sparmat;
-  char filestring[MAXPATH];
+  char filestring[MAXPATH], filestring2[MAXPATH];
   float normd[ITMAX + 2], normx[ITMAX + 2], normt[ITMAX + 2];
   const int nc3 = NBINS;
 #ifdef CONJGRAD
@@ -227,8 +227,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
     }
     matrices[i].nf = jj + 1;
 
-
-	  
     /* allocate space for y, r, delta vectors */
     matrices[i].r = (float *) malloc(matrices[i].nf * sizeof(float));
     matrices[i].y = (float *) malloc(matrices[i].nf * sizeof(float));
@@ -284,7 +282,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
 
   }				/* end of i loop over matrices */
 
-
   /* initialize x, x_o */
   strcpy(filestring, BINDIR);
   strncat(filestring, x_infile, MAXPATH);
@@ -294,9 +291,15 @@ int solve(float *regularization_parameter, const int *huber_flag,
     fprintf(stderr, "Input file(s) not found\n");
     exit(2);
   }
- 
+
+
 #ifdef PRINT_FILE_INFO
   fprintf(stderr, "reading %s\n", filestring);
+  // Added by Albert to make sure from start that the output setting has been set right, to avoid mistakes.
+  strcpy(filestring2, BINDIR);
+  strncat(filestring2, x_outfile, MAXPATH);
+  fprintf(stderr, "Output will be written in: %s\n", filestring2);
+  //------------------------
 #endif
  
   number_read = fread(x, sizeof(float), nc3, fid_xinput);

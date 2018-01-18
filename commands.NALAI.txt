@@ -30,7 +30,7 @@ nohup ./bA_WO_Orb01_60imgs > termout.bA_WO_Orb01_60imgs.txt  2>&1 &
 
 ulimit -s unlimited
 nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit01.60images_l1e-5 wisprI.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit01.60images_l1e-5 2>&1 &
->ohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit12.60images_l1e-5 wisprI.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit12.60images_l1e-5 wisprI.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit12.60images_l1e-5 2>&1 &
 nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit24.60images_l1e-5 wisprI.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit24.60images_l1e-5 2>&1 &
 nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit01.60images_l1e-5 wisprO.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit01.60images_l1e-5 2>&1 &
 nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprO.512.Orbit12.60images_l1e-5 wisprO.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprO.512.Orbit12.60images_l1e-5 2>&1 &
@@ -102,9 +102,10 @@ ulimit -s unlimited
 nohup ./bA_WI_CircOrbOffEq01_60imgs > termout.bACircular_WI_OrbOffEquator01_60imgs.txt  2>&1 &
 nohup ./bA_WO_CircOrbOffEq01_60imgs > termout.bACircular_WO_OrbOffEquator01_60imgs.txt  2>&1 &
 
-RUNNING:
+
 nohup ./callsolve_cg_wIO_CircOrb01 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_l1e-5 2>&1 &
 
+I stopped all of these after ~65 hr of running.
 nohup ./callsolve_cg_wIO_CircOrbOffEq01_hlaplac > termout_callsolve_wisprIO.512.CircularOrbitOffEquator01.60images_hlaplac_l1e-5 2>&1 &
 nohup ./callsolve_cg_wIO_CircOrbOffEq01_3regmat > termout_callsolve_wisprIO.512.CircularOrbitOffEquator01.60images_3regmat_l1e-5 2>&1 &
 
@@ -114,3 +115,35 @@ nohup ./callsolve_cg_wIO_CircularOrbit01_3regmat_l1e-4 > termout_callsolve_wispr
 nohup ./callsolve_cg_wIO_CircOrb01_identity_l1e-5  > termout_callsolve_wisprIO.512.CircularOrbit01.60images_identity_l1e-5  2>&1 &
 nohup ./callsolve_cg_wIO_Orbit01_identity_l1e-5  > termout_callsolve_wisprIO.512.Orbit01.60images_identity_l1e-5  2>&1 &
 nohup ./callsolve_cg_wIO_CircOrbOffEq01_identity_l1e-5 > termout_callsolve_wisprIO.512.CircularOrbitOffEq01.60images_identity_l1e-5  2>&1 &
+
+nohup ./callsolve_cg_wIO_CircOrb01_identityNEW_l1e-5  > termout_callsolve_wisprIO.512.CircularOrbit01.60images_identityNEW_l1e-5  2>&1 &
+nohup ./callsolve_cg_wIO_Orbit01_identityNEW_l1e-5  > termout_callsolve_wisprIO.512.Orbit01.60images_identityNEW_l1e-5  2>&1 &
+nohup ./callsolve_cg_wIO_CircOrbOffEq01_identityNEW_l1e-5 > termout_callsolve_wisprIO.512.CircularOrbitOffEq01.60images_identityNEW_l1e-5  2>&1 &
+nohup ./callsolve_cg_wIO_CircOrbOffEq01_identity_startfrommodel_l1e-5 > termout_callsolve_wisprIO.512.CircularOrbitOffEq01.60images_identity_startfrommodel_l1e-5  2>&1 &
+
+RUNNING:
+ulimit -s unlimited
+nohup ./callsolve_cg_wIO_Orbit01_identity_l1e0  > termout_callsolve_wisprIO.512.Orbit01.60images_identity_l1e0  2>&1 &
+
+
+RUNNING 1e-6 Circular Orbit Experiments:
+ulimit -s unlimited
+nohup ./callsolve_cg_wIO_CircOrb01_hlaplac_l1e-6 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_hlaplac_l1e-6 2>&1 &
+nohup ./callsolve_cg_wIO_CircOrb01_3regmat_l1e-6 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-6 2>&1 &
+nohup ./callsolve_cg_wIO_CircOrb01_identit_l1e-6 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_identit_l1e-6 2>&1 &
+
+RUNNING 1e-6 Real Orbit Experiments:
+ulimit -s unlimited
+nohup ./callsolve_cg_wIO_Orb01_hlaplac_l1e-6 > termout_callsolve_wisprIO.512.Orbit01.60images_hlaplac_l1e-6 2>&1 &
+nohup ./callsolve_cg_wIO_Orb01_3regmat_l1e-6 > termout_callsolve_wisprIO.512.Orbit01.60images_3regmat_l1e-6 2>&1 &
+nohup ./callsolve_cg_wIO_Orb01_identit_l1e-6 > termout_callsolve_wisprIO.512.Orbit01.60images_identit_l1e-6 2>&1 &
+
+RUNNING 1e0 Circular Orbit Experiments:
+ulimit -s unlimited
+nohup ./callsolve_cg_wIO_CircOrb01_hlaplac_l1e0 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_hlaplac_l1e0 2>&1 &
+nohup ./callsolve_cg_wIO_CircOrb01_3regmat_l1e0 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e0 2>&1 &
+nohup ./callsolve_cg_wIO_CircOrb01_identit_l1e0 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_identit_l1e0 2>&1 &
+
+nohup ./callsolve_cg_wIO_CircOrb01_3regmat_l1e1 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e1 2>&1 &
+
+AGREGAR A CALLSOLVE que imprima el X_OUTFILE al principio
