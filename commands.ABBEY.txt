@@ -1,0 +1,2 @@
+
+nohup ./compare x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_C2_pB_LAM_CR2081_test.txt  2>&1 &

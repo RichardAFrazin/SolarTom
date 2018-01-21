@@ -6,7 +6,7 @@
  * as determined from a 3D reconstruction (in an input file).
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
- *
+ *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  */
 
 #include <math.h>
@@ -32,7 +32,6 @@ static void usage(char *arg0) {
   printf(" x_infile is the filename of reconstruction.\n");
   printf("[k]: Compute the k'th comparison (first is k=0)\n");
 }
-
 
 int main(int argc, char **argv){
   char confstring[] = CONFSTRING;
@@ -176,7 +175,9 @@ int main(int argc, char **argv){
      *   of the image */
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
-    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
+    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
+    assert(hgetr8(header,"R_SOHO",&dsun_obs));
+    dsun_obs = dsun_obs*(RSUN*1.e3);//km
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
     assert(hgetr8(header,"CROTA2",&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
@@ -201,8 +202,14 @@ int main(int argc, char **argv){
 #endif
 
 #ifdef C2BUILD  /*for C2, is it pB or total B ?*/
+#ifdef NRL
   strncpy(BpBcode, idstring + 3, 2); 
-  if ( strcmp(BpBcode,"PB") == 0 )
+#endif
+#ifdef MARSEILLES
+  strncpy(BpBcode, idstring + 8, 2);
+#endif
+fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
+  if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
     totalB = 0;
   else if ( strcmp(BpBcode,"BK") == 0 )
     totalB = 1;

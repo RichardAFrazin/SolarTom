@@ -67,7 +67,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   for (k = 0;k < 3;k++)
     c[k] *= 0.001;
 
-  // Get Sub-Spacecraft arrington Longitude [deg], as pointer "carlong".
+  // Get Sub-Spacecraft Carrington Longitude [deg], as pointer "carlong".
   assert(hgetr8(header,"CRLN_OBS",carlong));
 
   fitsdate = hgetc(header,"DATE_OBS");
@@ -150,13 +150,23 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 
  /* carrington longitude calculation for Earth */
 #if (defined C2BUILD || defined C3BUILD)
-
+ char *header, *fitsdate, *fitstime;
+  int lhead, nbhead;
+  strcpy(buffer,DATADIR);
+  strcat(buffer,idstring);
+  assert((header = fitsrhead(buffer, &lhead, &nbhead)) != NULL);
+#ifdef NRL
  strncpy(hr, idstring + 15, 2);
  strncpy(mn, idstring + 17, 2);
- frcdy = atof(hr) / 24.0 + atof(mn) / (24.0 * 60.0);
-
+#endif
+#ifdef MARSEILLES
+ fitstime = hgetc(header,"TIME_OBS");
+ fprintf(stderr,"fitstime = %s\n",fitstime);
+ strncpy(hr, fitstime    , 2);
+ strncpy(mn, fitstime + 3, 2);
+#endif
+frcdy = atof(hr) / 24.0 + atof(mn) / (24.0 * 60.0);
 #elif defined EITBUILD
-
  strncpy(hr, idstring + 12, 2);
  strncpy(mn, idstring + 14, 2);
  frcdy = atof(hr) / 24.0 + atof(mn) / (24.0 * 60.0);
@@ -166,21 +176,29 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
  sprintf(frcr, "%04d", fdt);
 
 #if (defined C2BUILD || defined C3BUILD)
-
+#ifdef NRL
  strncpy(sdate, idstring + 6, 4);
  strncpy(sdate + 5, idstring + 10, 2);
  strncpy(sdate + 8, idstring + 12, 2);
+#endif
+#ifdef MARSEILLES
+ fitsdate = hgetc(header,"DATE_OBS");
+ fprintf(stderr,"fitsdate = %s\n",fitsdate);
+ strncpy(sdate    , fitsdate     , 4);
+ strncpy(sdate + 5, fitsdate + 5 , 2);
+ strncpy(sdate + 8, fitsdate + 8 , 2); 
+#endif
 #elif defined EITBUILD
-
  strncpy(sdate, idstring + 3, 4);
  strncpy(sdate + 5, idstring + 7, 2);
  strncpy(sdate + 8, idstring + 9, 2);
-
 #endif
 
  strncpy(sdate + 11, frcr, 4);
-
  *mjd = fd2mjd(sdate);
+ fprintf(stderr,"get_orbit.c: sdate is: ");
+ fprintf(stderr,"%s, modified julian date is: %.8g\n",sdate,*mjd);
+ 
  fprintf(stdout,"get_orbit.c: sdate is: ");
  fprintf(stdout,"%s, modified julian date is: %.8g\n",sdate,*mjd);
 
@@ -228,7 +246,16 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
     strcpy(orbfn, ORBIT_FILE_DIR);
     strcat(orbfn, "SO_OR_PRE_");
 #if (defined C2BUILD || defined C3BUILD)
+#ifdef NRL
     strncat(orbfn, idstring + 6, 8);
+#endif
+#ifdef MARSEILLES
+ strncpy(sdate    , fitsdate     , 4);
+ strncpy(sdate + 4, fitsdate + 5 , 2);
+ strncpy(sdate + 6, fitsdate + 8 , 2);
+ strncat(orbfn, sdate, 8);
+#endif
+    
 #elif defined EITBUILD
     strncat(orbfn, idstring + 3, 8);
 #endif
@@ -237,6 +264,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
     sprintf(buffer, "%d", version);
     strcat(orbfn, buffer);
     strcat(orbfn, ".DAT");
+    fprintf(stderr, "orbfn =%s\n", orbfn);
     fid_orb = fopen(orbfn, "r");
  }
 #endif
@@ -264,15 +292,30 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
    strcpy(scratch, ORBIT_SCRATCH_DIR);
    strcpy(orbfn, "SO_OR_PRE_");
 #if (defined C2BUILD || defined C3BUILD)
+#ifdef NRL
    strncat(orburl,idstring + 6, 4);  
    strcat(orburl,"/");
    strncat(orbfn, idstring + 6, 8);
+#endif
+#ifdef MARSEILLES
+ fitsdate = hgetc(header,"DATE_OBS");
+ fprintf(stderr,"fitsdate = %s\n",fitsdate);
+ strncpy(sdate , fitsdate , 4);
+ strncat(orburl, sdate    , 4);
+ strcat(orburl,"/");
+ strncpy(sdate + 4, fitsdate + 5 , 2);
+ strncpy(sdate + 6, fitsdate + 8 , 2);
+ strncat(orbfn, sdate, 8);
+ fprintf(stderr,"orburl = %s\n",orburl);
+ fprintf(stderr,"orbfn  = %s\n",orbfn);
+#endif
+
 #elif defined EITBUILD
    strncat(orburl,idstring + 3, 4);
    strcat(orburl,"/");
    strncat(orbfn, idstring + 3, 8);
 #endif
-
+    
    version++;
    strcat(orbfn, "_V0");
    sprintf(buffer, "%d", version);
@@ -309,7 +352,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
    }
  }
 
-#endif
+#endif 
 
  for (i = 0; i <= k; i++)
    fgets(bigline, 512, fid_orb);

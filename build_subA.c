@@ -5,6 +5,7 @@
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
+ *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *
  */
 
@@ -66,16 +67,22 @@ void build_subA(char *idstring, rcs_llist *rcs,
   strcpy(filename, DATADIR);
   strcat(filename, idstring);
 
-#if (defined C2BUILD || defined C3BUILD)  /*for C2, is it pB or total B ?*/
+#ifdef C2BUILD  /*for C2, is it pB or total B ?*/
+#ifdef NRL
   strncpy(BpBcode, idstring + 3, 2); 
-  if ( strcmp(BpBcode,"PB") == 0 )
+#endif
+#ifdef MARSEILLES
+  strncpy(BpBcode, idstring + 8, 2);
+#endif
+fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
+  if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
     totalB = 0;
   else if ( strcmp(BpBcode,"BK") == 0 )
     totalB = 1;
   else {
     totalB = -1;
-    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring);
-    exit(1);
+    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring); 
+   exit(1);
   }
 #endif
 
@@ -138,7 +145,8 @@ void build_subA(char *idstring, rcs_llist *rcs,
      *   of the image */
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
-    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
+    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
+    assert(hgetr8(header,"R_SOHO",&dsun_obs));
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
     assert(hgetr8(header,"CROTA2",&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
@@ -330,7 +338,7 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   free(Ry);
   //-----------------R23 computed------------------------------------------------------------------------
-  
+
 #if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");
