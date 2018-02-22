@@ -3,9 +3,10 @@
 // #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-   #define C2BUILD 
+// #define C2BUILD 
 // #define WISPRIBUILD
 // #define WISPROBUILD
+   #define KCOR
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -19,7 +20,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-#define NONUNIFORMRAD // Set if radial grid is not uniform.
+//#define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
@@ -31,6 +32,25 @@
 // #define NRL            // use for NRL        calibration
    #define MARSEILLES     // use for Marseilles calibration
 #endif
+
+#elif defined KCOR
+#define RMIN   1.0          /* innner radius (hollow  sphere)   */
+#define RMAX   6.0          /* outer radius of computation ball */
+//#define NZ     130
+//#define NCELLS  90	    /* cartesian: object has NCELLS^3 elements */
+#define NRAD    50  
+#define NTHETA  90          /* polar angle bins */
+#define NPHI (NTHETA * 2)   /* azimuthal angle bins */
+#define IMSIZE  1024	    /* size of C2 images (pixels) */
+#define BINFAC    4	    /* binning factor for C2 images (pixels) */
+#define DELTA     0.0	    /* delta vector */
+#define INSTR_RMIN      1.05
+#define INSTR_RMAX      3.00
+#define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
+typedef float PB_IMTYPE;
+#define DATADIR    TOMROOT"DATA/kcor/CR2198/"
+#define CONFSTRING DATADIR"list.txt"
+#define A_OUTFILE         "kcor.CR2198.bf4" /* suffix of A matrix ouput files */
 
 #ifdef WISPRIBUILD
 #define RMIN  2.0             /* RMIN reached by the grid */
@@ -45,7 +65,7 @@
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN  1.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
 #define INSTR_RMAX  1000. // 90.    
-#define PIXSIZE     (71.894531*2048/IMSIZE)  /* arcsec per pixel */
+#define PIXSIZE     (66.621094*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/"
 #define CONFSTRING  DATADIR"list.wisprI.512.CircularOrbitOffEquator01.synth.txt"
@@ -64,7 +84,7 @@ typedef float PB_IMTYPE;
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN   1.   //7.0
 #define INSTR_RMAX   1000.   //110. 
-#define PIXSIZE     (104.06250*2048/IMSIZE)  /* arcsec per pixel */
+#define PIXSIZE     (96.679680*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbitOffEquator01.synth.txt"
