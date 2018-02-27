@@ -28,8 +28,8 @@ if (nargin ~= 5)
 end
 
 
-lplac = 0; % write 'horizontal laplacian'
-all_three = 1;  % write deriv matrices for the 3 coords
+laplac = 1; % write 'horizontal laplacian'
+all_three = 0;  % write deriv matrices for the 3 coords
 
 nbins = nrad*ntheta*nphi;
 row_d2r = zeros(1,3*nbins); col_d2r = row_d2r; val_d2r = row_d2r; 
@@ -231,7 +231,7 @@ disp(['h_laplac has ',num2str(szh(1)), ...
  
 disp(['output directory: ', directory])
 
-if lplac 
+if laplac 
 
    fname_hlaplac = ['hlaplac_',fname_ext];
    disp(['The filename extension is ', fname_hlaplac])
