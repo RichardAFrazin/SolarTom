@@ -6,6 +6,7 @@
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
+ *  Changes to handle KCor, by Alberto Vásquez, February 2018
  *
  */
 
@@ -321,14 +322,18 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
 
-  // If dealing with KCOR data R12 and spol2 above are crap.
-  // As R12 was only needed to compute spol2, we just forget about it,
-  // and simply re-compute spol2 using the sub-Earth latitude, which is known from the KCOR header:
+  // If dealing with KCOR data R12, spol2 and sun_ob2 above are crap.
+  // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
+  // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
+  // Earth-Sun distance, which are both known from the KCOR header:
 #if defined KCOR
-  tilt     = obslat*M_PI/180.0;
-  spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
-  spol2[1] = 0.;
-  spol2[2] = cos(tilt);
+    tilt     = obslat*M_PI/180.0;
+    spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
+    spol2[1] = 0.;
+    spol2[2] = cos(tilt);
+  sun_ob2[0] = DSUN_OBS/1.e3/RSUN; // sun_ob2 must be in Rsun units.
+  sun_ob2[1] = 0.;
+  sun_ob2[2] = 0.;
 #endif
   
   // Calculate R23 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)

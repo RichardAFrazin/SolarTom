@@ -6,7 +6,7 @@
 // #define C2BUILD 
 // #define WISPRIBUILD
 // #define WISPROBUILD
-   #define KCOR
+#define KCOR
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -29,8 +29,8 @@
 #endif
    
 #if (defined C2BUILD || defined C3BUILD)
-// #define NRL            // use for NRL        calibration
-   #define MARSEILLES     // use for Marseilles calibration
+// #define NRL            // use for NRL        calibration 
+#define MARSEILLES     // use for Marseilles calibration
 #endif
 
 #elif defined KCOR

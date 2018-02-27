@@ -7,6 +7,8 @@
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
+ *  Changes to handle KCor, by Alberto Vásquez, February 2018
+ *
  */
 
 #include <math.h>
@@ -190,6 +192,11 @@ int main(int argc, char **argv){
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
 #endif
+#elif defined KCOR
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+#endif
 
 #ifdef MARSEILLES /* we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore */ 
     roll_offset -= 0. ;  /* 0.5; */
@@ -281,7 +288,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
       for (jj = 0; jj < imsize; jj++) {
 #endif
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -319,7 +326,11 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.
-#endif	       
+#endif
+#if (defined KCOR)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.e6 // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
+#endif
 #endif 
 
 #ifdef DROP_NEG_PB
@@ -369,6 +380,21 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     free(Rx);
     free(Ry);
     free(Rz);
+  //-----------------R12 computed------------------------------------------------------------------------
+
+  // If dealing with KCOR data R12, spol2 and sun_ob2 above are crap.
+  // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
+  // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
+  // Earth-Sun distance, which are both known from the KCOR header:
+#if defined KCOR
+    tilt     = obslat*M_PI/180.0;
+    spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
+    spol2[1] = 0.;
+    spol2[2] = cos(tilt);
+  sun_ob2[0] = DSUN_OBS/1.e3/RSUN; // sun_ob2 must be in Rsun units.
+  sun_ob2[1] = 0.;
+  sun_ob2[2] = 0.;
+#endif
 
     /* Calculate R23 matrix */
     /* solar axes in frame 2 */
