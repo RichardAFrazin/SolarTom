@@ -1,0 +1,46 @@
+nohup ./compOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit01_BK.txt  2>&1 &
+nohup ./compOrbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit12_BK.txt  2>&1 &
+nohup ./compOrbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_Orbit24_BK.txt  2>&1 &
+
+albert@abbey:/data1/tomography/bindata/Compare/
+convert -delay 60 -loop 0 comp*2018*BK.gif WISPR-I_Orbit-01_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp*2022*BK.gif WISPR-I_Orbit-12_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp*2025*BK.gif WISPR-I_Orbit-24_CR-2081_BK.gif
+
+albert@abbey:/data1/tomography/bindata/Compare/pB
+convert -delay 60 -loop 0 comp*2018*pB.gif WISPR-I_Orbit-01_CR-2081_pB.gif
+convert -delay 60 -loop 0 comp*2022*pB.gif WISPR-I_Orbit-12_CR-2081_pB.gif
+convert -delay 60 -loop 0 comp*2025*pB.gif WISPR-I_Orbit-24_CR-2081_pB.gif
+
+nohup ./compOBK_Orbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_Orbit01_BK.txt  2>&1 &
+nohup ./compOBK_Orbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_Orbit12_BK.txt  2>&1 &
+nohup ./compOBK_Orbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_Orbit24_BK.txt  2>&1 &
+
+
+nohup ./bA_WI_Orb24_60imgs > termout.bA_WI_Orb24_60imgs.txt  2>&1 &
+nohup ./bA_WO_Orb24_60imgs > termout.bA_WO_Orb24_60imgs.txt  2>&1 &
+
+nohup ./bA_WI_Orb12_60imgs > termout.bA_WI_Orb12_60imgs.txt  2>&1 &
+nohup ./bA_WO_Orb12_60imgs > termout.bA_WO_Orb12_60imgs.txt  2>&1 &
+
+nohup ./bA_WI_Orb01_60imgs > termout.bA_WI_Orb01_60imgs.txt  2>&1 &
+nohup ./bA_WO_Orb01_60imgs > termout.bA_WO_Orb01_60imgs.txt  2>&1 &
+
+ulimit -s unlimited
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit01.60images_l1e-5 wisprI.512.Orbit01.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit01.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit12.60images_l1e-5 wisprI.512.Orbit12.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit12.60images_l1e-5 2>&1 &
+nohup ./callsolve_cg x_AWSOM_CR2081run5_WISPR_sphere_2.dat x_wisprI.512.Orbit24.60images_l1e-5 wisprI.512.Orbit24.60images 1.e-5 > termout_callsolve_wisprI.512.Orbit24.60images_l1e-5 2>&1 &
+
+nohup ./comp_I_CircOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprI_512_CircularOrbit01_BK.txt  2>&1 &
+nohup ./comp_O_CircOrbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_CircularOrbit01_BK.txt  2>&1 &
+
+movie,input_file='list.wisprI.512.CircularOrbit01.txt',data_dir='wisprI/',table_file='table.CircularOrbit01.short.txt',/BK
+movie,input_file='list.wisprO.512.CircularOrbit01.txt',data_dir='wisprO/',table_file='table.CircularOrbit01.short.txt',/BK
+
+
+WISPR-I,O,I/O, 3-reg-mat, CIRCULAR orbit 1
+nohup ./callsolve_cg_3regmat x_wisprI.512.CircularOrbit01.60images_l1e-5  x_wisprI.512.CircularOrbit01.60images_3regmat_l1e-5 wisprI.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprI.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+nohup ./callsolve_cg_3regmat x_wisprO.512.CircularOrbit01.60images_l1e-5  x_wisprO.512.CircularOrbit01.60images_3regmat_l1e-5 wisprO.512.CircularOrbit01.60images 1.e-5 > termout_callsolve_wisprO.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+
+nohup ./callsolve_cg_wIO_CircularOrbit01_3regmat > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e-5 2>&1 &
+

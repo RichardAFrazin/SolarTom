@@ -5,6 +5,7 @@
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
+ *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *
  */
 
@@ -66,16 +67,22 @@ void build_subA(char *idstring, rcs_llist *rcs,
   strcpy(filename, DATADIR);
   strcat(filename, idstring);
 
-#if (defined C2BUILD || defined C3BUILD)  /*for C2, is it pB or total B ?*/
+#ifdef C2BUILD  /*for C2, is it pB or total B ?*/
+#ifdef NRL
   strncpy(BpBcode, idstring + 3, 2); 
-  if ( strcmp(BpBcode,"PB") == 0 )
+#endif
+#ifdef MARSEILLES
+  strncpy(BpBcode, idstring + 8, 2);
+#endif
+fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
+  if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
     totalB = 0;
   else if ( strcmp(BpBcode,"BK") == 0 )
     totalB = 1;
   else {
     totalB = -1;
-    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring);
-    exit(1);
+    fprintf(stderr,"Bad BpBcode: %s, idstring: %s\n",BpBcode, idstring); 
+   exit(1);
   }
 #endif
 
@@ -138,9 +145,10 @@ void build_subA(char *idstring, rcs_llist *rcs,
      *   of the image */
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
-    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset));
+    assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
+    assert(hgetr8(header,"R_SOHO",&dsun_obs));
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
-    assert(hgetr8(header,"CROTA2",&roll_offset));
+    assert(hgetr8(header,"CROTA2"  ,&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
     assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
     assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
@@ -151,6 +159,10 @@ void build_subA(char *idstring, rcs_llist *rcs,
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
     /*fprintf(stdout,"CROTA2 = %g\n",roll_offset); fflush(stdout);*/
+#elif defined KCOR
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #endif
 
 #ifdef MARSEILLES /* CROTA1 = INITANG1 - 0.5  (.5 deg offset) */ 
@@ -159,7 +171,6 @@ void build_subA(char *idstring, rcs_llist *rcs,
 
     // Get the sun --> observer vector in J2000 GCI (CS-1) in [km]
     // and the sub-spacecraft Carrington longitude in [deg].
-
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
     assert(fwrite(&mjd, sizeof(double), 1, fid_date) == 1);
     carlong = carlong * M_PI / 180.0;
@@ -198,7 +209,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
 for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -236,6 +247,10 @@ for (i = 0; i < imsize; i++) {
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.
+#endif	       
+#if (defined KCOR)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.e6 // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
 #endif	       
 #endif
 
@@ -277,11 +292,10 @@ for (i = 0; i < imsize; i++) {
   fprintf(stderr, "      Rz(a) Sun_ob1: [%g, %g, %g]\n", sob[0],     sob[1],     sob[2]);
 
   // Ry(b) will zero the "z" component of "sob" ( = Rz(a) * sun_ob1 )
-  Ry = roty(-atan2(sob[2], sob[0])); // Albert: I believe it should be "+atan2" within the "roty" operator,
-                                     // as this is a counter-clockwise rotation.
+  Ry = roty(-atan2(sob[2], sob[0])); // Albert: The roty operator is defined in rots.c
+                                     // to be clockwise for angle > 0, the sign "-"  here
+                                     // is then correct, as this is a counter-clockwise rotation.
 
-//Ry = roty(+atan2(sob[2], sob[0])); // TEST !!!! It failed, Rich's formulae are correct.
-  
   rotmul(&Rtmp, Ry, Rz);
 
   rotvmul(sob, &Rtmp, sun_ob1);
@@ -306,15 +320,25 @@ for (i = 0; i < imsize; i++) {
   free(Ry);
   free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
+
+  // If dealing with KCOR data R12 and spol2 above are crap.
+  // As R12 was only needed to compute spol2, we just forget about it,
+  // and simply re-compute spol2 using the sub-Earth latitude, which is known from the KCOR header:
+#if defined KCOR
+  tilt     = obslat*M_PI/180.0;
+  spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
+  spol2[1] = 0.;
+  spol2[2] = cos(tilt);
+#endif
   
-  // Calculate R12 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)
+  // Calculate R23 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)
   /* solar axes in frame 2 */
   pang = atan2(spol2[0], spol2[2]); // Albert: This is the correct expression for the tilt angle of spol_2.
 
   // Zero "x" component of spol2
-  Ry = roty(pang);                  // Albert: I believe it should be "-pang" within the "roty" operator,
-                                    // as this is a clockwise rotation.
-//Ry = roty(-pang);                 // TEST !!!!! It failed, Rich's formulae are correct.
+  Ry = roty(pang);                  // Albert: The roty operator is defined in rots.c
+                                    // to be clockwise for angle > 0, the sign "+" here 
+                                    // is then correct, as this is a clockwise rotation.
  
   Rz = rotz(carlong); /* correct */ // Albert: "+carlong" within the "rotx" operator is correct,              
                                     // as this is a counter-clockwise rotation.
@@ -331,7 +355,7 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   free(Ry);
   //-----------------R23 computed------------------------------------------------------------------------
-  
+
 #if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)
     fprintf(stderr,"Total Brightness image.\n");

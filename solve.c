@@ -8,8 +8,6 @@
 
 #include "headers.h"
 
-
-
 #if defined BOUNDARY_FILE && defined FESSMIN
 static int boundary[NBINS];
 #elif defined FESSMIN
@@ -23,7 +21,6 @@ static float *constraint = NULL;
 
 #define MAXCHUNK  536500000 /*largest number of 4-byte objects fread can handle */
 
-
 /* solve.c  by Richard Frazin 7/99 */
 
 /* n_optarg is the number of optional arguments.  For now, the value must be
@@ -34,15 +31,14 @@ static float *constraint = NULL;
  *   "./Test_routines/stdarg_test.c"
  */
 
-
 int solve(float *regularization_parameter, const int *huber_flag,
       float *final_normx, float *final_normd, float *final_normt, 
 	  char *x_infile, char *x_outfile, int n_optarg, ...)
 {
   FILE *fid_xoutput, *fid_xinput;
-  float x[NBINS], x_o[NBINS];
+  float *x, *x_o;//  float x[NBINS], x_o[NBINS];
 #ifdef FESSMIN
-  float x_work[NBINS];
+  float *x_work;// float x_work[NBINS];
 #endif
   float lambda[NMATS];
   int i, jj, k, fil, itcount, status,number_read;
@@ -51,7 +47,7 @@ int solve(float *regularization_parameter, const int *huber_flag,
   float *rr;
   struct matrix matrices[NMATS];
   struct sparse sparmat;
-  char filestring[MAXPATH];
+  char filestring[MAXPATH], filestring2[MAXPATH];
   float normd[ITMAX + 2], normx[ITMAX + 2], normt[ITMAX + 2];
   const int nc3 = NBINS;
 #ifdef CONJGRAD
@@ -59,6 +55,12 @@ int solve(float *regularization_parameter, const int *huber_flag,
 #endif
   va_list pt_optarg; /*optional argument pointer*/
   char *matrix_name;
+
+  x      = (float *)malloc(NBINS*sizeof(float));
+  x_o    = (float *)malloc(NBINS*sizeof(float));
+#ifdef FESSMIN  
+  x_work = (float *)malloc(NBINS*sizeof(float));
+#endif
 
   if (n_optarg == 0){
     strcpy(matrices[0].file_id, FILESTR0);
@@ -85,13 +87,15 @@ int solve(float *regularization_parameter, const int *huber_flag,
 #ifdef FILESTR3
        strcpy(matrices[3].file_id, FILESTR3);
 #endif
-  if (NMATS > 4){
+#ifdef FILESTR4
+       strcpy(matrices[4].file_id, FILESTR4);
+#endif
+  if (NMATS > 5){
        fprintf(stderr,"SOLVE: NMATS = %d!\n",NMATS);
 	   fflush(stderr);
        exit(1);
   }
-  
-
+  	    
   for (i = 0; i < ITMAX + 2; i++) {
     normd[i] = 0.0;
     normx[i] = 0.0;
@@ -278,7 +282,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
 
   }				/* end of i loop over matrices */
 
-
   /* initialize x, x_o */
   strcpy(filestring, BINDIR);
   strncat(filestring, x_infile, MAXPATH);
@@ -288,9 +291,15 @@ int solve(float *regularization_parameter, const int *huber_flag,
     fprintf(stderr, "Input file(s) not found\n");
     exit(2);
   }
- 
+
+
 #ifdef PRINT_FILE_INFO
   fprintf(stderr, "reading %s\n", filestring);
+  // Added by Albert to make sure from start that the output setting has been set right, to avoid mistakes.
+  strcpy(filestring2, BINDIR);
+  strncat(filestring2, x_outfile, MAXPATH);
+  fprintf(stderr, "Output will be written in: %s\n", filestring2);
+  //------------------------
 #endif
  
   number_read = fread(x, sizeof(float), nc3, fid_xinput);
@@ -588,13 +597,12 @@ int solve(float *regularization_parameter, const int *huber_flag,
     }
 
     itcount++;
-  }				/* end while loop */
+    }				/* end while loop */
 
   *final_normx = normx[itcount - 1];
   *final_normd = normd[itcount - 1];
   *final_normt = normt[itcount - 1];
   
-
   for (i = 0; i < NMATS; i++) {
     free(matrices[i].r);
     free(matrices[i].y);
@@ -603,7 +611,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
     free(matrices[i].vB);
   }
   free(rr);
-
 
   /* output */
   strcpy(filestring, BINDIR);
@@ -616,6 +623,11 @@ int solve(float *regularization_parameter, const int *huber_flag,
   fprintf(stderr, "wrote %s\n", filestring);
   fclose(fid_xoutput);
 
-
+  free(x);
+  free(x_o);
+#ifdef FESSMIN
+  free(x_work);
+#endif
+  
   return (status);
 }

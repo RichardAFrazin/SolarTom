@@ -2,41 +2,48 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 2                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
-#define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
+#define NMATS 5                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NUMBER_OF_DATA_MATRICES 2	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
 #define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object differenrce required to exit */
 #define MINIMUM_VALUE 0 	/* min value assigned to a pixel intensity */
 #define ITMAX 5000		/* max no. calls to minimizer fcn */
-#define NSUBIT 600		/* number of suberiteration per call only used for CG algorithm */
+#define NSUBIT 1000		/* number of suberiteration per call only used for CG algorithm */
 
 #define PRINT_FILE_INFO		/* prints file info */
 
-
-// If LAMBDA, FILESTRO are specified in the calling sequence, those values overwrite anything stated below
+// If running with NMATS=2 and NUMBER_OF_DATA_MATRICES=1,
+// LAMBDA, FILESTRO (data), FILESTR1 (reg matrix) can be specified in the calling sequence.
+// In that case any values provided below are overwritten.
+//
+// If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define LAMBDA  { 1.0 , 1.e-5, 100}       // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
-#define HUBER_FLAG {0, 0, 0}
-#define FILESTR0 "euvi"                   // A_outfile of first A matrix
-#define FILESTR1 ""                       // A_outfile of second A matrix, or first Reg matrix
-#define FILESTR1 "hlaplac_100_90_180"     // Must always be specified.
-#define MAIN_X_INFILE  " "
-#define MAIN_X_OUTFILE " "
+#define LAMBDA  {1.,1.,10.,10.,10.}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define HUBER_FLAG {0,0,0,0,0}
+//#define FILESTR0 ""
+#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
+#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
+//#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
+//#define FILESTR2 "identity_100_90_180"      // Must always be specified.
+#define FILESTR2 "d2r_100_90_180"      // Must always be specified.
+#define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
+#define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
+#define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
+#define MAIN_X_OUTFILE "x_wisprIO.512.CircularOrbit01.60images_3regmat_l1e1"
 
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
 #define FILESTR0 A_OUTFILE " "
 #define FILESTR1 "hlaplac_60_60"
-#define MAIN_X_INFILE   "x_zero_100_180"
+#define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
 #define MAIN_X_OUTFILE " "
 #define LAMBDA  { 1.0 , 1.e-6}
 
 #else
 #error No build that is currently understood specified
 #endif
-
 
 /* Cross Validation stuff (see auto_cv(_brent), cv_brent_fixed, cv_calc */
 /*#define PRESERVE_SOL */   /* define to keep the solution computed at each iteration (cvcalc) */

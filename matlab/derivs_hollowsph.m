@@ -270,7 +270,6 @@ if laplac
 end %if laplac  
 
 
-
 if all_three
 
    fname_d2r = ['d2r',fname_ext]

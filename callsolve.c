@@ -98,10 +98,14 @@ int main(int argc, char **argv) {
     printf(" }\n");
   }
 
+  fprintf(stdout,"Callsolve.c: calling solve.c.  If there is segmentation fault, try: ulimit -s unlimited.\n");
+  fflush(stdout);
+  
   if (n_optarg == 0){
     status = solve(lambda, huber_flag, &final_normx, &final_normd, &final_normt, 
 		   x_infile, x_outfile,n_optarg);
   } else if (n_optarg == 1){
+    //              fprintf(stderr, "Loc0\n");
     status = solve(lambda, huber_flag, &final_normx, &final_normd, &final_normt, 
 		   x_infile, x_outfile,n_optarg,matrix_name);
   }
