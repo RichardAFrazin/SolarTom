@@ -15,7 +15,12 @@
  *   Butala in 2004 and Frazin in 2006,7,8,2010
  *
  * Modified by A.M.Vásquez, CLASP Fall-2017, to include WISPR,
+ *                          deal with new LAM LASCO-C2 headers,
+ *                          deal with pre-processed KCOR headers (1),
  *                          and also comments for documentation. 
+ *
+ * NOTE (1): Our own kcor_prep.pro IDL tool should be used.
+ *
  */
 
 #include <math.h>
@@ -49,7 +54,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
 	 *  need to rotated about the x-axis. 
 	 */ 
-#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
+#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
  {
   char *header, *fitsdate;
   int lhead, nbhead;
@@ -79,12 +84,17 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
    * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
 
-  // Compute now Sun_Ob [km] in CS-1 (J2000), as vector "sub_ob".
+#ifdef KCOR
+  // If dealing with KCOR data, do NOT rotate, simply set: sun_ob = HAE_OBS = DSUN [1,0,0],
+  // as it is only used in build_subA (or compare.c) to get DSUN from its norm.
+  r3eq(sun_ob,c);
+#else
+  // Compute now Sun_Ob [km] in CS-1 (J2000), as vector "sun_ob".
   Rx = rotx(0.40909262920459);
   rotvmul(sun_ob,Rx,c);
-
   free(Rx);
-
+#endif
+  
  return;
  }
 #endif
