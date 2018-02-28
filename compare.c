@@ -44,7 +44,7 @@ int main(int argc, char **argv){
   static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3];// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
+  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3],tilt;// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
   Rot R12, R23, Rtmp, *Rx, *Ry, *Rz;
   int nfiles, i, ii, jj, kk, ll, mmm, hasdata, totalB;
   const int nc3 = NBINS, imsize = IMSIZE;
@@ -191,7 +191,6 @@ int main(int argc, char **argv){
     assert(hgetr8(header,"SC_ROLL",&roll_offset));
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
-#endif
 #elif defined KCOR
     assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
@@ -391,7 +390,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
     spol2[2] = cos(tilt);
-  sun_ob2[0] = DSUN_OBS/1.e3/RSUN; // sun_ob2 must be in Rsun units.
+  sun_ob2[0] = dsun_obs/1.e3/RSUN; // sun_ob2 must be in Rsun units.
   sun_ob2[1] = 0.;
   sun_ob2[2] = 0.;
 #endif

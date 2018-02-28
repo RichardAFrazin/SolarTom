@@ -33,25 +33,6 @@
 #define MARSEILLES     // use for Marseilles calibration
 #endif
 
-#elif defined KCOR
-#define RMIN   1.0          /* innner radius (hollow  sphere)   */
-#define RMAX   6.0          /* outer radius of computation ball */
-//#define NZ     130
-//#define NCELLS  90	    /* cartesian: object has NCELLS^3 elements */
-#define NRAD    50  
-#define NTHETA  90          /* polar angle bins */
-#define NPHI (NTHETA * 2)   /* azimuthal angle bins */
-#define IMSIZE  1024	    /* size of C2 images (pixels) */
-#define BINFAC    4	    /* binning factor for C2 images (pixels) */
-#define DELTA     0.0	    /* delta vector */
-#define INSTR_RMIN      1.05
-#define INSTR_RMAX      3.00
-#define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
-typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/kcor/CR2198/"
-#define CONFSTRING DATADIR"list.txt"
-#define A_OUTFILE         "kcor.CR2198.bf4" /* suffix of A matrix ouput files */
-
 #ifdef WISPRIBUILD
 #define RMIN  2.0             /* RMIN reached by the grid */
 #define RMAX 214.5            /* RMAX reached by the grid */
@@ -89,6 +70,25 @@ typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/"
 #define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbitOffEquator01.synth.txt"
 #define A_OUTFILE               "wisprO.512.CircularOrbitOffEquator01.60images"     /* suffix of A matrix ouput files */
+
+#elif defined KCOR
+#define RMIN   1.0          /* innner radius (hollow  sphere)   */
+#define RMAX   6.0          /* outer radius of computation ball */
+//#define NZ     130
+//#define NCELLS  90	    /* cartesian: object has NCELLS^3 elements */
+#define NRAD    50  
+#define NTHETA  90          /* polar angle bins */
+#define NPHI (NTHETA * 2)   /* azimuthal angle bins */
+#define IMSIZE  1024	    /* size of C2 images (pixels) */
+#define BINFAC    4	    /* binning factor for C2 images (pixels) */
+#define DELTA     0.0	    /* delta vector */
+#define INSTR_RMIN      1.05
+#define INSTR_RMAX      3.00
+#define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
+typedef float PB_IMTYPE;
+#define DATADIR    TOMROOT"DATA/kcor/CR2198/"
+#define CONFSTRING DATADIR"list.txt"
+#define A_OUTFILE         "kcor.CR2198.bf4" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */

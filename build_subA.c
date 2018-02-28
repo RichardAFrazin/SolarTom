@@ -46,7 +46,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
-  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3];// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
+  double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3],tilt;// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
@@ -331,7 +331,7 @@ for (i = 0; i < imsize; i++) {
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
     spol2[2] = cos(tilt);
-  sun_ob2[0] = DSUN_OBS/1.e3/RSUN; // sun_ob2 must be in Rsun units.
+  sun_ob2[0] = dsun_obs/1.e3/RSUN; // sun_ob2 must be in Rsun units.
   sun_ob2[1] = 0.;
   sun_ob2[2] = 0.;
 #endif

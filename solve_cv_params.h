@@ -2,8 +2,8 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 5                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
-#define NUMBER_OF_DATA_MATRICES 2	/* number observation matrices */
+#define NMATS 2                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
 #define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object differenrce required to exit */
@@ -19,17 +19,18 @@
 //
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
-#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD)
-#define LAMBDA  {1.,1.,10.,10.,10.}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
+#define LAMBDA  {1.,1.e-6}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0,0,0,0}
-//#define FILESTR0 ""
-#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
-#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
+#define FILESTR0 ""
+#define FILESTR1 "hlaplac_50_90_180"
+//#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
+//#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
 //#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
 //#define FILESTR2 "identity_100_90_180"      // Must always be specified.
-#define FILESTR2 "d2r_100_90_180"      // Must always be specified.
-#define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
-#define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
+//#define FILESTR2 "d2r_100_90_180"      // Must always be specified.
+//#define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
+//#define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
 #define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
 #define MAIN_X_OUTFILE "x_wisprIO.512.CircularOrbit01.60images_3regmat_l1e1"
 
