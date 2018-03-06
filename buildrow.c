@@ -652,6 +652,7 @@
 #endif
   
   /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
+  // or by t2 (case 2F and all cases 3).
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
         dtpr = rad_bin_boundaries(jij);  
         rtmp = *dtpr; // outer boundary of cell jij.
@@ -663,11 +664,10 @@
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
-	// In the next line we changed: "(double) RMIN" -> "1.0"
-	// because in the new proposed scheme the LOS only stops if it hits
-	// the disk. With just that change the whole thing works as t array
-	// is filtered out below for any t<t3.
-	if ( impact > 1. ) { // take the POSITIVE root also
+	// In this new code we ALWAYS keep also the positive root.
+	// The whole thing works in all cases (1,2,3) now,
+	// as the array t is filtered out for any t < t3 below.
+	// OLD CODE:	if ( impact > 1. ) { // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
 	  tdex++;
@@ -675,7 +675,7 @@
           fprintf(stderr,"(%d,%g)",jij,ttmp);
           fflush(stderr);
 #endif
-	}
+	  //OLD CODE: }
   }
 
   //  exit(-1);
