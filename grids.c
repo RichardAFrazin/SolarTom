@@ -94,3 +94,18 @@ void print_grid(void){
   }
   fclose(fp);
 }
+
+double GridDivision(double num, double denom){
+  double test_ratio, max_time = 1000.;
+
+  if (denom == 0.)
+    return(copysign(max_time,num));
+
+   if (abs(denom) < abs(num)){
+       test_ratio = abs(denom)/abs(num);
+       if (test_ratio < 1./max_time)
+	 return(copysign(max_time,num*denom));
+   }
+   
+   return(num/denom);  
+}

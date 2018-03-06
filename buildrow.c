@@ -692,7 +692,6 @@
   fflush(stderr);
 #endif
 
-
   for (jij = 0; jij < NTHETA/2 + 1; jij++) {
 	 gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
 	 gam = gam*gam;
@@ -700,7 +699,9 @@
 	 vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
 	 sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
 
-	 ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+//	 ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+	 ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
+		 
 	 if ((ttmp > t1) && (ttmp < t2)) {
 	    t[tdex] = ttmp;
 	    tdex++;
@@ -711,7 +712,8 @@
 #endif
 	 }
 
-         ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+//       ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+	 ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
 	 if ((ttmp > t1) && (ttmp < t2)) {
 	    t[tdex] = ttmp;
 	    tdex++;
@@ -734,7 +736,8 @@
     for (jij = MIN(binbin[4], binbin[5]);
          jij < MAX(binbin[4], binbin[5]); jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
@@ -751,7 +754,8 @@
   } else {
     for (jij = MAX(binbin[4], binbin[5]); jij < NPHI; jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp = (nrpt[1] - nrpt[0]*ptmp)/(unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp)/(unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
@@ -767,8 +771,8 @@
     } /* jij loop */
     for (jij = 0; jij < MIN(binbin[4], binbin[5]); jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp =
-        (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
