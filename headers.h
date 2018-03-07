@@ -132,6 +132,7 @@ void build_subA(char *, rcs_llist *, float **, float **, int *, FILE *, FILE *);
 double* rad_bin_boundaries(int bin);
 int rad_bin_number(double dist);
 void write_table();
+double GridDivision(double num, double denom);
 
 void get_things_C2(char *, double *, double *);
 int doublecompare(const void *, const void *);

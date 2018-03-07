@@ -783,7 +783,7 @@
       } else {
         fprintf(stderr, "wrap = 1: out of bounds!!\n");
         fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,(jij+1)*360./ (double) NPHI);
-	exit(32);
+       	exit(32);
       }
     } /* jij loop */
   }
