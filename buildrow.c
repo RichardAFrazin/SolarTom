@@ -76,8 +76,8 @@
   // to Eqs. (9) and (10) in Frazin & Janzen (2002), respectively.
   // A.M.V. corrected the expressions for r3tmp[0] and r3tmp[2].
   // The error was an incorrect multiplicative factor 1/cos(rho1).
-  // While being of order 1e-6 for EUV instruments, and of order 1e-4
-  // for LASCO-C2, it would have been of order 1E-1 to 1E0 for WISPR.
+  // While being of up to order 1e-6 for EUV instruments, and up to 1e-4
+  // for LASCO-C2, it would have been uo to order 1E-1 to 1E0 for WISPR.
 
   r3tmp[0] = dsun*sin(rho1)*sin(rho1);
   r3tmp[1] = 0.0;
@@ -104,8 +104,8 @@
   // Compute t3, the SIGNED "time" of the spacecraft location
   t3 = sqrt(dsun*dsun - impact*impact);
   if (r3dot(unit,sun_ob3) < 0)
-    t3 = -t3;
-
+    t3 *= -1.;
+	  
   //------------------------------------------------------
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enters and leaves the computation area
@@ -395,12 +395,54 @@
     binbin[5] = NZ - 1;
 
 #elif defined HOLLOW_SPHERE
-      /* r, theta (polar angle), phi (azimuthal angle) coordinate order */
-  binbin[0] = NRAD-1;
-  binbin[1] = NRAD-1;
-  if (impact <= (double) RMIN){
-     binbin[1] = 0;
-  }
+   /* r, theta (polar angle), phi (azimuthal angle) coordinate order */
+
+  // The next code computes binbin[0] and binbin[1] for all possible cases 1, 2 and 3,
+  // defined above when computing t1 and t2.;
+   if (dsun > ((double) RMAX)){ // Cases 1.
+     if (impact > 1.0){         // Cases 1A, 1B.
+       binbin[0] = NRAD-1;
+       binbin[1] = NRAD-1;
+     }
+     if (impact <= 1.0){        // Case 1C.
+       binbin[0] = NRAD-1;
+       binbin[1] = 0;
+       }
+   } // Cases 1.
+
+   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
+     if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
+       binbin[0] = NRAD-1;
+       binbin[1] = NRAD-1;
+       }
+     if (impact <= 1.0){             // Cases 2E, 2F.
+       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
+       binbin[0] = NRAD-1;
+       binbin[1] = 0;
+       }
+       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
+       binbin[0] = 0;
+       binbin[1] = NRAD-1;
+       }
+       }
+   } // Cases 2.
+
+   if (dsun < ((double) RMIN)){      // Cases 3.
+     if (impact > 1.0){              // Cases 3A, 3B.
+       binbin[0] = 0;
+       binbin[1] = NRAD-1;
+       }
+     if (impact < 1.0){
+       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
+         ontarget = 0;
+         goto salida; // it went to salida already when computing t1,t2, just included the line for completeness of cases. 
+       }
+       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
+       binbin[0] = 0;
+       binbin[1] = NRAD-1;
+       }
+       }
+   } // Cases 3
 
   // Compute Latitude [rad] of vector los1 in CS-3:
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
@@ -626,6 +668,7 @@
 	// because in the new proposed scheme the LOS only stops if it hits
 	// the disk. With just that change the whole thing works as t array
 	// is filtered out below for any t<t3.
+        // The next code needs to generalize to other situations, as with t1,t2 above !!!
 	if ( impact > 1. ) { // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
@@ -634,7 +677,7 @@
           fprintf(stderr,"(%d,%g)",jij,ttmp);
           fflush(stderr);
 #endif
-	}
+	 }
   }
 
   //  exit(-1);
@@ -651,16 +694,15 @@
   fflush(stderr);
 #endif
 
-
   for (jij = 0; jij < NTHETA/2 + 1; jij++) {
 	 gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
 	 gam = gam*gam;
 	 vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
 	 vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
 	 sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
-	 ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-	 //ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
-	 
+//	 ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+	 ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
+		 
 	 if ((ttmp > t1) && (ttmp < t2)) {
 	    t[tdex] = ttmp;
 	    tdex++;
@@ -671,8 +713,8 @@
 #endif
 	 }
 
-	 ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-         //ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
+//       ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+	 ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
 	 if ((ttmp > t1) && (ttmp < t2)) {
 	    t[tdex] = ttmp;
 	    tdex++;
@@ -695,8 +737,8 @@
     for (jij = MIN(binbin[4], binbin[5]);
          jij < MAX(binbin[4], binbin[5]); jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
-      //ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
@@ -713,8 +755,8 @@
   } else {
     for (jij = MAX(binbin[4], binbin[5]); jij < NPHI; jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp = (nrpt[1] - nrpt[0]*ptmp)/(unit[0]*ptmp - unit[1]);
-      //ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp)/(unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
@@ -730,8 +772,8 @@
     } /* jij loop */
     for (jij = 0; jij < MIN(binbin[4], binbin[5]); jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
-      //ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
+//    ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
+      ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
         t[tdex] = ttmp;
         tdex++;
@@ -742,7 +784,7 @@
       } else {
         fprintf(stderr, "wrap = 1: out of bounds!!\n");
         fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,(jij+1)*360./ (double) NPHI);
-	exit(32);
+       	exit(32);
       }
     } /* jij loop */
   }

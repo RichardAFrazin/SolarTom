@@ -664,10 +664,12 @@
         fprintf(stderr,"(%d,%g)",jij,ttmp);
         fflush(stderr);
 #endif
-	// In this new code we ALWAYS keep also the positive root.
-	// The whole thing works in all cases (1,2,3) now,
-	// as the array t is filtered out for any t < t3 below.
-	// OLD CODE:	if ( impact > 1. ) { // take the POSITIVE root also
+	// In the next line we changed: "(double) RMIN" -> "1.0"
+	// because in the new proposed scheme the LOS only stops if it hits
+	// the disk. With just that change the whole thing works as t array
+	// is filtered out below for any t<t3.
+        // The next code needs to generalize to other situations, as with t1,t2 above !!!
+	if ( impact > 1. ) { // take the POSITIVE root also
 	  ttmp *= -1.;
   	  t[tdex] = ttmp;
 	  tdex++;
@@ -675,7 +677,7 @@
           fprintf(stderr,"(%d,%g)",jij,ttmp);
           fflush(stderr);
 #endif
-	  //OLD CODE: }
+	 }
   }
 
   //  exit(-1);
