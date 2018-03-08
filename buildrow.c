@@ -657,30 +657,96 @@
         dtpr = rad_bin_boundaries(jij);  
         rtmp = *dtpr; // outer boundary of cell jij.
 	// fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
-#include "newcode.c"
-	/* ---BEGIN OF REPLACED CODE:
-        ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.	
-        t[tdex] = ttmp;
-	tdex++;
+
+  // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
+  // For cases 1, 2, 3, carefuly decide when to assign it negative sign, positive sign,
+  // or take both when appropriate.
+  ttmp = sqrt(rtmp*rtmp - impact*impact) ;
+
+  if (dsun > ((double) RMAX)){ // Cases 1.
+      if (impact > 1.0){         // Cases 1A, 1B.
+       t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,ttmp);
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
         fflush(stderr);
 #endif
-	// In the next line we changed: "(double) RMIN" -> "1.0"
-	// because in the new proposed scheme the LOS only stops if it hits
-	// the disk. With just that change the whole thing works as t array
-	// is filtered out below for any t<t3.
-        // The next code needs to generalize to other situations, as with t1,t2 above !!!
-	if ( impact > 1. ) { // take the POSITIVE root also
-	  ttmp *= -1.;
-  	  t[tdex] = ttmp;
-	  tdex++;
+       tdex++;
+       t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-          fprintf(stderr,"(%d,%g)",jij,ttmp);
-          fflush(stderr);
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
 #endif
-	 }
-	*/ //----END OF REPLACED CODE
+       tdex++;
+       }
+     if (impact <= 1.0){        // Case 1C.
+       t[tdex] = -ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+   } // Cases 1.
+
+   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
+      if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
+       t[tdex] = -ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       t[tdex] = +ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+     if (impact <= 1.0){             // Cases 2E, 2F.
+       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
+       t[tdex] = -ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
+       t[tdex] = +ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+       }
+   } // Cases 2.
+
+   if (dsun < ((double) RMIN)){      // Cases 3.
+      if (impact > 1.0){              // Cases 3A, 3B.
+       t[tdex] = +ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+     if (impact < 1.0){
+       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
+         ontarget = 0;
+         goto salida;
+       }
+       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
+       t[tdex] = +ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+       tdex++;
+       }
+       }
+   } // Cases 3
   }
 
   //  exit(-1);
