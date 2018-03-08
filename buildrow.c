@@ -657,7 +657,9 @@
         dtpr = rad_bin_boundaries(jij);  
         rtmp = *dtpr; // outer boundary of cell jij.
 	// fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
-        ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.
+#include "newcode.c"
+	/* ---BEGIN OF REPLACED CODE:
+        ttmp = - sqrt(rtmp*rtmp - impact*impact) ; // take here the NEGATIVE root.	
         t[tdex] = ttmp;
 	tdex++;
 #ifdef RAYDIAGNOSE
@@ -678,6 +680,7 @@
           fflush(stderr);
 #endif
 	 }
+	*/ //----END OF REPLACED CODE
   }
 
   //  exit(-1);
