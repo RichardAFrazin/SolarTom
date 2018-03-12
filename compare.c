@@ -42,6 +42,7 @@ int main(int argc, char **argv){
   const double rmax = RMAX;
   static float pBval[IMSIZE][IMSIZE], pBcalc[IMSIZE][IMSIZE];
   static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
+  static float xxx; // Added by Albert.
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
   double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3],tilt;// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
@@ -314,22 +315,34 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
           /* the .79 factor is to convert from units of mean brightness
            *    to 1.e10*(center brightness)           */
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
 	       1.e10 * 0.79;
 #elif (defined MARSEILLES)
   	       0.79; /* Marseilles scaling */ 
 #endif
-#if (defined WISPRIBUILD || defined WISPROBUILD)
+#elif (defined WISPRIBUILD || defined WISPROBUILD)
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.
-#endif
-#if (defined KCOR)
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e-4 // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
-#endif
+	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.;
+	  //#endif
+#elif (defined KCOR)
+	    /*
+	  if (pBval[i][jj] > 1.e-10) {
+		xxx = pBval[i][jj];
+		fprintf(stderr,"pBval: %g.\n",xxx);
+	      }
+	    */
+	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.e-4; // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
+	  /*
+	      if (xxx > 1.e-10){
+		fprintf(stderr,"pBval: %g.\n",pBval[i][jj]);
+                exit(-32);
+	      }
+	  */  
+	  //#endif
 #endif 
 
 #ifdef DROP_NEG_PB
@@ -343,7 +356,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     free(image);
     }   /* end of block */
      
-    dsun = 0.0;
+      dsun = 0.0;
     for (i = 0; i < 3; i++) {
       sun_ob1[i] /= RSUN;
       dsun += sun_ob1[i] * sun_ob1[i];
