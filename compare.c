@@ -326,23 +326,9 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.;
-	  //#endif
 #elif (defined KCOR)
-	    /*
-	  if (pBval[i][jj] > 1.e-10) {
-		xxx = pBval[i][jj];
-		fprintf(stderr,"pBval: %g.\n",xxx);
-	      }
-	    */
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e-4; // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
-	  /*
-	      if (xxx > 1.e-10){
-		fprintf(stderr,"pBval: %g.\n",pBval[i][jj]);
-                exit(-32);
-	      }
-	  */  
-	  //#endif
 #endif 
 
 #ifdef DROP_NEG_PB
