@@ -247,12 +247,12 @@ for (i = 0; i < imsize; i++) {
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.
+	    pBval[i][jj] *= 1.;
 #elif (defined KCOR)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e-4; // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
 #endif
-
+	  
 #ifdef DROP_NEG_PB
           if (pBval[i][jj] < 0)
             pBval[i][jj] = -999.0;
