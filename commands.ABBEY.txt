@@ -1,2 +1,23 @@
 
 nohup ./compare x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_C2_pB_LAM_CR2081_test.txt  2>&1 &
+
+albert@abbey:/data1/tomography/bindata/Compare/
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_I_2018*Unif*gif WISPR-I_ExtendedOrbit01_UniformLongitudeStep_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_O_2018*Unif*gif WISPR-O_ExtendedOrbit01_UniformLongitudeStep_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_I_2022*Unif*gif WISPR-I_ExtendedOrbit12_UniformLongitudeStep_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_O_2022*Unif*gif WISPR-O_ExtendedOrbit12_UniformLongitudeStep_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_I_2025*Unif*gif WISPR-I_ExtendedOrbit24_UniformLongitudeStep_CR-2081_BK.gif
+convert -delay 60 -loop 0 comp_x_AWSOM_CR2081run5*WISPR_O_2025*Unif*gif WISPR-O_ExtendedOrbit24_UniformLongitudeStep_CR-2081_BK.gif
+
+
+convert -delay 60 -loop 0 comp*gif Movie_KCOR-CR2198_295_90_180_bf2.gif
+
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_I*CircularOrbits3degUnifStep__BK.gif Movie_WISPR-I-CircularOrbit-10Rsun_CR-2082.gif
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_O*CircularOrbits3degUnifStep__BK.gif Movie_WISPR_O-CircularOrbit-10Rsun_CR-2082.gif
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_I_2018*UniformLong_BK.gif            Movie_WISPR-I-ExtendedOrbit-01_CR-2082.gif
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_O_2018*UniformLong_BK.gif            Movie_WISPR-O-ExtendedOrbit-01_CR-2082.gif
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_I_2025*UniformLong_BK.gif            Movie_WISPR-I-ExtendedOrbit-24_CR-2082.gif
+convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_O_2025*UniformLong_BK.gif            Movie_WISPR-O-ExtendedOrbit-24_CR-2082.gif
+
+nohup ./compare_nostatic_WISPRI x_AWSOM_CR2082_sphere_WISPR.dat > termout.compare_nostatic_WISPRI 2>&1 &
+nohup ./compare_nostatic_WISPRO x_AWSOM_CR2082_sphere_WISPR.dat > termout.compare_nostatic_WISPRO 2>&1 &

@@ -102,7 +102,7 @@ typedef float PB_IMTYPE;
 #define DELTA     0.0	    /* delta vector */
 #define INSTR_RMIN      2.1
 #define INSTR_RMAX      6.3
-#define PIXSIZE  23.8       /* arcsec per pixel */
+#define PIXSIZE  (23.8*512/IMSIZE)   /* arcsec per pixel */
 #ifdef NRL
 typedef float PB_IMTYPE;
 #endif

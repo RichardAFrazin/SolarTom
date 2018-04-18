@@ -25,14 +25,14 @@
 
 /***********  BEGIN BUILDROW ***********************/
 {
-  static double nrpt[3], g1[3], unit[3], los1[3], los2[3];
-  static double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
-  static double deltagrid, grideps, rayeps;
-  static double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
-  static int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
-  static double abstrmin, abstrmax, *dtpr; // New variables added by Albert
-  static int index0; // New variables added by Albert
-  static char case_string[]="0";
+   double nrpt[3], g1[3], unit[3], los1[3], los2[3];
+   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
+   double deltagrid, grideps, rayeps;
+   double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
+   int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
+   double abstrmin, abstrmax, *dtpr; // New variables added by Albert
+   int index0; // New variables added by Albert
+   char case_string[]="0";
 
   rayeps = 1.e-6;
 #if defined CYLINDRICAL || defined HOLLOW_SPHERE
@@ -372,8 +372,8 @@
   fprintf(stderr,"entry phi = %3.6g deg, ",ptmp*180./M_PI);
 #endif
 
-  rtmp = atan2(los2[1], los2[0]);
-  if (rtmp < 0.0)
+  rtmp = atan2(los2[1], los2[0]);  
+if (rtmp < 0.0)
     rtmp += 2.0 * M_PI;
   binbin[3] = floor(rtmp * ((double) NPHI) / 2.0 / M_PI);
   /* set the wrap parameter */
@@ -456,7 +456,7 @@
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap);
+  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
 #endif
   // Compute Longitude [rad] of vector los1 in CS-3, making sure is in range [0,2pi].
   rtmp = atan2(los1[1], los1[0]);
@@ -474,8 +474,7 @@
   if ( fabs(rtmp - ptmp) > M_PI )
     wrap = 1; // If unsigned Longitude difference between los1 and los2 is larger than Pi.
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",
-      ptmp*180/M_PI, wrap);
+  fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);// Here wrap has the correct value already.
 #endif
 
 #endif
@@ -801,11 +800,13 @@
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
   fflush(stderr);
 #endif
-
+  // Here wrap is used in hollow sphere  
   if (wrap == 0) {
     for (jij = MIN(binbin[4], binbin[5]);
          jij < MAX(binbin[4], binbin[5]); jij++) {
+      // Let ptmp = TAN(longitude) = r1/r0, where r is the position vector of a cell boundary crossed by the LOS.
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
+      // The expression for the crossing time ttmp below comes from solving components 0 and 1 of Eq (8) of FJ2002.
 //    ttmp = (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
       ttmp = GridDivision(nrpt[1] - nrpt[0]*ptmp , unit[0]*ptmp - unit[1]);
       if ((ttmp > t1) && (ttmp < t2)) {
@@ -821,7 +822,8 @@
 	exit(32);
       }
     }
-  } else {
+    // end of wrap = 0 condition
+  } else { 
     for (jij = MAX(binbin[4], binbin[5]); jij < NPHI; jij++) {
       ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
 //    ttmp = (nrpt[1] - nrpt[0]*ptmp)/(unit[0]*ptmp - unit[1]);
@@ -856,7 +858,7 @@
        	exit(32);
       }
     } /* jij loop */
-  }
+  } // end of wrap = 1 condition
 
 #elif defined (CARTESIAN)
 
