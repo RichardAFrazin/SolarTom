@@ -29,7 +29,7 @@ char *fitsrhead(char *, int *, int *);
 char *fitsrimage(char *, int, char *);
 
 
-static void usage(char *arg0) {
+void usage(char *arg0) {
   printf("usage: %s <x_infile> [k]\n", arg0);
   printf(" x_infile is the filename of reconstruction.\n");
   printf("[k]: Compute the k'th comparison (first is k=0)\n");
@@ -40,9 +40,9 @@ int main(int argc, char **argv){
   FILE *fid_conf, *fid;
   char idstring[MAXPATH], filename[MAXPATH], BpBcode[] = "xx", filename_x[MAXPATH];
   const double rmax = RMAX;
-  static float pBval[IMSIZE][IMSIZE], pBcalc[IMSIZE][IMSIZE];
-  static float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
-  static float xxx; // Added by Albert.
+  float pBval[IMSIZE][IMSIZE], pBcalc[IMSIZE][IMSIZE];
+  float rho[IMSIZE][IMSIZE], eta[IMSIZE][IMSIZE];
+  float xxx; // Added by Albert.
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
   double dsun, pang, deltagrid, rho1, eta1, carlong, mjd, roll_offset;
   double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3],tilt;// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.

@@ -4,9 +4,9 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-// #define WISPRIBUILD
+   #define WISPRIBUILD
 // #define WISPROBUILD
-#define KCOR
+// #define KCOR
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -20,7 +20,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-//#define NONUNIFORMRAD // Set if radial grid is not uniform.
+#define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
@@ -42,15 +42,15 @@
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
-#define BINFAC    2	     /* binning factor for WISPRI images (pixels) */
+#define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN  1.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
 #define INSTR_RMAX  1000. // 90.    
 #define PIXSIZE     (66.621094*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR     TOMROOT"DATA/wisprI/"
-#define CONFSTRING  DATADIR"list.wisprI.512.CircularOrbitOffEquator01.synth.txt"
-#define A_OUTFILE               "wisprI.512.CircularOrbitOffEquator01.60images"     /* suffix of A matrix ouput files */
+#define DATADIR     TOMROOT"DATA/wisprI/CR2082_UnifLong/"
+#define CONFSTRING  DATADIR"list.wisprI.TEST.txt"
+#define A_OUTFILE               "wisprI.512.CircularOrbitOffEquator01.60images.."     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
@@ -67,9 +67,9 @@ typedef float PB_IMTYPE;
 #define INSTR_RMAX   1000.   //110. 
 #define PIXSIZE     (96.679680*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR     TOMROOT"DATA/wisprO/"
-#define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbitOffEquator01.synth.txt"
-#define A_OUTFILE               "wisprO.512.CircularOrbitOffEquator01.60images"     /* suffix of A matrix ouput files */
+#define DATADIR     TOMROOT"DATA/wisprO/Circular_CR2082/"
+#define CONFSTRING  DATADIR"list.wisprO.circular.TEST.txt"
+#define A_OUTFILE               "wisprO.512.CircularOrbitOffEquator01.60images.."     /* suffix of A matrix ouput files */
 
 #elif defined KCOR
 #define RMIN   1.0          /* innner radius (hollow  sphere)   */
