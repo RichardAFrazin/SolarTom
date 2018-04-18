@@ -4,9 +4,9 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-// #define WISPRIBUILD
+   #define WISPRIBUILD
 // #define WISPROBUILD
-#define KCOR
+// #define KCOR
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -20,7 +20,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-//#define NONUNIFORMRAD // Set if radial grid is not uniform.
+#define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
@@ -42,15 +42,15 @@
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
-#define BINFAC    2	     /* binning factor for WISPRI images (pixels) */
+#define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
 #define INSTR_RMIN  1.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
 #define INSTR_RMAX  1000. // 90.    
 #define PIXSIZE     (66.621094*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR     TOMROOT"DATA/wisprI/"
-#define CONFSTRING  DATADIR"list.wisprI.512.CircularOrbitOffEquator01.synth.txt"
-#define A_OUTFILE               "wisprI.512.CircularOrbitOffEquator01.60images"     /* suffix of A matrix ouput files */
+#define DATADIR     TOMROOT"DATA/wisprI/CR2082_UnifLong/"
+#define CONFSTRING  DATADIR"list.wisprI.Synth.CR2082.UnifLong.SciOrb01.txt"
+#define A_OUTFILE               "wisprI.Synth.CR2082.UnifLong.SciOrb01.bf4"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
@@ -67,35 +67,35 @@ typedef float PB_IMTYPE;
 #define INSTR_RMAX   1000.   //110. 
 #define PIXSIZE     (96.679680*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR     TOMROOT"DATA/wisprO/"
-#define CONFSTRING  DATADIR"list.wisprO.512.CircularOrbitOffEquator01.synth.txt"
-#define A_OUTFILE               "wisprO.512.CircularOrbitOffEquator01.60images"     /* suffix of A matrix ouput files */
+#define DATADIR     TOMROOT"DATA/wisprO/CR2082_UnifLong/"
+#define CONFSTRING  DATADIR"list.wisprO.Synth.CR2082.UnifLong.SciOrb01.txt"
+#define A_OUTFILE               "wisprO.Synth.CR2082.UnifLong.SciOrb01.bf4"     /* suffix of A matrix ouput files */
 
 #elif defined KCOR
-#define RMIN   1.0          /* innner radius (hollow  sphere)   */
-#define RMAX   6.0          /* outer radius of computation ball */
+#define RMIN   1.05          /* innner radius (hollow  sphere)   */
+#define RMAX   4.00          /* outer radius of computation ball */
 //#define NZ     130
 //#define NCELLS  90	    /* cartesian: object has NCELLS^3 elements */
-#define NRAD    50  
-#define NTHETA  90          /* polar angle bins */
+#define NRAD     295
+#define NTHETA    90        /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE  1024	    /* size of C2 images (pixels) */
-#define BINFAC    4	    /* binning factor for C2 images (pixels) */
+#define BINFAC    2	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
 #define INSTR_RMIN      1.05
-#define INSTR_RMAX      3.00
+#define INSTR_RMAX      2.00
 #define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/kcor/CR2198/"
-#define CONFSTRING DATADIR"list.txt"
-#define A_OUTFILE         "kcor.CR2198.bf4" /* suffix of A matrix ouput files */
+#define CONFSTRING DATADIR"list_prep.txt"
+#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_CORRECTED" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */
-#define RMAX   214.5 //10.            /* outer radius of computation ball */
+#define RMAX   12.0 //214.5 //10.            /* outer radius of computation ball */
 #define NZ     130 #define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
-#define NRAD   100  
-#define NTHETA  90          /* polar angle bins */
+#define NRAD   200  
+#define NTHETA 180          /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
 #define BINFAC    4	    /* binning factor for C2 images (pixels) */
@@ -109,9 +109,9 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2/CR2081/"
+#define DATADIR    TOMROOT"DATA/c2/CR2082/"
 #define CONFSTRING DATADIR"list.txt"
-#define A_OUTFILE         "c2.CR2081.LAM.test" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "c2.CR2081.LAM.test...." /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
@@ -181,28 +181,25 @@ typedef float PB_IMTYPE;
 #elif defined EUVIBUILD
 /* don't accept data between INNER_REJECT_RAD and OUTER_REJECT_RAD (due to optical depth) */
 #define RING_REJECT
-#define RMAX 1.260
-#define RMIN 1.000
+#define INSTR_RMAX 1.5
+#define RMAX       2.0
+#define RMIN       1.0
 #ifdef  RING_REJECT
-#define INNER_REJECT_RAD 0.980  /* 0.98 */ 
-#define OUTER_REJECT_RAD 1.025 /* 1.025 */
+#define INNER_REJECT_RAD 0.98  /* 0.98 */ 
+#define OUTER_REJECT_RAD 1.02 /* 1.025 */
 #endif
-#define NRAD 60
-#define NTHETA 90
+#define NRAD    100
+#define NTHETA  90
 #define NPHI (NTHETA * 2)
 #define IMSIZE 1024
 #define DELTA 0.0
-#define INSTR_RMAX RMAX
 #define PIXSIZE (1.589*2048./IMSIZE) /*A is 1.588 ''/pix, B is 1.590 in 2048 mode*/
 #define BINFAC 4
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/EUVI/CR2084/A171/" 
-#define CONFSTRING DATADIR"list.A171.b4.little.txt"        
-#define A_OUTFILE         "euviA.171.cr2081.ri.000-ro1.025.NODECON.halfhollow1"
-/*#define DATADIR    TOMROOT"DATA/EUVI/AB.171.cr2069/" 
-#define CONFSTRING DATADIR"list.euviAB.171.rs.cr2069.txt"        
-#define A_OUTFILE  "CR2069.171ABrr20_90"*/
-
+#define DATADIR    TOMROOT"DATA/euvi/CR2081/A284/"
+#define CONFSTRING DATADIR"list.A284.b4.nodecon.test"
+#define A_OUTFILE         "euvi_A284_b4_nodecon_100_90_180_Rmax2.0_InstrRmax1.5_bf4"
+			  
 #elif defined AIABUILD
 #define RING_REJECT  /* don't accept data between INNER_REJECT_RAD and OUTER_REJECT_RAD (due to optical depth) */
 #define RMAX 1.26
