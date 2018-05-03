@@ -1,6 +1,0 @@
-function [Rz] = rotz(az)
-% to zero the y component az = -atan2(q(2),q(1)) ;
-	
-Rz = [  cos(az), -sin(az),    0     ; ...
-        sin(az),  cos(az),    0     ; ...
-         0     ,    0    ,    1     ];
