@@ -1,8 +1,4 @@
-/* CARTESIAN: (x,y,z), (bin 0 in each coord. is betwen -RMAX and RMAX(1 + 2/NCELLS)
- * CYLINDRICAL: (r, phi, z) (radial bin 0 is between r = 0 and RMAX/NRAD,
- *                           phi    bin 0 is between 0 and  2pi/NPHI,
- *                           z      bin 0 is betwen -RMAX and RMAX(1 + 2/NCELLS))
- * HOLLOW_SPHERE: (r, theta, phi)
+/* HOLLOW_SPHERE: (r, theta, phi)
  *    (radial bin 0 is between RMIN and (RMAX-RMIN)/NRAD,
  *     theta  bin 0 is between -pi/2 and (-pi/2 + pi/NTHETA),
  *     phi    bin 0 is same as CYLINDRICAL case)
@@ -35,17 +31,9 @@
    char case_string[]="0";
 
   rayeps = 1.e-6;
-#if defined CYLINDRICAL || defined HOLLOW_SPHERE
+#ifdef HOLLOW_SPHERE
   int wrap, binrmin;
   double rr, phiphi;
-#endif
-#ifdef CARTESIAN
-  deltagrid = (2 * rmax) / (double) NCELLS;
-  grideps = 1.e-6*deltagrid;
-#elif defined CYLINDRICAL
-  deltagrid = (2 * rmax) / (double) NZ;
-  grideps = 1.e-6*MIN((rmax / (double) NRAD), deltagrid);
-#elif defined HOLLOW_SPHERE
   deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
   grideps = 1.e-6*deltagrid;
 #endif
@@ -121,113 +109,7 @@
    *    hits the edge of the grid, set ontarget = 1
    */
 
-// Compute t1,t2 for CARTESIAN COORDINATES,
-// as well as facedex[0,1]: faces of entry/exit.
-#ifdef CARTESIAN
-  for (jij = 0; jij < 6; jij += 2)
-  {
-    if ( fabs(unit[jij/2]) > rayeps )
-    {
-      // If unit[a] NE 0, with a=0,1,2 then set junk[a] and junk[a+1] so that
-      // unit[a] * junk[a  ] + nrpt[a] = - rmax
-      // unit[a] * junk[a+1] + nrpt[a] = + rmax
-      junk[jij    ] = (-rmax - nrpt[jij / 2]) / unit[jij / 2] ;
-      junk[jij + 1] = (+rmax - nrpt[jij / 2]) / unit[jij / 2] ;
-    }
-    else
-    {
-      // If unit[a] ~ 0, with a=0,1,2 then set
-      // junk[a] = junk[a+1] = 1.e12, a huge number, so that
-      // neither junk[a] nor junk[a+1] will contribute to determine facedex[] below.
-      junk[jij    ] = 1.e12;
-      junk[jij + 1] = 1.e12;
-    }
-  }
-  ontarget = 0;
-  facedex[0] = -1; /* facedex[0] contains junk[] of the 1st intersection */
-  facedex[1] = -1; //        [1]                        2nd
-  for (jij = 0; jij < 6; jij++)
-  {
-    // vector_g1 = vector_nrpt + junk[jij] * vector_unit.
-    g1[0] = nrpt[0] + junk[jij]*unit[0];
-    g1[1] = nrpt[1] + junk[jij]*unit[1];
-    g1[2] = nrpt[2] + junk[jij]*unit[2];
-
-    if ( (fabs(g1[0]) < rmax + grideps) &&
-         (fabs(g1[1]) < rmax + grideps) &&
-         (fabs(g1[2]) < rmax + grideps)   )
-      {
-            ontarget = 1;
-	    if ( facedex[0] < 0){
-	        facedex[0] = jij;
-            } else {
-	        facedex[1] = jij;
-            }
-      #ifdef  RAYDIAGNOSE
-      fprintf(stderr,"intersection with computation cube face %d\n",jij);
-      #endif
-      }
-  }
-  if (ontarget == 0)
-  goto salida;
-
-// Compute t1,t2 for CYLINDRICAL COORDINATES:
-// as well as facedex[0,1]: faces of entry/exit.
-#elif defined CYLINDRICAL
-  vdhA = (unit[0]*unit[0] + unit[1]*unit[1]);
-  gam = 2.0 * (unit[0] * nrpt[0] + unit[1] * nrpt[1]);
-  rtmp = nrpt[0] * nrpt[0] + nrpt[1] * nrpt[1] - rmax * rmax;
-  if ( vdhA > rayeps) {
-    junk[0] =
-      (-gam - sqrt(gam * gam - 4. * vdhA * rtmp)) / (2.*vdhA);
-    junk[1] =
-      (-gam + sqrt(gam * gam - 4. * vdhA * rtmp)) / (2.*vdhA);
-  } else {
-    junk[0] = 1.e12;
-    junk[1] = 1.e12;
-  }
-  junk[2] =  1.e12;	/* these will not contribute */
-  junk[3] =  1.e12;
-  for (jij = 4; jij < 6; jij += 2) {
-    if ( fabs(unit[jij/2]) > rayeps ) {
-      junk[jij] = (-rmax - nrpt[jij / 2]) / unit[jij / 2];
-      junk[jij + 1] = (rmax - nrpt[jij / 2]) / unit[jij / 2] ;
-    } else {
-      junk[jij] = 1.e12;
-      junk[jij + 1] = 1.e12;
-    }
-  }
-  ontarget = 0;
-  facedex[0] = -1; /* face[0] contains junk[] of the 1st intersection */
-  facedex[1] = -1; /*     [2]                        2nd  */
-  for (jij = 0; jij < 6; jij++){
-    g1[0] = nrpt[0] + junk[jij]*unit[0];
-    g1[1] = nrpt[1] + junk[jij]*unit[1];
-    g1[2] = nrpt[2] + junk[jij]*unit[2];
-#ifdef  RAYDIAGNOSE
-        fprintf(stderr,"%d: z = %1.10g, rr = %1.10g\n",jij, g1[2],sqrt(g1[0]*g1[0] + g1[1]*g1[1]) );
-        fflush(stderr);
-#endif
-    if ( (fabs(g1[2]) < rmax + grideps) &&
-         (sqrt(g1[0]*g1[0] + g1[1]*g1[1]) < rmax + grideps) ){
-            ontarget = 1;
-	    if ( facedex[0] < 0){
-	        facedex[0] = jij;
-            } else {
-	        facedex[1] = jij;
-            }
-#ifdef  RAYDIAGNOSE
-            fprintf(stderr,"cylinder boundary %d: %1.10g, %1.10g, %1.10g\n",
-		    jij,g1[0],g1[1],g1[2]);
-            fflush(stderr);
-#endif
-    }
-  }
-  if ( ontarget == 0)
-  goto salida;
-
-// Compute t1,t2 for SPHERICAL COORDINATES:
-#elif defined HOLLOW_SPHERE
+#elif defined HOLLOW_SPHERE  // Compute t1,t2 
 
   ontarget = 1;
   if (impact > RMAX ){
@@ -297,24 +179,6 @@
 
 #endif
 
-#if defined CARTESIAN || defined CYLINDRICAL
-   if (junk[facedex[0]] < junk[facedex[1]] ){
-     t1 = junk[facedex[0]];
-     t2 = junk[facedex[1]];
-   } else {
-     t1 = junk[facedex[1]];
-     t2 = junk[facedex[0]];
-   }
-   /*  I'M NOT SURE THIS DOES ANY GOOD...
-   t1 = t1 + grideps;
-   if (t2 > 0){
-     t2 = t2 - grideps;
-   } else {
-     t2 = t2 + grideps;
-   }
-   */
-#endif
-
 // LOS endpoints position vector coordinates in CS-3.
 // This is valid for all geometries.
    for (jij = 0; jij < 3; jij++)
@@ -330,71 +194,8 @@
    // dlos1 = sqrt(r3dot(r3sub(los1,sun_ob3),r3sub(los1,sun_ob3)));
    // dlos2 = sqrt(r3dot(r3sub(los2,sun_ob3),r3sub(los2,sun_ob3)));
 
-  /* put the bin number of LOS endpoints into binbin array -
-       see CARTESIAN example for ordering */
+  /* put the bin number of LOS endpoints into binbin array */
 
-#ifdef CARTESIAN
-
-  binbin[0] = floor((los1[0] + rmax) / deltagrid);
-  binbin[1] = floor((los2[0] + rmax) / deltagrid);
-  binbin[2] = floor((los1[1] + rmax) / deltagrid);
-  binbin[3] = floor((los2[1] + rmax) / deltagrid);
-  binbin[4] = floor((los1[2] + rmax) / deltagrid);
-  binbin[5] = floor((los2[2] + rmax) / deltagrid);
-
-  /* sometime small errors put the end point just
-   *  outside the box */
-  for (jij = 0; jij < 6; jij++){
-    if (binbin[jij] == NCELLS)
-      binbin[jij] = NCELLS - 1;
-  }
-
-#elif defined CYLINDRICAL
-
-  rtmp = sqrt(los1[0]*los1[0] + los1[1]*los1[1]);
-  binbin[0] = floor(rtmp * ((double) NRAD) / rmax);
-  rtmp = sqrt(los2[0]*los2[0] + los2[1]*los2[1]);
-  binbin[1] = floor(rtmp * ((double) NRAD) / rmax);
-
-  /* sometime small errors put the end point just
-   *  outside the computional cylinder */
-  if (binbin[0] == NRAD)
-    binbin[0] = NRAD - 1;
-  if (binbin[1] == NRAD)
-    binbin[1] = NRAD - 1;
-
-
-  ptmp = atan2(los1[1], los1[0]);
-  if (ptmp < 0.0)
-    ptmp += 2.0 * M_PI;
-  binbin[2] = floor(ptmp * ((double) NPHI) / 2.0 / M_PI);
-#ifdef RAYDIAGNOSE
-  fprintf(stderr,"entry phi = %3.6g deg, ",ptmp*180./M_PI);
-#endif
-
-  rtmp = atan2(los2[1], los2[0]);  
-if (rtmp < 0.0)
-    rtmp += 2.0 * M_PI;
-  binbin[3] = floor(rtmp * ((double) NPHI) / 2.0 / M_PI);
-  /* set the wrap parameter */
-  wrap = 0;
-  if ( fabs(rtmp - ptmp) > M_PI )
-     wrap = 1;
-#ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit phi = %3.6g deg ==> wrap = %d\n", rtmp*180./M_PI,wrap);
-#endif
-
-  binbin[4] = floor((los1[2] + rmax) / deltagrid);
-  binbin[5] = floor((los2[2] + rmax) / deltagrid);
-
-  /* sometime small errors put the end point just
-   *  outside the computional cylinder */
-  if (binbin[4] == NZ)
-    binbin[4] = NZ - 1;
-  if (binbin[5] == NZ)
-    binbin[5] = NZ - 1;
-
-#elif defined HOLLOW_SPHERE
    /* r, theta (polar angle), phi (azimuthal angle) coordinate order */
 
   // The next code computes binbin[0] and binbin[1] for all possible cases 1, 2 and 3,
@@ -477,7 +278,6 @@ if (rtmp < 0.0)
   fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);// Here wrap has the correct value already.
 #endif
 
-#endif
 
   /* find the "times" of bin crossings */
 
@@ -487,10 +287,8 @@ if (rtmp < 0.0)
   tdex = 2;
 
   // In hollow_sphere geometry, third element is the Spacecraft "time"
-#ifdef HOLLOW_SPHERE
   t[2] = t3;
   tdex++;
-#endif
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry distance t1 = %g, exit distance t2 = %g,\n",t1,t2);
@@ -500,142 +298,6 @@ if (rtmp < 0.0)
   fprintf(stderr,"point of exit  %1.10g, %1.10g, %1.10g\n",nrpt[0]+ t2*unit[0], nrpt[1]+t2*unit[1], nrpt[2]+t2*unit[2]);
   fprintf(stderr,"entry/exit bins (binbin) = %d %d %d %d %d %d\n",binbin[0],binbin[1],binbin[2],binbin[3],binbin[4],binbin[5]);
 #endif
-
-#ifdef CYLINDRICAL
-
-  /* binrmin = bin of minimum radius */
-  ttmp = -(unit[0]*nrpt[0] + unit[1]*nrpt[1]) /
-          (unit[0]*unit[0] + unit[1]*unit[1]);
-  rtmp = sqrt((nrpt[0] + ttmp*unit[0])*(nrpt[0] + ttmp*unit[0]) +
-              (nrpt[1] + ttmp*unit[1])*(nrpt[1] + ttmp*unit[1]));
-  binrmin = floor(rtmp*((double) NRAD) / rmax );
-
-  rtmp = nrpt[2] + ttmp*unit[2];
-
-  /*radial bin crossings */
-  vdhA = (unit[0]*unit[0] + unit[1]*unit[1]);
-  gam = 2.*(unit[0]*nrpt[0] + unit[1]*nrpt[1]);
-  ptmp = nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1];
-
-#ifdef RAYDIAGNOSE
-  fprintf(stderr,"RADIAL Bins: binrmin= %d, bin crossings: ",binrmin);
-  fflush(stderr);
-#endif
-
-  for (jij = MAX(binbin[0], binbin[1]) - 1; jij >= binrmin; jij--) {
-    rtmp = rmax * ((double) (jij + 1) / (double) NRAD); /* = outer radius of jij bin */
-    rtmp = ptmp - rtmp * rtmp;
-    ttmp =
-      (-gam - sqrt(gam*gam - 4.*vdhA*rtmp)) / (2.*vdhA);
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-#ifdef RAYDIAGNOSE
-      fprintf(stderr,"(%d,%g)",jij,ttmp);
-      fflush(stderr);
-#endif
-    }
-    ttmp =
-      (-gam + sqrt(gam*gam - 4.*vdhA*rtmp)) / (2.*vdhA);
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-#ifdef RAYDIAGNOSE
-      fprintf(stderr,"(%d,%g)",jij,ttmp);
-      fflush(stderr);
-#endif
-    }
-  }
-
-  /* angular bin crossings */
-
-#ifdef RAYDIAGNOSE
-  fprintf(stderr,"\nPHI Bins: bin crossings: ");
-  fflush(stderr);
-#endif
-
-  if (wrap == 0) {
-    for (jij = MIN(binbin[2], binbin[3]);
-         jij < MAX(binbin[2], binbin[3]); jij++) {
-      ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp =
-        (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
-      if ((ttmp > t1) && (ttmp < t2)) {
-        t[tdex] = ttmp;
-        tdex++;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,ttmp);
-        fflush(stderr);
-#endif
-      } else {
-        fprintf(stderr, "wrap = 0: out of bounds!!\n");
-        fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,(jij+1)*360./ (double) NPHI);
-        exit(32);
-      }
-    }
-  } else {
-    for (jij = MAX(binbin[2], binbin[3]); jij < NPHI; jij++) {
-      ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp =
-        (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
-      if ((ttmp > t1) && (ttmp < t2)) {
-        t[tdex] = ttmp;
-        tdex++;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,ttmp);
-        fflush(stderr);
-#endif
-      } else {
-        fprintf(stderr, "wrap = 1: out of bounds!!\n");
-        fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,(jij+1)*360./ (double) NPHI);
-        exit(32);
-      }
-    }
-    for (jij = 0; jij < MIN(binbin[2], binbin[3]); jij++) {
-      ptmp = tan((jij+1)*2.*M_PI / (double) NPHI);
-      ttmp =
-        (nrpt[1] - nrpt[0]*ptmp) / (unit[0]*ptmp - unit[1]);
-      if ((ttmp > t1) && (ttmp < t2)) {
-        t[tdex] = ttmp;
-        tdex++;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,ttmp);
-        fflush(stderr);
-#endif
-      } else {
-        fprintf(stderr, "wrap = 1: out of bounds!!\n");
-        fprintf(stderr, "ttmp = %g, ptmp = %g, jij = %d, phi = %g deg\n",ttmp,ptmp, jij,((jij+1)*360./ (double) NPHI));
-        exit(32);
-      }
-    }
-  }
-
-  /* z bin crossings */
-
-#ifdef RAYDIAGNOSE
-  fprintf(stderr,"\nZ Bins: bin crossings: ");
-  fflush(stderr);
-#endif
-  for (jij = MIN(binbin[4], binbin[5]);
-       jij < MAX(binbin[4], binbin[5]); jij++) {
-    ptmp = (jij + 1) * deltagrid - rmax;
-    ttmp = (ptmp - nrpt[2]) / unit[2] ;
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-#ifdef RAYDIAGNOSE
-      fprintf(stderr,"(%d,%g)",jij,ttmp);
-      fflush(stderr);
-#endif
-    } else {
-      fprintf(stderr,"ttmp out of bounds (Z bin crossing)!");
-      fprintf(stderr,"ttmp = %g, ptmp = %g, jij = %d, z = %g \n",ttmp,ptmp, jij, (jij+1)*deltagrid - rmax);
-      fflush(stderr);
-      exit(32);
-    }
-  }
-
-#elif defined HOLLOW_SPHERE
 
   /*radial bin crossings */
   if (impact <= ((double) RMIN)){
@@ -860,40 +522,6 @@ if (rtmp < 0.0)
     } /* jij loop */
   } // end of wrap = 1 condition
 
-#elif defined (CARTESIAN)
-
-  /* x bin crossings */
-  for (jij = MIN(binbin[0], binbin[1]); jij < MAX(binbin[0], binbin[1]);
-       jij++) {
-    ptmp = (jij + 1) * deltagrid - rmax;
-    ttmp = (ptmp - nrpt[0])/unit[0];
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-    }
-  }
-  /* y bin crossings */
-  for (jij = MIN(binbin[2], binbin[3]); jij < MAX(binbin[2], binbin[3]);
-       jij++) {
-    ptmp = (jij + 1) * deltagrid - rmax;
-    ttmp = (ptmp - nrpt[1])/unit[1];
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-    }
-  }
-  /* z bin crossings */
-  for (jij = MIN(binbin[4], binbin[5]); jij < MAX(binbin[4], binbin[5]);
-       jij++) {
-    ptmp = (jij + 1) * deltagrid - rmax;
-    ttmp = (ptmp - nrpt[2])/unit[2];
-    if ((ttmp > t1) && (ttmp < t2)) {
-      t[tdex] = ttmp;
-      tdex++;
-    }
-  }
-
-#endif
 
   // At this point, tdex = # of voxels that are threaded by the LOS, for all geometries.
   // +1 (spacecraft location) for hollow_sphere.
@@ -950,21 +578,6 @@ if (rtmp < 0.0)
     // Now compute "ardex": the column-index of the voxel.
     // The calculation is done for the three geometries.
 
-#ifdef CYLINDRICAL
-
-    rr = sqrt(xx * xx + yy * yy);
-    phiphi = atan2(yy, xx);
-    if (phiphi < 0.0)
-      phiphi += 2.0 * M_PI;
-
-    index[0] = floor((rr / rmax) * (double) NRAD);
-    index[1] = floor((phiphi / 2.0 / M_PI) * (double) NPHI);
-    index[2] = floor((zz + rmax) / deltagrid);
-
-    ardex = index[2]*NRAD*NPHI + index[1]*NRAD + index[0];
-
-#elif defined HOLLOW_SPHERE
-
     /* r index */
    //index[0] = floor((double) NRAD *(r - (double) RMIN)/(rmax - (double) RMIN)) ;
    // previous line now changed to:
@@ -992,16 +605,6 @@ if (rtmp < 0.0)
     // starting at [irad,ith,iph]=[0,0,0] and then ordered:
     // first by rad, then by theta, finally by phi.
     ardex = index[2]*NRAD*NTHETA + index[1]*NRAD + index[0];
-
-#elif defined CARTESIAN
-
-    index[0] = floor((xx + rmax) / deltagrid);
-    index[1] = floor((yy + rmax) / deltagrid);
-    index[2] = floor((zz + rmax) / deltagrid);
-
-    ardex = index[2]*NCELLS*NCELLS + index[1]*NCELLS + index[0];
-
-#endif
 
     if (ardex > NBINS - 1){
       fprintf(stderr,"ardex (%d) exceeds max. voxel number (%d)!\n", ardex,NBINS);
