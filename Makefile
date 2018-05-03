@@ -33,9 +33,6 @@ BIN = builda callsolve_cg callsolve_fess auto_cv_brent compare
 
 all: tomroot.h $(BIN)
 
-tomroot.h:  $(TOMROOT_HEADER) 
-	cp $(TOMROOT_HEADER) tomroot.h
-
 builda: $(OBJ_BUILD) builda.o build_subA.o rcs_llist.o llist.o
 
 compare: $(OBJ_BUILD) compare.o

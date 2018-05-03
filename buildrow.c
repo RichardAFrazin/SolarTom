@@ -25,18 +25,13 @@
    double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
    double deltagrid, grideps, rayeps;
    double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
-   int binbin[6], facedex[2], jij, tdex, index[3], ardex, ontarget;
+   int binbin[6], jij, tdex, index[3], ardex, ontarget;
    double abstrmin, abstrmax, *dtpr; // New variables added by Albert
    int index0; // New variables added by Albert
    char case_string[]="0";
-
-  rayeps = 1.e-6;
-#ifdef HOLLOW_SPHERE
   int wrap, binrmin;
   double rr, phiphi;
   deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
-  grideps = 1.e-6*deltagrid;
-#endif
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"ENTERING BUILDROW: rho1 = %1.12g, eta1 = %1.12g\n",rho1, eta1);
@@ -109,8 +104,6 @@
    *    hits the edge of the grid, set ontarget = 1
    */
 
-#elif defined HOLLOW_SPHERE  // Compute t1,t2 
-
   ontarget = 1;
   if (impact > RMAX ){
     /* Is the LOS outside of computation sphere?  If so, just
@@ -176,8 +169,6 @@
    // Assign the SIGNED values to t1 and t2:
    t1 = junk[0];
    t2 = junk[1];
-
-#endif
 
 // LOS endpoints position vector coordinates in CS-3.
 // This is valid for all geometries.
