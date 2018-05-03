@@ -15,7 +15,7 @@ compare
 callsolve_cg*
 row_to_col
 geomtest
-buildrow.c_STATIC
+*.c_STATIC
 comp_I_CircOrbit01
 comp_O_CircOrbit01
 compare.c_STATIC
