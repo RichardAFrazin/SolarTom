@@ -1,2 +1,2 @@
-#define TOMROOT "/data1/tomography/"
+#define TOMROOT "/home/rfrazin/tomography/"
 
