@@ -26,14 +26,6 @@
 #define WGETCOMMAND "/usr/bin/wget --quiet -P"  /* put the wget binary and path */
 #endif
 
-#if (defined EITBUILD || defined EUVIBUILD || AIABUILD)
-#define HOLLOW_SPHERE  /* hollow sphere geometry for EUV tomography */ 
-#else   /* white light tomography options */
-/*#define CYLINDRICAL*/ 		/* use for cylindrical grid */
-/*#define CARTESIAN*/    /* cartesian grid */
-#define HOLLOW_SPHERE
-#endif
-
 
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
 #define THOMSON		/* VdH Thomson scattering calculation */
@@ -43,15 +35,7 @@
 #error Undefined LOS weighting!
 #endif
 
-#ifdef CYLINDRICAL
-#define NBINS (NRAD*NPHI*NZ)
-#elif defined CARTESIAN
-#define NBINS (NCELLS*NCELLS*NCELLS)
-#elif defined HOLLOW_SPHERE
-#define NBINS (NRAD*NTHETA*NPHI)
-#else
-#error Unknown computation grid type!
-#endif
+#define NBINS (NRAD*NTHETA*NPHI)  // for hollow_sphere
 
 /* constants */
 #define ARCSECRAD (M_PI / 180. / 3600.)

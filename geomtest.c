@@ -124,15 +124,8 @@ fprintf(stderr,"sun_ob2: [%g, %g, %g]\n",sun_ob2[0],sun_ob2[1],sun_ob2[2]);
 
   fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
        
-
-#ifdef CARTESIAN
-	deltagrid = (2.0 * rmax) / (double) NCELLS;
-#elif defined (CYLINDRICAL)
-	deltagrid = (2.0 * rmax) / (double) NZ;
-#elif defined HOLLOW_SPHERE 
-        deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
-#endif
-
+fprintf(stderr, "geomtest.c: setting value of deltagrid before calling buildrow.c.  You might not want this.\n")
+deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
 
 	hasdata = 1;
 #include "buildrow.c"
