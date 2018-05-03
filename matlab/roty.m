@@ -1,0 +1,6 @@
+function [Ry] = roty(ay)
+% to zero the z component ay = -atan2(q(3),q(1)) ;
+
+Ry = [  cos(ay),    0    , -sin(ay) ; ...
+         0     ,    1    ,    0     ; ...
+        sin(ay),    0    ,  cos(ay) ];
