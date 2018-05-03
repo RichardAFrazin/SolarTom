@@ -1,8 +1,10 @@
-TOMROOT_HEADER = tomroot.iommi.h
-CC = gcc
+TOMROOT_HEADER = tomroot.h
+
+#CC = clang 
+ CC = gcc    # for Linux systems
 
 DEFINES =
-CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
+ CFLAGS = -Wall -O3 -I/home/rfrazin/tomography/wcstools-3.7.0/libwcs -L/home/rfrazin/tomography/wcstools-3.7.0/libwcs
 
 #################################-I/usr/include/sys
 
@@ -17,8 +19,7 @@ INDENT_FLAGS = --style=kr --indent=spaces=2
 
 #####################################################################
 
-
-SRC_BUILD = get_orbit.c r3misc.c rots.c
+SRC_BUILD = get_orbit.c r3misc.c rots.c grids.c
 OBJ_BUILD = $(SRC_BUILD:%.c=%.o)
 
 SRC_SOLVE = fess_hu.c cg_quad.c sparse.c normcalc.c 
@@ -41,13 +42,17 @@ compare: $(OBJ_BUILD) compare.o
 
 datetest: $(OBJ_BUILD) datetest.o
 
+## print_grid: $(CC) buildA_params.h grids.c print_grid.c -o print_grid
+
+print_grid: $(OBJ_BUILD) print_grid.o
+
 solve_cg.o: headers.h
 solve_cg.o: CFLAGS += -UFESSMIN -DCONJGRAD
 solve_cg.o: solve.c
 	$(CC) -c $(CFLAGS) $(DEFINES) $< -o $@
 
 callsolve_cg: $(OBJ_SOLVE) callsolve.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 solve_fess.o: headers.h
 solve_fess.o: CFLAGS += -UCONJGRAD -DFESSMIN
@@ -55,16 +60,16 @@ solve_fess.o: solve.c
 	$(CC) -c $(CFLAGS) $(DEFINES) $< -o $@
 
 callsolve_fess: $(OBJ_SOLVE) callsolve.o solve_fess.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 ###auto_cv: $(OBJ_SOLVE) auto_cv.o amoeba.o solve_cg.o
-###	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+###	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 auto_cv_brent: $(OBJ_SOLVE) auto_cv_brent.o fminbr.o cvcalc.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 cv_brent_fixed: $(OBJ_SOLVE) cv_brent_fixed.o fminbr.o cvcalc.o solve_cg.o
-	gcc $(CFLAGS) -o $@ $^ $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 row_extract: row_extract.o sparse.o
 
@@ -95,7 +100,6 @@ indent:
 clean:
 	rm -f *.o $(BIN)
 
-
 # DO NOT DELETE
 headers.h: buildA_params.h solve_cv_params.h  tomroot.h
 get_orbit.o: headers.h  buildA_params.h solve_cv_params.h
@@ -118,3 +122,5 @@ fminbr.o: headers.h buildA_params.h solve_cv_params.h
 cv_brent_fixed.o: headers.h buildA_params.h solve_cv_params.h
 auto_cv_brent.o: headers.h buildA_params.h solve_cv_params.h
 extract_block.o: headers.h buildA_params.h solve_cv_params.h 
+print_grid.o: buildA_params.h grids.c print_grid.c
+
