@@ -118,16 +118,53 @@
   abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
   if (dsun > ((double) RMAX)){
-  	case_str[0] = "1"
-  	if (impact > 1.){
- 	  case_str[1] = "A";
-	} else {
-	  case_str[1] = "C";
-	} 
-
-
-fprintf(stderr, "the cases as coded below are not mutually exclusive.  for example, the cases 1 condition does not excluded the cases 2 condition.\n")
-
+    case_str[0] = "1";
+    if (impact <= 1.){
+      case_str[1] = "C";
+    } else {
+      if (){
+      case_str[1] = "A";
+      } else {
+      case_str[1] = "B";
+      }
+    }
+  } else if ((dsun <= (double) RMAX) && (dsun >= (double) RMIN)){
+    case_str[0] = "2";
+    if (impact > 1.){
+      if (){
+	case_str[1] = "A";
+      } else if () {
+	case_str[1] = "B";
+      } else if () {
+	case_str[1] = "C";
+      } else {
+	case_str[1] = "D";
+      }
+    } else {  // impact <= 1.
+      if ((r3dot(unit, sun_ob3) < 0.){
+	case_str[1] = "E";
+      } else {
+        case_str[1] = "F";
+      }
+    }
+  } else { // dsun < RMIN
+    case_str[0] = "3";
+    if (impact > 1.){ 
+      if () {
+	case_str[1] = "A";
+      } else {
+	case_str[1] = "B";
+      }
+    } else {
+      if (r3dot(unit,sun_ob3) < 0) {
+	case_str[1] = "C";
+	ontarget = 0;
+	goto salida;
+      } else {
+	case_str[1] = "D";
+      }
+    }
+  }
 
   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
    
