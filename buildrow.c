@@ -21,22 +21,23 @@
 
 /***********  BEGIN BUILDROW ***********************/
 {
-   double nrpt[3], g1[3], unit[3], los1[3], los2[3];
-   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
-   double deltagrid, grideps, rayeps;
-   double junk[6], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
-   int binbin[6], jij, tdex, index[3], ardex, ontarget;
-   double abstrmin, abstrmax, *dtpr; // New variables added by Albert
-   int index0; // New variables added by Albert
-   char case_string[]="0";
+  double nrpt[3], g1[3], unit[3], los1[3], los2[3];
+  double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
+  double junk[2], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
+  int binbin[6], jij, tdex, index[3], ardex, ontarget;
+  double abstrmin, abstrmax, bin_bdy[2]; 
+  int index0;
+  char case_str[]="xx";
   int wrap, binrmin;
   double rr, phiphi;
-  deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"ENTERING BUILDROW: rho1 = %1.12g, eta1 = %1.12g\n",rho1, eta1);
   fflush(stderr);
 #endif
+
+  junk[0] = 0.; junk[1] = 0.;
+
 
   /* unit is the LOS unit vector
    * nrpt is the nearest point vector
@@ -46,7 +47,7 @@
    *   TOWARD the observer) */
 
   // Note in CASE-3-D Unit MAY point AWAY from the observer and AWAY the Sun,
-  // I will ASSUME ight now this is already possible in the current code
+  // I will ASSUME this is already possible in the current code
   // and simply not contemplated so, and hence commented so, by Rich.
   // If so, pointing towards or away the Sun is simply characterized by
   // r3dot(unit,sun_ob3) > 0 or < 0, respectively.
@@ -94,7 +95,7 @@
    * los1 and los2 mark where the LOS enters and leaves the computation area
    *
    * junk[] are the (signed) distances from nrpt where the LOS crosses
-   *    the max and min values of the computation box for each of the 3
+   *    the max and min values of the computation ball for each of the 3
    *    coordinates
    *
    * If the LOS misses the computation grid, set ontarget = 0 and
@@ -112,22 +113,34 @@
     goto salida;
   }
 
-   // Un-signed crossing times at radii RMIN and RMAX.
-   abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
-   abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
+  // Un-signed crossing times at radii RMIN and RMAX.
+  abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
+  abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
-   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
+  if (dsun > ((double) RMAX)){
+  	case_str[0] = "1"
+  	if (impact > 1.){
+ 	  case_str[1] = "A";
+	} else {
+	  case_str[1] = "C";
+	} 
+
+
+fprintf(stderr, "the cases as coded below are not mutually exclusive.  for example, the cases 1 condition does not excluded the cases 2 condition.\n")
+
+
+  // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
    
    if (dsun > ((double) RMAX)){ // Cases 1.
      strcpy(case_string,"1");
      if (impact > 1.0){         // Cases 1A, 1B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
-       }
+     }
      if (impact <= 1.0){        // Case 1C.
        junk[0] = -abstrmax;
        junk[1] = -abstrmin;
-       }
+     }
    } // Cases 1.
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
@@ -135,7 +148,7 @@
      if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
-       }
+     }
      if (impact <= 1.0){             // Cases 2E, 2F.
        if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
        junk[0] = -abstrmax;
@@ -145,7 +158,7 @@
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
-       }
+     }
    } // Cases 2.
 
    if (dsun < ((double) RMIN)){      // Cases 3.
@@ -153,7 +166,7 @@
      if (impact > 1.0){              // Cases 3A, 3B.
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
-       }
+     }
      if (impact < 1.0){
        if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
          ontarget = 0;
@@ -163,7 +176,7 @@
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
        }
-       }
+     }
    } // Cases 3
 
    // Assign the SIGNED values to t1 and t2:
@@ -178,16 +191,8 @@
     los2[jij] = nrpt[jij] + t2*unit[jij];
    }
 
-   // At this point: los1, los2 and sun_ob3, are all given in SC-3.
-
-   // Compute distances Spacecraft-los1 (dlos1) and Spacecraft-los2 (dlos2)
-   // not needed for now, leave it here commented out in case we need them in the future
-   // dlos1 = sqrt(r3dot(r3sub(los1,sun_ob3),r3sub(los1,sun_ob3)));
-   // dlos2 = sqrt(r3dot(r3sub(los2,sun_ob3),r3sub(los2,sun_ob3)));
-
-  /* put the bin number of LOS endpoints into binbin array */
-
-   /* r, theta (polar angle), phi (azimuthal angle) coordinate order */
+   /* put the bin number of LOS endpoints into binbin array:
+      r, theta (polar angle), phi (azimuthal angle) coordinate order */
 
   // The next code computes binbin[0] and binbin[1] for all possible cases 1, 2 and 3,
   // defined above when computing t1 and t2.;
@@ -199,48 +204,48 @@
      if (impact <= 1.0){        // Case 1C.
        binbin[0] = NRAD-1;
        binbin[1] = 0;
-       }
+     }
    } // Cases 1.
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
      if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
        binbin[0] = NRAD-1;
        binbin[1] = NRAD-1;
-       }
+     }
      if (impact <= 1.0){             // Cases 2E, 2F.
        if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
-       binbin[0] = NRAD-1;
-       binbin[1] = 0;
+         binbin[0] = NRAD-1;
+         binbin[1] = 0;
        }
        if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
-       binbin[0] = 0;
-       binbin[1] = NRAD-1;
+         binbin[0] = 0;
+         binbin[1] = NRAD-1;
        }
-       }
+     }
    } // Cases 2.
 
    if (dsun < ((double) RMIN)){      // Cases 3.
      if (impact > 1.0){              // Cases 3A, 3B.
        binbin[0] = 0;
        binbin[1] = NRAD-1;
-       }
+     }
      if (impact < 1.0){
        if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
          ontarget = 0;
          goto salida; // it went to salida already when computing t1,t2, just included the line for completeness of cases. 
        }
        if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
-       binbin[0] = 0;
-       binbin[1] = NRAD-1;
+         binbin[0] = 0;
+         binbin[1] = NRAD-1;
        }
-       }
+     }
    } // Cases 3
 
-  // Compute Latitude [rad] of vector los1 in CS-3:
+  // Compute Latitude [rad] of vector los1
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
-  // Compute Theta bin of vector los1, taking Theta=0 in South pole, and Theta=Pi in North pole.
-  // Works well only wih uniform theta grid. !! 
-  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
+  // Compute Theta bin of vector los1, taking theta=0 as the South pole,  theta=Pi as the North pole.
+  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );  // assumes uniform theta grid
+  
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry theta = %g deg, ",rtmp*180./M_PI);
 #endif
@@ -250,9 +255,10 @@
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
 #endif
-  // Compute Longitude [rad] of vector los1 in CS-3, making sure is in range [0,2pi].
+  // Compute Longitude [rad] of vector los1
   rtmp = atan2(los1[1], los1[0]);
-  if (rtmp < 0.) rtmp += 2.*M_PI;
+  if (rtmp < 0.)
+    rtmp += 2.*M_PI;
   // Compute Phi bin of vector los1
   binbin[4] = floor(rtmp * ((double) NPHI)/2./M_PI);
 #ifdef RAYDIAGNOSE
@@ -260,13 +266,14 @@
 #endif
   // Same Longitude/Phi computations for vector los2:
   ptmp = atan2(los2[1], los2[0]);
-  if (ptmp < 0.) ptmp += 2.*M_PI;
+  if (ptmp < 0.)
+    ptmp += 2.*M_PI;
   binbin[5] = floor(ptmp * ((double) NPHI)/2./M_PI);
   wrap = 0;
-  if ( fabs(rtmp - ptmp) > M_PI )
-    wrap = 1; // If unsigned Longitude difference between los1 and los2 is larger than Pi.
+  if ( fabs(rtmp - ptmp) > M_PI )  // check for wrapping (crossing phi = 0) 
+    wrap = 1; 
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);// Here wrap has the correct value already.
+  fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);
 #endif
 
 
@@ -295,9 +302,7 @@
      binrmin = 0;  /* binrmin = bin of minimum radius */
   } else {
      binrmin = rad_bin_number(impact);
-     //     fprintf(stderr,"impact = %g, bin = %d.\n",impact,binrmin);
   }
-
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"RADIAL Bins: binrmin= %d, bin crossings: ",binrmin);
   fflush(stderr);
@@ -306,38 +311,35 @@
   /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
   // or by t2 (case 2F and all cases 3).
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-        dtpr = rad_bin_boundaries(jij);  
-        rtmp = *dtpr; // outer boundary of cell jij.
-	// fprintf(stderr,"index = %d, r = %g, dr = %g\n",jij,(*dtpr+*(dtpr+1))/2.,(*dtpr-*(dtpr+1)));
+    rad_bin_boundaries(jij, bin_bdy);  
+    rtmp = *bin_bdy; // outer boundary of cell jij.
 
-  // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
-  // For cases 1, 2, 3, carefuly decide when to assign it negative sign, positive sign,
-  // or take both when appropriate.
-  ttmp = sqrt(rtmp*rtmp - impact*impact) ;
-
-  if (dsun > ((double) RMAX)){ // Cases 1.
+    // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
+    // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.
+   ttmp = sqrt(rtmp*rtmp - impact*impact) ;
+    if (dsun > ((double) RMAX)){ // Cases 1.
       if (impact > 1.0){         // Cases 1A, 1B.
-       t[tdex] = -ttmp;
+        t[tdex] = -ttmp;
+#ifdef RAYDIAGNOSE
+        fprintf(stderr,"(%d,%g)",jij,t[dex]);
+        fflush(stderr);
+#endif
+        tdex++;
+        t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,t[dex]);
         fflush(stderr);
 #endif
        tdex++;
-       t[tdex] = +ttmp;
+      }
+      if (impact <= 1.0){        // Case 1C.
+        t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,t[dex]);
         fflush(stderr);
 #endif
-       tdex++;
-       }
-     if (impact <= 1.0){        // Case 1C.
-       t[tdex] = -ttmp;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
-#endif
-       tdex++;
-       }
+        tdex++;
+      }
    } // Cases 1.
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
@@ -377,7 +379,7 @@
 
    if (dsun < ((double) RMIN)){      // Cases 3.
       if (impact > 1.0){              // Cases 3A, 3B.
-       t[tdex] = +ttmp;
+        t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
         fprintf(stderr,"(%d,%g)",jij,t[dex]);
         fflush(stderr);
@@ -390,18 +392,17 @@
          goto salida;
        }
        if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
-       t[tdex] = +ttmp;
+         t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
+         fprintf(stderr,"(%d,%g)",jij,t[dex]);
+         fflush(stderr);
 #endif
        tdex++;
        }
-       }
+     }
    } // Cases 3
   }
 
-  //  exit(-1);
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
@@ -416,35 +417,33 @@
 #endif
 
   for (jij = 0; jij < NTHETA/2 + 1; jij++) {
-	 gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
-	 gam = gam*gam;
-	 vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
-	 vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
-	 sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
-//	 ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-	 ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
+	gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
+	gam = gam*gam;
+	vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
+	vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
+	sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
+    //ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+	ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
 		 
-	 if ((ttmp > t1) && (ttmp < t2)) {
-	    t[tdex] = ttmp;
-	    tdex++;
+	if ((ttmp > t1) && (ttmp < t2)) {
+	  t[tdex] = ttmp;
+	  tdex++;
 #ifdef RAYDIAGNOSE
-            fprintf(stderr,"(%d, %g deg, %g)"
-	      ,jij,(jij+1)*180./((double) NTHETA) - 90.,ttmp);
+      fprintf(stderr,"(%d, %g deg, %g)", jij, (jij+1)*180./((double) NTHETA) - 90., ttmp);
             fflush(stderr);
 #endif
-	 }
+    }  
 
-//       ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-	 ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam),2.*vdhA);
-	 if ((ttmp > t1) && (ttmp < t2)) {
-	    t[tdex] = ttmp;
-	    tdex++;
+    //ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+    ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
+    if ((ttmp > t1) && (ttmp < t2)) {
+	  t[tdex] = ttmp;
+	  tdex++;
 #ifdef RAYDIAGNOSE
-            fprintf(stderr,"(%d, %g deg, %g)"
-	      ,jij,(jij+1)*180./((double) NTHETA) - 90.,ttmp);
-            fflush(stderr);
+      fprintf(stderr,"(%d, %g deg, %g)",jij,(jij+1)*180./((double) NTHETA) - 90.,ttmp);
+      fflush(stderr);
 #endif
-	 }
+    }
   }
 
   /* azimuthal bin crossings */

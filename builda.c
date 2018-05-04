@@ -27,11 +27,11 @@ int main(int argc, char **argv) {
   char a_outfile[MAXPATH];
   FILE *fid_y, *fid_delta, *fid_w, *fid_j, *fid_m;
   FILE *fid_conf, *fid_log, *fid_date, *fid_block;
-  int nfiles, i, k, er;
+  int nfiles, i, er;
   char idstring[MAXPATH], filestring[MAXPATH];
   char filename_v[MAXPATH], filename_i[MAXPATH], filename_n[MAXPATH];
   char fn_w[MAXPATH], fn_m[MAXPATH], fn_j[MAXPATH];
-  int nc3, nA[NBINS], nA_old[NBINS], n_elem_exported;
+  int nc3, n_elem_exported;
   float *yy, *dd;
   int len_yy, len_y, opt;
   rcs_llist *rcs;
@@ -65,10 +65,6 @@ int main(int argc, char **argv) {
 
   nc3 = NBINS;
   len_y = 0;
-  for (k = 0; k < nc3; k++) {
-    nA_old[k] = 0;
-    nA[k] = 0;
-  }
 
   /* get the string containing the time and remove the spaces 
    *    the resulting string time_string will be used to make
