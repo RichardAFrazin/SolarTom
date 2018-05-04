@@ -33,12 +33,9 @@ int main(int argc, char **argv) {
   char fn_w[MAXPATH], fn_m[MAXPATH], fn_j[MAXPATH];
   int nc3, nA[NBINS], nA_old[NBINS], n_elem_exported;
   float *yy, *dd;
-  int len_yy, len_y, int_m1, i1, *ip1;
-  float float_m1, f1, *fp1;
+  int len_yy, len_y, opt;
   rcs_llist *rcs;
-  int opt;
   char optstring[] = "h";
-
 
   strcpy(a_outfile, A_OUTFILE);
 
@@ -67,11 +64,6 @@ int main(int argc, char **argv) {
   }
 
   nc3 = NBINS;
-  int_m1 = -1;
-  float_m1 = -1.0;
-  ip1 = &i1;
-  fp1 = &f1;
-
   len_y = 0;
   for (k = 0; k < nc3; k++) {
     nA_old[k] = 0;
