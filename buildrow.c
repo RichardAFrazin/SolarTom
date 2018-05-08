@@ -85,38 +85,7 @@
   // LOS' impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
 
-  // Compute t3, the SIGNED "time" of the spacecraft location
-  t3 = sqrt(dsun*dsun - impact*impact);
-  if (r3dot(unit,sun_ob3) < 0)
-    t3 *= -1.;
-	  
-  //------------------------------------------------------
-  /* Calculate t1,t2, the "times" where ray enters and leaves computation region
-   * los1 and los2 mark where the LOS enters and leaves the computation area
-   *
-   * junk[] are the (signed) distances from nrpt where the LOS crosses
-   *    the max and min values of the computation ball for each of the 3
-   *    coordinates
-   *
-   * If the LOS misses the computation grid, set ontarget = 0 and
-   *     exit buildrow.c .
-   *
-   * If any of the endpoints specified by the junk vector
-   *    hits the edge of the grid, set ontarget = 1
-   */
-
-  ontarget = 1;
-  if (impact > RMAX ){
-    /* Is the LOS outside of computation sphere?  If so, just
-         treat it has having no data (see build_subA.c)*/
-    ontarget = 0;
-    goto salida;
-  }
-
-  // Un-signed crossing times at radii RMIN and RMAX.
-  abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
-  abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
-
+  // figure out which case is relevant for this LOS
   if (dsun > ((double) RMAX)){
     case_str[0] = "1";
     if (impact <= 1.){
@@ -165,6 +134,40 @@
       }
     }
   }
+
+
+  // Compute t3, the SIGNED "time" of the spacecraft location
+  t3 = sqrt(dsun*dsun - impact*impact);
+  if (r3dot(unit,sun_ob3) < 0)
+    t3 *= -1.;
+	  
+  //------------------------------------------------------
+  /* Calculate t1,t2, the "times" where ray enters and leaves computation region
+   * los1 and los2 mark where the LOS enters and leaves the computation area
+   *
+   * junk[] are the (signed) distances from nrpt where the LOS crosses
+   *    the max and min values of the computation ball for each of the 3
+   *    coordinates
+   *
+   * If the LOS misses the computation grid, set ontarget = 0 and
+   *     exit buildrow.c .
+   *
+   * If any of the endpoints specified by the junk vector
+   *    hits the edge of the grid, set ontarget = 1
+   */
+
+  ontarget = 1;
+  if (impact > RMAX ){
+    /* Is the LOS outside of computation sphere?  If so, just
+         treat it has having no data (see build_subA.c)*/
+    ontarget = 0;
+    goto salida;
+  }
+
+  // Un-signed crossing times at radii RMIN and RMAX.
+  abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
+  abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
+
 
   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
    
