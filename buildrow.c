@@ -85,7 +85,7 @@
   // LOS' impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
 
-  // figure out which case is relevant for this LOS
+  // Figure out which case is relevant for this LOS
   if (dsun > ((double) RMAX)){
     case_str[0] = "1";
     if (impact <= 1.){
