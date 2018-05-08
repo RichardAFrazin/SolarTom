@@ -38,7 +38,6 @@
 
   junk[0] = 0.; junk[1] = 0.;
 
-
   /* unit is the LOS unit vector
    * nrpt is the nearest point vector
    *
@@ -82,59 +81,65 @@
   r3eq(unit, r3tmp);
   // From now on NRPT and UNIT are given in CS-3, in [Rsun] units.
 
-  // LOS' impact parameter = Norm(NRPT)
+  // LOS impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
+
+  // Leave if LOS not hitting the computational ball, and treat it as having no data.
+  ontarget = 1;
+  if (impact > RMAX ){
+    ontarget = 0;
+    goto salida;
+  }
 
   // Figure out which case is relevant for this LOS
   if (dsun > ((double) RMAX)){
     case_str[0] = "1";
-    if (impact <= 1.){
+    if (impact >= RMIN){
+      case_str[1] = "A";
+    } else if (impact < RMIN && impact > 1.){
+      case_str[1] = "B";
+    } else if (impact < 1.){
       case_str[1] = "C";
     } else {
-      if (){
-      case_str[1] = "A";
-      } else {
-      case_str[1] = "B";
-      }
-    }
+      fprintf(stderr, "buildrow: unrecognized case 1 of spacecraft position.");
+      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
+      exit(0);
+    }      
   } else if ((dsun <= (double) RMAX) && (dsun >= (double) RMIN)){
     case_str[0] = "2";
-    if (impact > 1.){
-      if (){
+    if (impact >= RMIN && r3dot(unit,sun_ob3) <= 0.){
 	case_str[1] = "A";
-      } else if () {
+    } else if (impact >= RMIN && r3dot(unit,sun_ob3) > 0.) {
 	case_str[1] = "B";
-      } else if () {
+    } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) < 0.) {
 	case_str[1] = "C";
-      } else {
+    } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) > 0.) {
 	case_str[1] = "D";
-      }
-    } else {  // impact <= 1.
-      if ((r3dot(unit, sun_ob3) < 0.){
-	case_str[1] = "E";
-      } else {
+    } else if (impact < 1. && r3dot(unit,sun_ob3) < 0.) { 
+        case_str[1] = "E";
+    } else if (impact < 1. && r3dot(unit,sun_ob3) > 0.) { 
         case_str[1] = "F";
-      }
-    }
-  } else { // dsun < RMIN
-    case_str[0] = "3";
-    if (impact > 1.){ 
-      if () {
-	case_str[1] = "A";
-      } else {
-	case_str[1] = "B";
-      }
     } else {
-      if (r3dot(unit,sun_ob3) < 0) {
-	case_str[1] = "C";
-	ontarget = 0;
-	goto salida;
-      } else {
-	case_str[1] = "D";
-      }
+      fprintf(stderr, "buildrow: unrecognized case 2 of spacecraft position.");
+      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
+      exit(0);
+    } 
+  } else { // if (dsun < RMIN)
+    case_str[0] = "3";
+    if (impact > 1. && r3dot(unit,sun_ob3) <= 0.){ 
+	case_str[1] = "A";
+    } else if (impact > 1. && r3dot(unit,sun_ob3) > 0.) {
+	case_str[1] = "B";
+    } else if (impact <= 1. && r3dot(unit,sun_ob3) < 0.) {
+        case_str[1] = "C";
+    } else if (impact <= 1. && r3dot(unit,sun_ob3) > 0.) {
+        case_str[1] = "D";
+    } else {
+      fprintf(stderr, "buildrow: unrecognized case 3 of spacecraft position.");
+      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
+      exit(0);
     }
   }
-
 
   // Compute t3, the SIGNED "time" of the spacecraft location
   t3 = sqrt(dsun*dsun - impact*impact);
@@ -156,14 +161,6 @@
    *    hits the edge of the grid, set ontarget = 1
    */
 
-  ontarget = 1;
-  if (impact > RMAX ){
-    /* Is the LOS outside of computation sphere?  If so, just
-         treat it has having no data (see build_subA.c)*/
-    ontarget = 0;
-    goto salida;
-  }
-
   // Un-signed crossing times at radii RMIN and RMAX.
   abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
   abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
@@ -172,7 +169,7 @@
   // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
    
    if (dsun > ((double) RMAX)){ // Cases 1.
-     strcpy(case_string,"1");
+     strcpy(case_str,"1");
      if (impact > 1.0){         // Cases 1A, 1B.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
@@ -184,7 +181,7 @@
    } // Cases 1.
 
    if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
-     strcpy(case_string,"2");
+     strcpy(case_str,"2");
      if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
        junk[0] = -abstrmax;
        junk[1] =  abstrmax;
@@ -202,7 +199,7 @@
    } // Cases 2.
 
    if (dsun < ((double) RMIN)){      // Cases 3.
-     strcpy(case_string,"3");
+     strcpy(case_str,"3");
      if (impact > 1.0){              // Cases 3A, 3B.
        junk[0] =  abstrmin;
        junk[1] =  abstrmax;
@@ -564,10 +561,10 @@
   while (t[index0] < t3) index0++;
   //  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
-  // If case_string NE "2" then index0 = index0 + 1, to exclude spacecraft location.
-  if (strcmp(case_string,"1") == 0 || strcmp(case_string,"3") == 0) index0++;
+  // If case_str NE "2" then index0 = index0 + 1, to exclude spacecraft location.
+  if (strcmp(case_str,"1") == 0 || strcmp(case_str,"3") == 0) index0++;
 
-  //  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_string,index0);
+  //  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_str,index0);
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
   //  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
