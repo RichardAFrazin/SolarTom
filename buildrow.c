@@ -108,17 +108,17 @@
   } else if ((dsun <= (double) RMAX) && (dsun >= (double) RMIN)){
     case_str[0] = "2";
     if (impact >= RMIN && r3dot(unit,sun_ob3) <= 0.){
-	case_str[1] = "A";
+	  case_str[1] = "A";
     } else if (impact >= RMIN && r3dot(unit,sun_ob3) > 0.) {
-	case_str[1] = "B";
+	  case_str[1] = "B";
     } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) < 0.) {
-	case_str[1] = "C";
+	  case_str[1] = "C";
     } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) > 0.) {
-	case_str[1] = "D";
+	  case_str[1] = "D";
     } else if (impact < 1. && r3dot(unit,sun_ob3) < 0.) { 
-        case_str[1] = "E";
+      case_str[1] = "E";
     } else if (impact < 1. && r3dot(unit,sun_ob3) > 0.) { 
-        case_str[1] = "F";
+      case_str[1] = "F";
     } else {
       fprintf(stderr, "buildrow: unrecognized case 2 of spacecraft position.");
       fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
@@ -127,13 +127,13 @@
   } else { // if (dsun < RMIN)
     case_str[0] = "3";
     if (impact > 1. && r3dot(unit,sun_ob3) <= 0.){ 
-	case_str[1] = "A";
+	  case_str[1] = "A";
     } else if (impact > 1. && r3dot(unit,sun_ob3) > 0.) {
-	case_str[1] = "B";
+	  case_str[1] = "B";
     } else if (impact <= 1. && r3dot(unit,sun_ob3) < 0.) {
-        case_str[1] = "C";
+      case_str[1] = "C";
     } else if (impact <= 1. && r3dot(unit,sun_ob3) > 0.) {
-        case_str[1] = "D";
+      case_str[1] = "D";
     } else {
       fprintf(stderr, "buildrow: unrecognized case 3 of spacecraft position.");
       fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
