@@ -291,9 +291,11 @@ static void convert_rcs_2_ccs(const char *rcs_v,
   assert(n_cols > 0);
   assert(n_rows > 0);
 
-  assert(rcs_v_fid = fopen(rcs_v, "r"));
-  assert(rcs_j_fid = fopen(rcs_j, "r"));
-  assert(rcs_r_fid = fopen(rcs_r, "r"));
+ // Note for Rich: In next three lines I surrounded the whole argument within extra (),
+ // as suggested by previous warnings.
+  assert((rcs_v_fid = fopen(rcs_v, "r")));
+  assert((rcs_j_fid = fopen(rcs_j, "r")));
+  assert((rcs_r_fid = fopen(rcs_r, "r")));
 
   n = (int *) calloc(n_cols, sizeof(int));
   assert(n);
@@ -358,10 +360,12 @@ static void convert_rcs_2_ccs(const char *rcs_v,
   fclose(rcs_v_fid);
   fclose(rcs_j_fid);
   fclose(rcs_r_fid);
-  
-  assert(ccs_v_fid = fopen(ccs_v, "w"));
-  assert(ccs_i_fid = fopen(ccs_i, "w"));
-  assert(ccs_n_fid = fopen(ccs_n, "w"));
+
+ // Note for Rich: In next three lines I surrounded the whole argument within extra (),
+ // as suggested by previous warnings. 
+  assert((ccs_v_fid = fopen(ccs_v, "w")));
+  assert((ccs_i_fid = fopen(ccs_i, "w")));
+  assert((ccs_n_fid = fopen(ccs_n, "w")));
 
   /* Write columnwise matrix from memory to file */
   for (col_index = 0; col_index < n_cols; col_index++) {
