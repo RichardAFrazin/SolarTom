@@ -26,7 +26,7 @@
   double junk[2], t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp;
   int binbin[6], jij, tdex, index[3], ardex, ontarget;
   double abstrmin, abstrmax, bin_bdy[2]; 
-  int index0;
+  int index0, case_num;
   char case_str[]="xx";
   int wrap, binrmin;
   double rr, phiphi;
@@ -84,68 +84,87 @@
   // LOS impact parameter = Norm(NRPT)
   impact = sqrt(r3dot(nrpt, nrpt)); // [Rsun] units
 
-  // Leave if LOS not hitting the computational ball, and treat it as having no data.
+  // Compute t3, the SIGNED "time" of the spacecraft position alog the LOS.
+  t3 = sqrt(dsun*dsun - impact*impact);
+  if (r3dot(unit,sun_ob3) < 0)
+    t3 *= -1.;
+
+  // If the LOS misses the computation grid set ontarget = 0,
+  // treating it as if it has no data, and exit builrow.c
+  // Note we allow now two possible situations for this.
   ontarget = 1;
-  if (impact > RMAX ){
+  if ( (impact > RMAX) || (dsun < RMIN && impact <= 1. && t3 < 0.) ){
     ontarget = 0;
     goto salida;
   }
 
-  // Figure out which case is relevant for this LOS
+  // Figure out case_str for spacecraft position.
+  case_num = 0;
   if (dsun > ((double) RMAX)){
-    case_str[0] = "1";
+    case_str[0] = '1';
     if (impact >= RMIN){
-      case_str[1] = "A";
+      case_str[1] = 'A';
+      case_num    = 11 ;
     } else if (impact < RMIN && impact > 1.){
-      case_str[1] = "B";
+        case_str[1] = 'B';
+        case_num    = 12 ;
     } else if (impact < 1.){
-      case_str[1] = "C";
+        case_str[1] = 'C';
+        case_num    = 13 ;
     } else {
-      fprintf(stderr, "buildrow: unrecognized case 1 of spacecraft position.");
-      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
-      exit(0);
+        fprintf(stderr, "buildrow: unrecognized case 1 of spacecraft position.");
+        fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, t3 = %g",RMIN,RMAX,dsun,impact,t3);
+        exit(0);
     }      
   } else if ((dsun <= (double) RMAX) && (dsun >= (double) RMIN)){
-    case_str[0] = "2";
-    if (impact >= RMIN && r3dot(unit,sun_ob3) <= 0.){
-	  case_str[1] = "A";
-    } else if (impact >= RMIN && r3dot(unit,sun_ob3) > 0.) {
-	  case_str[1] = "B";
-    } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) < 0.) {
-	  case_str[1] = "C";
-    } else if (impact < RMIN && impact > 1. && r3dot(unit,sun_ob3) > 0.) {
-	  case_str[1] = "D";
-    } else if (impact < 1. && r3dot(unit,sun_ob3) < 0.) { 
-      case_str[1] = "E";
-    } else if (impact < 1. && r3dot(unit,sun_ob3) > 0.) { 
-      case_str[1] = "F";
+    case_str[0] = '2';
+    if (impact >= RMIN && t3 <= 0.){
+        case_str[1] = 'A';
+	case_num    = 21 ;
+    } else if (impact >= RMIN && t3 > 0.) {
+        case_str[1] = 'B';
+	case_num    = 22 ;
+    } else if (impact < RMIN && impact > 1. && t3 < 0.) {
+        case_str[1] = 'C';
+	case_num    = 23 ;
+    } else if (impact < RMIN && impact > 1. && t3 > 0.) {
+        case_str[1] = 'D';
+	case_num    = 24 ;
+    } else if (impact < 1. && t3 < 0.) { 
+        case_str[1] = 'E';
+	case_num    = 25 ;
+    } else if (impact < 1. && t3 > 0.) { 
+        case_str[1] = 'F';
+	case_num    = 26 ;
     } else {
-      fprintf(stderr, "buildrow: unrecognized case 2 of spacecraft position.");
-      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
-      exit(0);
+        fprintf(stderr, "buildrow: unrecognized case 2 of spacecraft position.");
+        fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, t3 = %g",RMIN,RMAX,dsun,impact,t3);
+        exit(0);
     } 
   } else { // if (dsun < RMIN)
-    case_str[0] = "3";
-    if (impact > 1. && r3dot(unit,sun_ob3) <= 0.){ 
-	  case_str[1] = "A";
-    } else if (impact > 1. && r3dot(unit,sun_ob3) > 0.) {
-	  case_str[1] = "B";
-    } else if (impact <= 1. && r3dot(unit,sun_ob3) < 0.) {
-      case_str[1] = "C";
-    } else if (impact <= 1. && r3dot(unit,sun_ob3) > 0.) {
-      case_str[1] = "D";
+    case_str[0] = '3';
+    if (impact > 1. && t3 <= 0.){ 
+        case_str[1] = 'A';
+	case_num    = 31 ;
+    } else if (impact >  1. && t3 > 0.) {
+        case_str[1] = 'B';
+	case_num    = 32 ;
+    } else if (impact <= 1. && t3 < 0.) {
+        case_str[1] = 'C';
+	case_num    = 33 ;
+	fprintf(stderr, "buildrow: case_str valued 3C was allowed.");
+	fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, t3 = %g",RMIN,RMAX,dsun,impact,t3);
+	exit(0);
+    } else if (impact <= 1. && t3 > 0.) {
+        case_str[1] = 'D';
+	case_num    = 34 ;
     } else {
-      fprintf(stderr, "buildrow: unrecognized case 3 of spacecraft position.");
-      fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, Unit*SunOb3 = %g",RMIN,RMAX,dsun,impact,r3dot(unit,sun_ob3));
-      exit(0);
+        fprintf(stderr, "buildrow: unrecognized case 3 of spacecraft position.");
+        fprintf(stderr, "RMIN = %g, RMAX = %g, dsun = %g, impact = %g, t3 = %g",RMIN,RMAX,dsun,impact,t3);
+        exit(0);
     }
   }
 
-  // Compute t3, the SIGNED "time" of the spacecraft location
-  t3 = sqrt(dsun*dsun - impact*impact);
-  if (r3dot(unit,sun_ob3) < 0)
-    t3 *= -1.;
-	  
   //------------------------------------------------------
   /* Calculate t1,t2, the "times" where ray enters and leaves computation region
    * los1 and los2 mark where the LOS enters and leaves the computation area
@@ -153,9 +172,6 @@
    * junk[] are the (signed) distances from nrpt where the LOS crosses
    *    the max and min values of the computation ball for each of the 3
    *    coordinates
-   *
-   * If the LOS misses the computation grid, set ontarget = 0 and
-   *     exit buildrow.c .
    *
    * If any of the endpoints specified by the junk vector
    *    hits the edge of the grid, set ontarget = 1
@@ -165,61 +181,41 @@
   abstrmin = sqrt(((double) RMIN)*((double) RMIN) - impact*impact);
   abstrmax = sqrt(((double) RMAX)*((double) RMAX) - impact*impact);
 
-
-  // Compute SIGNED t1 and t2 for all possible on-target gemoetrical situations:
-   
-   if (dsun > ((double) RMAX)){ // Cases 1.
-     strcpy(case_str,"1");
-     if (impact > 1.0){         // Cases 1A, 1B.
-       junk[0] = -abstrmax;
-       junk[1] =  abstrmax;
-     }
-     if (impact <= 1.0){        // Case 1C.
-       junk[0] = -abstrmax;
-       junk[1] = -abstrmin;
-     }
-   } // Cases 1.
-
-   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
-     strcpy(case_str,"2");
-     if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
-       junk[0] = -abstrmax;
-       junk[1] =  abstrmax;
-     }
-     if (impact <= 1.0){             // Cases 2E, 2F.
-       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
-       junk[0] = -abstrmax;
-       junk[1] = -abstrmin;
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
-       junk[0] =  abstrmin;
-       junk[1] =  abstrmax;
-       }
-     }
-   } // Cases 2.
-
-   if (dsun < ((double) RMIN)){      // Cases 3.
-     strcpy(case_str,"3");
-     if (impact > 1.0){              // Cases 3A, 3B.
-       junk[0] =  abstrmin;
-       junk[1] =  abstrmax;
-     }
-     if (impact < 1.0){
-       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
-         ontarget = 0;
-         goto salida;
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
-       junk[0] =  abstrmin;
-       junk[1] =  abstrmax;
-       }
-     }
-   } // Cases 3
-
-   // Assign the SIGNED values to t1 and t2:
-   t1 = junk[0];
-   t2 = junk[1];
-
+  // For all possible on-target cases assign:
+  // t1 and t1, binbin[0] and binbin[1]
+  switch (case_num) {
+  case 11://"1A":
+  case 12://"1B":
+  case 21://"2A":
+  case 22://"2B":
+  case 23://"2C":
+  case 24://"2D":
+    t1 = -abstrmax;
+    t2 =  abstrmax;
+    binbin[0] = NRAD-1;
+    binbin[1] = NRAD-1;
+    break;
+  case 13://"1C":
+  case 25://"2E":
+    t1 = -abstrmax;
+    t2 = -abstrmin;
+    binbin[0] = NRAD-1;
+    binbin[1] = 0;
+    break;
+  case 26://"2F":
+  case 31://"3A":
+  case 32://"3B":
+  case 34://"3D":
+    t1 =  abstrmin;
+    t2 =  abstrmax;
+    binbin[0] = 0;
+    binbin[1] = NRAD-1;
+    break;
+  default:
+    fprintf(stderr, "buildrow: case_str = %s",case_str);
+    exit(0);
+  }
+  
 // LOS endpoints position vector coordinates in CS-3.
 // This is valid for all geometries.
    for (jij = 0; jij < 3; jij++)
@@ -228,55 +224,9 @@
     los2[jij] = nrpt[jij] + t2*unit[jij];
    }
 
-   /* put the bin number of LOS endpoints into binbin array:
-      r, theta (polar angle), phi (azimuthal angle) coordinate order */
-
-  // The next code computes binbin[0] and binbin[1] for all possible cases 1, 2 and 3,
-  // defined above when computing t1 and t2.;
-   if (dsun > ((double) RMAX)){ // Cases 1.
-     if (impact > 1.0){         // Cases 1A, 1B.
-       binbin[0] = NRAD-1;
-       binbin[1] = NRAD-1;
-     }
-     if (impact <= 1.0){        // Case 1C.
-       binbin[0] = NRAD-1;
-       binbin[1] = 0;
-     }
-   } // Cases 1.
-
-   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
-     if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
-       binbin[0] = NRAD-1;
-       binbin[1] = NRAD-1;
-     }
-     if (impact <= 1.0){             // Cases 2E, 2F.
-       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
-         binbin[0] = NRAD-1;
-         binbin[1] = 0;
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
-         binbin[0] = 0;
-         binbin[1] = NRAD-1;
-       }
-     }
-   } // Cases 2.
-
-   if (dsun < ((double) RMIN)){      // Cases 3.
-     if (impact > 1.0){              // Cases 3A, 3B.
-       binbin[0] = 0;
-       binbin[1] = NRAD-1;
-     }
-     if (impact < 1.0){
-       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
-         ontarget = 0;
-         goto salida; // it went to salida already when computing t1,t2, just included the line for completeness of cases. 
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
-         binbin[0] = 0;
-         binbin[1] = NRAD-1;
-       }
-     }
-   } // Cases 3
+  // Put the bin number of LOS endpoints into binbin array in
+  // r, theta (polar angle), phi (azimuthal angle) coordinate order.
+  // Components 0 and 1 of binbin already assigned above, do components 2,3,4,5 */
 
   // Compute Latitude [rad] of vector los1
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
@@ -313,7 +263,6 @@
   fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);
 #endif
 
-
   /* find the "times" of bin crossings */
 
   // First two elements are entry and exit "times"
@@ -321,7 +270,7 @@
   t[1] = t2;
   tdex = 2;
 
-  // In hollow_sphere geometry, third element is the Spacecraft "time"
+  // Third element is the Spacecraft "time"
   t[2] = t3;
   tdex++;
 
@@ -354,92 +303,52 @@
     // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
     // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.
    ttmp = sqrt(rtmp*rtmp - impact*impact) ;
-    if (dsun > ((double) RMAX)){ // Cases 1.
-      if (impact > 1.0){         // Cases 1A, 1B.
-        t[tdex] = -ttmp;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
-#endif
-        tdex++;
-        t[tdex] = +ttmp;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
-#endif
-       tdex++;
-      }
-      if (impact <= 1.0){        // Case 1C.
-        t[tdex] = -ttmp;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
-#endif
-        tdex++;
-      }
-   } // Cases 1.
 
-   if (dsun >= ((double) RMIN) && dsun <= ((double) RMAX)){ // Cases 2.
-      if (impact > 1.0){              // Cases 2A, 2B, 2C, 2D.
-       t[tdex] = -ttmp;
+   switch (case_num) {
+   case 11:
+   case 12:
+   case 21:
+   case 22:
+   case 23:
+   case 24:
+     t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
+     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fflush(stderr);
 #endif
-       tdex++;
-       t[tdex] = +ttmp;
+     tdex++;
+     t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
+     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fflush(stderr);
 #endif
-       tdex++;
-       }
-     if (impact <= 1.0){             // Cases 2E, 2F.
-       if (r3dot(unit,sun_ob3) < 0){ // Case 2E.
-       t[tdex] = -ttmp;
+     tdex++;
+     break;
+   case 13:
+   case 25:	  
+     t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
+     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fflush(stderr);
 #endif
-       tdex++;
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 2F.
-       t[tdex] = +ttmp;
+     tdex++;
+     break;
+   case 26:
+   case 31:
+   case 32:
+   case 34:
+     t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
+     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fflush(stderr);
 #endif
-       tdex++;
-       }
-       }
-   } // Cases 2.
-
-   if (dsun < ((double) RMIN)){      // Cases 3.
-      if (impact > 1.0){              // Cases 3A, 3B.
-        t[tdex] = +ttmp;
-#ifdef RAYDIAGNOSE
-        fprintf(stderr,"(%d,%g)",jij,t[dex]);
-        fflush(stderr);
-#endif
-       tdex++;
-       }
-     if (impact < 1.0){
-       if (r3dot(unit,sun_ob3) < 0){ // Case 3C; set ontarget=1 (LOS hits Sun w/o intersecting grid)
-         ontarget = 0;
-         goto salida;
-       }
-       if (r3dot(unit,sun_ob3) > 0){ // Case 3D.
-         t[tdex] = +ttmp;
-#ifdef RAYDIAGNOSE
-         fprintf(stderr,"(%d,%g)",jij,t[dex]);
-         fflush(stderr);
-#endif
-       tdex++;
-       }
-     }
-   } // Cases 3
-  }
-
+     tdex++;
+     break;
+   default:
+     fprintf(stderr, "buildrow: case_str = %s",case_str);
+     exit(0);
+   }
+   
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
@@ -550,10 +459,9 @@
   } // end of wrap = 1 condition
 
 
-  // At this point, tdex = # of voxels that are threaded by the LOS, for all geometries.
-  // +1 (spacecraft location) for hollow_sphere.
-  
-  // Sort all the bin crossing "times", in ascending order, works for all geometries:
+  // At this point, tdex = # of voxels that are threaded by the LOS, +1 (spacecraft location).
+ 
+  // Sort all the bin crossing "times", in ascending order.
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
   // Find index0 such that t[index0]=t3
@@ -561,9 +469,20 @@
   while (t[index0] < t3) index0++;
   //  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
-  // If case_str NE "2" then index0 = index0 + 1, to exclude spacecraft location.
-  if (strcmp(case_str,"1") == 0 || strcmp(case_str,"3") == 0) index0++;
-
+  // If case_str[0] NE "2" then index0 = index0 + 1, to exclude spacecraft location.
+  // OLD CODE: if (strcmp(case_str,"1") == 0 || strcmp(case_str,"3") == 0) index0++;
+  switch (case_num) {
+  case 11:
+  case 12:
+  case 13:
+  case 31:
+  case 32:
+  case 34:
+    index0++;
+    break;
+  default:
+    fprintf(stderr, "");
+  }
   //  fprintf(stderr, "Case # %s. Set index0 = %d.\n",case_str,index0);
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
@@ -694,7 +613,6 @@
     fwrite(&ttmp, sizeof(double), 1, fid_geomtest);
 #endif
 #endif
-
 
   } /*tdex loop */
 
