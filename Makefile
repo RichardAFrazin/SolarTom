@@ -4,7 +4,7 @@ TOMROOT_HEADER = tomroot.h
  CC = gcc    # for Linux systems
 
 DEFINES =
- CFLAGS = -Wall -O3 -I/home/rfrazin/tomography/wcstools-3.7.0/libwcs -L/home/rfrazin/tomography/wcstools-3.7.0/libwcs
+ CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
 
 #################################-I/usr/include/sys
 
@@ -32,6 +32,9 @@ SRC_AUX = amoeba.c fminbr.c builda.c datetest.c callsolve.c row_extract.c \
 BIN = builda callsolve_cg callsolve_fess auto_cv_brent compare
 
 all: tomroot.h $(BIN)
+
+tomroot.h:  $(TOMROOT_HEADER) 
+	cp $(TOMROOT_HEADER) tomroot.h
 
 builda: $(OBJ_BUILD) builda.o build_subA.o rcs_llist.o llist.o
 

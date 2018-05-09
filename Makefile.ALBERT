@@ -1,4 +1,4 @@
-TOMROOT_HEADER = tomroot.ALBERT.h
+TOMROOT_HEADER = tomroot.h
 
 #CC = clang 
  CC = gcc    # for Linux systems
