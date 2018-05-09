@@ -455,8 +455,6 @@
   case 34:
     index0++;
     break;
-  default:
-    fprintf(stderr, " ");
   }
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
