@@ -6,9 +6,7 @@
 
 /* geomtest.c uses RAYDIAGNOSE definition */
 
-/* Edited by Alberto M. Vásquez, CLASP Fall-2017, to handle WISPR,
- * added comments for documentation and did cosmetic edits for readability.
- */
+/* Edited by Alberto M. Vásquez, CLASP Fall-2017 */
 
 // Strategy to deal with the possibility of spacecraft being within computaional grid,
 // by A.M.Vasquez. We compute the SIGNED times of the LOS entering the computational
