@@ -285,13 +285,13 @@
    case 24:
      t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
-     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fprintf(stderr,"(%d,%g)",jij,t[tdex]);
      fflush(stderr);
 #endif
      tdex++;
      t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fprintf(stderr,"(%d,%g)",jij,t[tdex]);
      fflush(stderr);
 #endif
      tdex++;
@@ -300,7 +300,7 @@
    case 25:	  
      t[tdex] = -ttmp;
 #ifdef RAYDIAGNOSE
-     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fprintf(stderr,"(%d,%g)",jij,t[tdex]);
      fflush(stderr);
 #endif
      tdex++;
@@ -311,7 +311,7 @@
    case 34:
      t[tdex] = +ttmp;
 #ifdef RAYDIAGNOSE
-     fprintf(stderr,"(%d,%g)",jij,t[dex]);
+     fprintf(stderr,"(%d,%g)",jij,t[tdex]);
      fflush(stderr);
 #endif
      tdex++;

@@ -20,7 +20,7 @@ int
 main( int argc, char **argv)
 {
 	double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3],r3tmp[3];
-	double dsun, pang, deltagrid, rho1, eta1, carlong;
+	double dsun, pang, rho1, eta1, carlong; //deltagrid,
 	Rot R12, R23, Rtmp;
 	Rot *Rx, *Ry, *Rz;
 	double sun_ob3[3];// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
@@ -124,8 +124,8 @@ fprintf(stderr,"sun_ob2: [%g, %g, %g]\n",sun_ob2[0],sun_ob2[1],sun_ob2[2]);
 
   fprintf(stderr, "      Computed sun_ob3:  [%3.10g, %3.10g, %3.10g]\n\n",sun_ob3[0], sun_ob3[1], sun_ob3[2]);
        
-fprintf(stderr, "geomtest.c: setting value of deltagrid before calling buildrow.c.  You might not want this.\n")
-deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
+  //fprintf(stderr, "geomtest.c: setting value of deltagrid before calling buildrow.c.  You might not want this.\n")
+  //deltagrid = (rmax - ((double) RMIN)) / (double) NRAD;
 
 	hasdata = 1;
 #include "buildrow.c"
