@@ -328,7 +328,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 	    pBval[i][jj] *= 1.;
 #elif (defined KCOR)
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e-4; // Still need to check with Joan if Bsun in KCOR is center or disk-average, so may need an extra 0.79 here.
+	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
 #endif 
 
 #ifdef DROP_NEG_PB
