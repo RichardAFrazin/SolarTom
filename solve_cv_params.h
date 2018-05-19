@@ -19,7 +19,7 @@
 //
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
-#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
+#if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
 #define LAMBDA  {1.,1.e-6}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0,0,0,0}
 #define FILESTR0 ""

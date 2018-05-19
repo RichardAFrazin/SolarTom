@@ -23,7 +23,7 @@
   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
   double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; 
   int binbin[6], jij, tdex, index[3], ardex, ontarget;
-  double abstrmin, abstrmax, bin_bdy[2]; 
+  double abstrmin, abstrmax, *dtpr;//, bin_bdy[2]; 
   int index0, case_num;
   int wrap, binrmin;
   double rr, phiphi;
@@ -269,8 +269,8 @@
   /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
   // or by t2 (case 2F and all cases 3).
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-    rad_bin_boundaries(jij, bin_bdy);  
-    rtmp = *bin_bdy; // outer boundary of cell jij.
+    dtpr = rad_bin_boundaries(jij);  
+    rtmp = *dtpr; // outer boundary of cell jij.
 
     // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
     // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.

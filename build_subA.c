@@ -164,6 +164,17 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+#elif defined COMPBUILD
+    assert(hgetr8(header,"CROTA1"   ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+    /*
+    assert(hgetr8(header,"CRLN_OBS" ,&carlong));     // [deg] 
+    fprintf(stderr,"Header roll_offset: %e\n",roll_offset);
+    fprintf(stderr,"Header DSUN:        %e\n",dsun_obs   );
+    fprintf(stderr,"Header CRLT_OBS:    %e\n",obslat     );
+    fprintf(stderr,"Header CRLN_OBS:    %e\n",carlong    );
+    */
 #endif
 
 #ifdef MARSEILLES /* CROTA1 = INITANG1 - 0.5  (.5 deg offset) */ 
@@ -178,9 +189,12 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist    = sqrt(dist);
 
-    // Albert test printout:
+    /*
     fprintf(stderr,"Computed dist: %3.10g Rsun\n",dist/RSUN);
-
+    fprintf(stderr,"Header DSUN:   %3.10g Rsun\n",dsun_obs/RSUN/1.e3);    
+    exit(0);
+    */
+    
     for (i = 0; i < imsize; i++)
     {
       x_image[i] = pixsize * ((float) i - center_x);
@@ -202,15 +216,13 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     for ( i = 0;  i < imsize;  i++) {
     for (jj = 0; jj < imsize; jj++) {
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
-    
-
     }
     }
     
 for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -251,6 +263,9 @@ for (i = 0; i < imsize; i++) {
 #elif (defined KCOR)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
+#elif (defined COMPBUILD)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.0; // Keep units of the data
 #endif
 	  
 #ifdef DROP_NEG_PB
@@ -320,11 +335,11 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
 
-  // If dealing with KCOR data R12, spol2 and sun_ob2 above are crap.
+  // If dealing with KCOR or COMP data R12, spol2 and sun_ob2 above are crap.
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
-  // Earth-Sun distance, which are both known from the KCOR header:
-#if defined KCOR
+  // Earth-Sun distance, which are both known from the header:
+#if (defined KCOR || defined COMPBUILD)
     tilt     = obslat*M_PI/180.0;
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
@@ -332,6 +347,7 @@ for (i = 0; i < imsize; i++) {
   sun_ob2[0] = dsun_obs/1.e3/RSUN; // sun_ob2 must be in Rsun units.
   sun_ob2[1] = 0.;
   sun_ob2[2] = 0.;
+  fprintf(stderr,"tilt:  %e\n",tilt);
 #endif
   
   // Calculate R23 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)

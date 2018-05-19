@@ -54,7 +54,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
 	 *  need to rotated about the x-axis. 
 	 */ 
-#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
+#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
  {
   char *header, *fitsdate;
   int lhead, nbhead;
@@ -74,7 +74,6 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 
   // Get Sub-Spacecraft Carrington Longitude [deg], as pointer "carlong".
   assert(hgetr8(header,"CRLN_OBS",carlong));
-
   fitsdate = hgetc(header,"DATE_OBS");
 
   *mjd = fd2mjd(fitsdate);
@@ -84,10 +83,16 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
    * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
 
-#ifdef KCOR
-  // If dealing with KCOR data, do NOT rotate, simply set: sun_ob = HAE_OBS = DSUN [1,0,0],
+#if (defined KCOR || defined COMPBUILD)
+  // If dealing with KCOR or CoMP data, do NOT rotate,
+  // simply set: sun_ob = HAE_OBS = DSUN [1,0,0],
   // as it is only used in build_subA (or compare.c) to get DSUN from its norm.
   r3eq(sun_ob,c);
+  /*
+  fprintf(stderr,"Header CRLN_OBS:  %e\n",*carlong);
+  fprintf(stderr,"Header DATE_OBS:  %s\n",fitsdate);
+  exit(0);
+  */
 #else
   // Compute now Sun_Ob [km] in CS-1 (J2000), as vector "sun_ob".
   Rx = rotx(0.40909262920459);

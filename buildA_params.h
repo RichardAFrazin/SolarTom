@@ -5,8 +5,9 @@
 // #define C3BUILD
 // #define C2BUILD 
 // #define WISPRIBUILD
-   #define WISPROBUILD
+// #define WISPROBUILD
 // #define KCOR
+   #define COMPBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -20,7 +21,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-#define NONUNIFORMRAD // Set if radial grid is not uniform.
+//#define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
@@ -30,7 +31,7 @@
    
 #if (defined C2BUILD || defined C3BUILD)
 // #define NRL            // use for NRL        calibration 
-#define MARSEILLES     // use for Marseilles calibration
+z#define MARSEILLES     // use for Marseilles calibration
 #endif
 
 #ifdef WISPRIBUILD
@@ -87,13 +88,31 @@ typedef float PB_IMTYPE;
 #define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/kcor/CR2198/"
-#define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_CORRECTED" /* suffix of A matrix ouput files */
+#define CONFSTRING DATADIR"list_prep_test.txt"
+#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_test" /* suffix of A matrix ouput files */
+
+#elif defined COMPBUILD
+#define RMIN   1.05         /* innner radius (hollow  sphere)   */
+#define RMAX   4.00         /* outer radius of computation ball */
+#define NRAD    10
+#define NTHETA   90         /* polar angle bins */
+#define NPHI (NTHETA * 2)   /* azimuthal angle bins */
+#define BINFAC    2	    /* binning factor for C2 images (pixels) */
+#define DELTA     0.0	    /* delta vector */
+#define INSTR_RMIN      1.05
+#define INSTR_RMAX      1.35
+#define IMSIZE       620	    /* size of COMP images (pixels) */
+#define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
+typedef float PB_IMTYPE;
+#define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
+#define CONFSTRING DATADIR"list_total_intensity.txt"
+#define A_OUTFILE         "comp1074.CR2198.bf2.ri1.05.ro1.30_25_90_180" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */
 #define RMAX   12.0 //214.5 //10.            /* outer radius of computation ball */
-#define NZ     130 #define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
+#define NZ     130
+#define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
 #define NRAD   200  
 #define NTHETA 180          /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
