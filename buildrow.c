@@ -21,7 +21,7 @@
 {
   double nrpt[3], g1[3], unit[3], los1[3], los2[3];
   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
-  double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; 
+  static double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; // no-static is a deal-breaker on qsort
   int binbin[6], jij, tdex, index[3], ardex, ontarget;
   double abstrmin, abstrmax, *dtpr;//, bin_bdy[2]; 
   int index0, case_num;
@@ -187,7 +187,7 @@
     fprintf(stderr, "buildrow: case_num = %d\n",case_num);
     exit(0);
   }
-  
+
 // LOS endpoints position vector coordinates in CS-3.
 // This is valid for all geometries.
    for (jij = 0; jij < 3; jij++)
@@ -265,7 +265,7 @@
   fprintf(stderr,"RADIAL Bins: binrmin= %d, bin crossings: ",binrmin);
   fflush(stderr);
 #endif
-  
+
   /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
   // or by t2 (case 2F and all cases 3).
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
@@ -321,7 +321,8 @@
      exit(0);
    } // closes switch
   } // closes jij loop
-   
+
+
   /* polar angle bin crossings
    *
    * This formulation does not distinguish between positive
@@ -430,10 +431,9 @@
       }
     } /* jij loop */
   } // end of wrap = 1 condition
-
-
+  
   // At this point, tdex = # of voxels that are threaded by the LOS, +1 (spacecraft location).
- 
+
   // Sort all the bin crossing "times", in ascending order.
   qsort((void *) t, tdex, sizeof(double), (void *) &doublecompare);
 
@@ -585,6 +585,7 @@
 #endif
 
     } /*tdex loop */
+
 
 salida:/* exit point for LOS's that miss the compution grid */
 

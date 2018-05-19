@@ -50,7 +50,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
-  float Arow_long[NBINS];
+  static float Arow_long[NBINS];// no-static is a deal-breaker in   /* i loop over columns */ near the end of this code
   const int nc3 = NBINS;
   const int imsize = IMSIZE;
   const int binfac = BINFAC;
@@ -189,18 +189,18 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist    = sqrt(dist);
 
-    /*
+    /*  
     fprintf(stderr,"Computed dist: %3.10g Rsun\n",dist/RSUN);
     fprintf(stderr,"Header DSUN:   %3.10g Rsun\n",dsun_obs/RSUN/1.e3);    
     exit(0);
     */
-    
+
     for (i = 0; i < imsize; i++)
     {
       x_image[i] = pixsize * ((float) i - center_x);
       y_image[i] = pixsize * ((float) i - center_y);
     }
- 
+
     /* when the observed image has solar north rotated clockwise from the top,
        CROTA (for EUVI) is positive.   I assume that the same convention
        holds for SC_ROLL and CROTA1 */
@@ -218,7 +218,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
     }
     }
-    
+
 for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
@@ -374,6 +374,7 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   free(Ry);
   //-----------------R23 computed------------------------------------------------------------------------
+
 
 #if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)
