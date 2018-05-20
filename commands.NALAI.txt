@@ -147,3 +147,5 @@ nohup ./callsolve_cg_wIO_CircOrb01_identit_l1e0 > termout_callsolve_wisprIO.512.
 nohup ./callsolve_cg_wIO_CircOrb01_3regmat_l1e1 > termout_callsolve_wisprIO.512.CircularOrbit01.60images_3regmat_l1e1 2>&1 &
 
 AGREGAR A CALLSOLVE que imprima el X_OUTFILE al principio
+
+nohup ./builda > termout_test.txt 2>&1 &
