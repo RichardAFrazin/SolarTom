@@ -50,7 +50,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
-  static float Arow_long[NBINS];// no-static is a deal-breaker in   /* i loop over columns */ near the end of this code
+  static float Arow_long[NBINS];// no-static causes seg fault /* i loop over columns */ near the end of this code
   const int nc3 = NBINS;
   const int imsize = IMSIZE;
   const int binfac = BINFAC;

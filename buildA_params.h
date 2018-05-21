@@ -90,21 +90,21 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_CORRECTED_3" /* suffix of A matrix ouput files */
 
 #elif defined COMPBUILD
-#define RMIN   1.05         /* innner radius (hollow  sphere)   */
-#define RMAX   4.00         /* outer radius of computation ball */
-#define NRAD    295
+#define RMIN   1.00         /* innner radius (hollow  sphere)   */
+#define RMAX   1.50         /* outer radius of computation ball */
+#define NRAD     50
 #define NTHETA   90         /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define BINFAC    2	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
 #define INSTR_RMIN      1.05
-#define INSTR_RMAX      1.40
-#define IMSIZE      620	    /* size of COMP images (pixels) */
+#define INSTR_RMAX      1.30
+#define IMSIZE       620	    /* size of COMP images (pixels) */
 #define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
 #define CONFSTRING DATADIR"list_total_intensity.txt"
-#define A_OUTFILE         "comp1074.CR2198.bf2.ri1.05.ro4.00_295_90_180" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */

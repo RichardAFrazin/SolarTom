@@ -21,7 +21,7 @@
 {
   double nrpt[3], g1[3], unit[3], los1[3], los2[3];
   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
-  static double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; // no-static is a deal-breaker on qsort
+  static double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; // no-static causes seg fault in qsort
   int binbin[6], jij, tdex, index[3], ardex, ontarget;
   double abstrmin, abstrmax, *dtpr;//, bin_bdy[2]; 
   int index0, case_num;
