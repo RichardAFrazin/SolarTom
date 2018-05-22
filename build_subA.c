@@ -1,12 +1,13 @@
 /*
  *    build_subA:
- * build the submatrix associated with each 2D image.
+ *  build the submatrix associated with each 2D image.
  * 
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
+ *  Changes to handle CoMP, by Alberto Vásquez, May 2018
  *
  */
 
@@ -161,11 +162,19 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
     /*fprintf(stdout,"CROTA2 = %g\n",roll_offset); fflush(stdout);*/
 #elif defined KCOR
-    assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"KCOR roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #elif defined COMPBUILD
-    assert(hgetr8(header,"CROTA1"   ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"CROTA1"   ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"CoMP roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
     /*
@@ -277,7 +286,7 @@ for (i = 0; i < imsize; i++) {
     } /* i loop over image pixels */  
    
     free(image);
-  }   /* end of block */
+ }   /* end of block */
 
   dsun = 0.0;
   for (i = 0; i < 3; i++) {

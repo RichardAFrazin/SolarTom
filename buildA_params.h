@@ -6,8 +6,8 @@
 // #define C2BUILD 
 // #define WISPRIBUILD
 // #define WISPROBUILD
-   #define KCOR
-// #define COMPBUILD
+// #define KCOR
+   #define COMPBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
