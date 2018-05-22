@@ -27,7 +27,7 @@
 #endif
 
 
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD)
 #define THOMSON		/* VdH Thomson scattering calculation */
 #elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined COMPBUILD)
 #define RADON      /* unweighted LOS integral for EUV emissivity */
