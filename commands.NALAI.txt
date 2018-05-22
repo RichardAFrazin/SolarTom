@@ -148,4 +148,15 @@ nohup ./callsolve_cg_wIO_CircOrb01_3regmat_l1e1 > termout_callsolve_wisprIO.512.
 
 AGREGAR A CALLSOLVE que imprima el X_OUTFILE al principio
 
-nohup ./builda > termout_test.txt 2>&1 &
+nohup ./builda > termout_KCOR_CORRECTED3.txt 2>&1 &
+
+RUNNING:
+nohup ./bA_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180 > termout_bA_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180.txt 2>&1 &
+
+nohup ./cs_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac x_zero_50_90_180 x_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_l1.0e-6 comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180 1.e-6 > termout_x_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_l1.0e-6.txt 2>&1 &
+
+nohup ./cs_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_identity x_zero_50_90_180 x_comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_indentity_l1.0e-6 comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180 1.e-6 > termout_x_comp1074.CR2198.bf2.ri1.00.ro1.50_50_180_identity_l1.0e-6.txt 2>&1 &
+
+nohup ./cs_KCOR_CR2198_295_90_180_hlaplac x_KCOR.CR2198.13imgs.bf2.295_90_180_l1e-5_hlaplac_CORRECTED_2 x_KCOR.CR2198.13imgs.bf2.295_90_180_l1e-5_hlaplac_CORRECTED_3 KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_CORRECTED_3 1.e-5 > termout_x_KCOR.CR2198.13imgs.bf2.295_90_180_l1e-5_hlaplac_CORRECTED_3.txt  2>&1 &
+
+./callsolve_cg x_zero_50_90_180 x_test comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180 1.e-6
