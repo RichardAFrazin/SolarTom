@@ -14,12 +14,12 @@
  * by Paul Janzen and Richard Frazin Summer/Fall 1999 modified by
  *   Butala in 2004 and Frazin in 2006,7,8,2010
  *
- * Modified by A.M.Vásquez, CLASP Fall-2017, to include WISPR,
+ * Modified by A.M.Vásquez, CLASP Fall-2017 and Spring-2018, to include WISPR,
  *                          deal with new LAM LASCO-C2 headers,
- *                          deal with pre-processed KCOR headers (1),
+ *                          deal with pre-processed KCOR /CoMP images (1),
  *                          and also comments for documentation. 
  *
- * NOTE (1): Our own kcor_prep.pro IDL tool should be used.
+ * NOTE (1): Our own kcor_prep.pro and comp_prep.pro IDL tool should be used.
  *
  */
 
@@ -54,7 +54,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
 	 *  need to rotated about the x-axis. 
 	 */ 
-#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
+#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
  {
   char *header, *fitsdate;
   int lhead, nbhead;
@@ -83,9 +83,9 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
    * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
 
-#if (defined KCOR || defined COMPBUILD)
+#if (defined KCORBUILD || defined COMPBUILD)
   // If dealing with KCOR or CoMP data, do NOT rotate,
-  // simply set: sun_ob = HAE_OBS = DSUN [1,0,0],
+  // simply set: sun_ob = HAE_OBS, which was set to DSUN [1,0,0] in the [kcor/comp]_prep.pro routines,
   // as it is only used in build_subA (or compare.c) to get DSUN from its norm.
   r3eq(sun_ob,c);
   /*

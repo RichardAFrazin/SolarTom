@@ -8,7 +8,7 @@ DEFINES =
 
 #################################-I/usr/include/sys
 
-LIBS = -lm -lwcs
+LIBS = -lm  -lwcs
 
 MEX = mex
 MEX_FLAGS = -argcheck -g -O -outdir ./matlab/

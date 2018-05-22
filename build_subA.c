@@ -1,12 +1,13 @@
 /*
  *    build_subA:
- * build the submatrix associated with each 2D image.
+ *  build the submatrix associated with each 2D image.
  * 
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
+ *  Changes to handle CoMP, by Alberto Vásquez, May 2018
  *
  */
 
@@ -160,12 +161,20 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
     /*fprintf(stdout,"CROTA2 = %g\n",roll_offset); fflush(stdout);*/
-#elif defined KCOR
-    assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+#elif defined KCORBUILD
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"KCOR roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #elif defined COMPBUILD
-    assert(hgetr8(header,"CROTA1"   ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
+    assert(hgetr8(header,"CROTA1"   ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"CoMP roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
     /*
@@ -222,7 +231,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -260,7 +269,7 @@ for (i = 0; i < imsize; i++) {
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.;
-#elif (defined KCOR)
+#elif (defined KCORBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
 #elif (defined COMPBUILD)
@@ -277,7 +286,7 @@ for (i = 0; i < imsize; i++) {
     } /* i loop over image pixels */  
    
     free(image);
-  }   /* end of block */
+ }   /* end of block */
 
   dsun = 0.0;
   for (i = 0; i < 3; i++) {
@@ -339,7 +348,7 @@ for (i = 0; i < imsize; i++) {
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
   // Earth-Sun distance, which are both known from the header:
-#if (defined KCOR || defined COMPBUILD)
+#if (defined KCORBUILD || defined COMPBUILD)
     tilt     = obslat*M_PI/180.0;
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
