@@ -6,7 +6,7 @@
 // #define C2BUILD 
 // #define WISPRIBUILD
 // #define WISPROBUILD
-// #define KCOR
+// #define KCORBUILD
    #define COMPBUILD
 
 /* Not using this for now
@@ -72,7 +72,7 @@ typedef float PB_IMTYPE;
 #define CONFSTRING  DATADIR"list.wisprO.Synth.CR2082.UnifLong.SciOrb01.txt"
 #define A_OUTFILE               "wisprO.Synth.CR2082.UnifLong.SciOrb01.bf4"     /* suffix of A matrix ouput files */
 
-#elif defined KCOR
+#elif defined KCORBUILD
 #define RMIN   1.05          /* innner radius (hollow  sphere)   */
 #define RMAX   4.00          /* outer radius of computation ball */
 #define NRAD    295
