@@ -9,6 +9,10 @@ Makefile
 tomroot.h
 termout*
 bA*
+ba.*
+ba_*
+cs_*
+cs.*
 compO*
 builda*
 compare
