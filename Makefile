@@ -5,6 +5,7 @@ TOMROOT_HEADER = tomroot.h
 
 DEFINES =
  CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
+#CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.9.5/libwcs -L/data1/tomography/wcstools-3.9.5/libwcs
 
 #################################-I/usr/include/sys
 
