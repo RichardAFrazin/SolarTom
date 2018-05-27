@@ -81,13 +81,13 @@ typedef float PB_IMTYPE;
 #define IMSIZE  1024	    /* size of C2 images (pixels) */
 #define BINFAC    2	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
-#define INSTR_RMIN      1.05
+#define INSTR_RMIN      1.09
 #define INSTR_RMAX      2.00
 #define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/kcor/CR2198/"
-#define CONFSTRING DATADIR"list_prep_test.txt"
-#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_295_90_180_CORRECTED_3" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/kcor/CR2198/AvgNoOffset_Images/"
+#define CONFSTRING DATADIR"list_prep.txt"
+#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg" /* suffix of A matrix ouput files */
 
 #elif defined COMPBUILD
 #define RMIN   1.00         /* innner radius (hollow  sphere)   */
@@ -102,9 +102,9 @@ typedef float PB_IMTYPE;
 #define IMSIZE       620	    /* size of COMP images (pixels) */
 #define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
-#define CONFSTRING DATADIR"list_mean_total_intensity.txt"
-#define A_OUTFILE         "comp1074.CR2198.bf2.ri1.00.ro1.50_50_90_180_meanimage" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/comp/1079/CR2198/"
+#define CONFSTRING DATADIR"list_total_intensity.txt"
+#define A_OUTFILE         "comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */
