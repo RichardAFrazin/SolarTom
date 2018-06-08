@@ -5,9 +5,9 @@
 // #define C3BUILD
 // #define C2BUILD 
 // #define WISPRIBUILD
-// #define WISPROBUILD
+   #define WISPROBUILD
 // #define KCORBUILD
-   #define COMPBUILD
+// #define COMPBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -51,7 +51,7 @@ z#define MARSEILLES     // use for Marseilles calibration
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/CR2082_UnifLong/"
 #define CONFSTRING  DATADIR"list.wisprI.Synth.CR2082.UnifLong.SciOrb01.txt"
-#define A_OUTFILE               "wisprI.Synth.CR2082.UnifLong.SciOrb01.bf4"     /* suffix of A matrix ouput files */
+#define A_OUTFILE               "wisprI.Synth.CR2082.UnifLong.SciOrb01.bf4_TEST"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */

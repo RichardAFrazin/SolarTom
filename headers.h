@@ -113,7 +113,8 @@ void r3add(double *, double *, double *);
 void build_subA(char *, rcs_llist *, float **, float **, int *, FILE *, FILE *);
 
 /* grids */
-double* rad_bin_boundaries(int bin);
+void rad_bin_boundaries(int bin, double *boundaries);
+//double* rad_bin_boundaries(int bin);
 int rad_bin_number(double dist);
 void print_grid(void);
 double GridDivision(double num, double denom);

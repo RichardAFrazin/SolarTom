@@ -15,8 +15,11 @@
 
 #ifdef NONUNIFORMRAD
 
+/*
 double* rad_bin_boundaries(int bin){ // Returns the height [Rs] of the two boundaries of given radial bin.
 static  double s[2];  // [outer, inner]
+*/
+void rad_bin_boundaries(int bin, double *s){ // s is bin boundary array = [outer, inner]
   int j;
   double q1, q2, p, drmin = 0.25, drmax = 4.0;
   if ((bin < 0) || (bin >= NRAD)){
@@ -32,7 +35,8 @@ static  double s[2];  // [outer, inner]
   }
   s[0] = q2; //outer
   s[1] = q1; //inner
-  return(s);
+  //  return(s);
+  return;  
 }
 
 int rad_bin_number(double dist){  // Returns the radial bin index of given distance.
