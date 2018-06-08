@@ -23,7 +23,7 @@
   double t1, t2, t3, arclength, xx, yy, zz, impact, r, vdhA, vdhB, vdhC, vdhD;
   static double t[NBINS], rtmp, ttmp, gam, sgam, cgam, ptmp; // no-static causes seg fault in qsort
   int binbin[6], jij, tdex, index[3], ardex, ontarget;
-  double abstrmin, abstrmax, bin_bdy[2]; //*dtpr;//, 
+  double abstrmin, abstrmax, bin_bdy[2],*dtpr;//, 
   int index0, case_num;
   int wrap, binrmin;
   double rr, phiphi;
@@ -266,15 +266,25 @@
   fflush(stderr);
 #endif
 
+  //fprintf(stderr,"bin_bdy=%g,%g\n",bin_bdy[0],bin_bdy[1]);
+  //fprintf(stderr,"dtpr=%g,%g\n",dtpr[0],dtpr[1]);
   /* -2 because of the bin numbering and the entry point into the last bin is already marked by t1 */
   // or by t2 (case 2F and all cases 3).
   for (jij = NRAD - 2; jij >= binrmin; jij--) {
-    rad_bin_boundaries(jij, bin_bdy);	
-    rtmp = bin_bdy[0]; // outer boundary of cell jij.
+    dtpr = rad_bin_boundaries(jij);
     /*
+    //rad_bin_boundaries(jij, bin_bdy);
+    fprintf(stderr,"bin_bdy=%g,%g\n",bin_bdy[0],bin_bdy[1]);
+    fprintf(stderr,"dtpr=%g,%g\n",dtpr[0],dtpr[1]);
+    exit(0);
+    */
+      
+    /*
+    rtmp = bin_bdy[0]; // outer boundary of cell jij.
+    */
     dtpr = rad_bin_boundaries(jij);
     rtmp = *dtpr; // outer boundary of cell jij.
-    */
+
     
     // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
     // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.
