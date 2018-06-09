@@ -2,7 +2,7 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 2                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NMATS 3                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
 #define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */

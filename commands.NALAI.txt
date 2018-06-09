@@ -192,3 +192,11 @@ nohup ./cs_KCOR.bf2.295_90_180_hlaplac x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_In
 
 nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l5e-5 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l5e-5 2>&1 &
 nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac-d2r_l5e-5 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac-d2r_l5e-5 2>&1 &
+
+KCOR CV Study:
+
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1
+> termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 2>&1 &
+
+-m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_droppneg 

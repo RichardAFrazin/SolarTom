@@ -338,34 +338,18 @@ void initialize(int *n_blocks, int *block_start, char *full_matrix_name) {
   char buffer[MAXPATH];
   int i, info_file_data, found_newline;
   
-  strcat(strcat(strcpy(buffer, BINDIR),"info_"), full_matrix_name);
+  strcat(strcat(strcpy(buffer, BINDIR),"block_"), full_matrix_name);
   fid_info = fopen(buffer, "r");
   assert(fid_info != NULL);
 
-  found_newline = 0;
-  
-  for (i = 0; i < MAX_NUMBER_OF_IMAGES+1; i++) {
+  assert(fread(&info_file_data, sizeof(int), 1, fid_info) == 1);
+  *n_blocks = info_file_data;
+  fprintf(stderr,"Entry #1: %d\n",info_file_data);
+  for (i = 0; i < *n_blocks+1; i++) {
     assert(fread(&info_file_data, sizeof(int), 1, fid_info) == 1);
-    /* if ((char) info_file_data == '\n') { */
-    if ( info_file_data == 1701336074 ){  /* this number represents the int32 interpretation of \nThis preceeding line ... */
-      found_newline = 1;
-      break;
-    }
-    else {
-      block_start[i] = info_file_data;
-    }
+    block_start[i] = info_file_data;
+    fprintf(stderr,"Entry # %d: %d\n",i+2,info_file_data);
   }
-
-  if (!found_newline) {
-    assert(fread(&info_file_data, sizeof(int), 1, fid_info) == 1);
-
-    if ((char) info_file_data != '\n') {
-      fprintf(stderr, "More than MAX_NUMBER_OF_IMAGES (%d) number of blocks in file %s\n!", MAX_NUMBER_OF_IMAGES, buffer);
-      exit(1);
-    }
-  }
-
-  fclose(fid_info);
-
-  *n_blocks = i - 1;
+  fclose(fid_info);  
+  //  exit(0);
 }
