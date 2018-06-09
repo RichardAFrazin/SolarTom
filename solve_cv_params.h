@@ -49,8 +49,8 @@
 
 /* Cross Validation stuff (see auto_cv(_brent), cv_brent_fixed, cv_calc */
 /*#define PRESERVE_SOL */   /* define to keep the solution computed at each iteration (cvcalc) */
-#define CV_X_OUTFILE    "x_euviA_171_200701" /* cv solution (code adds _auto_cv suffix) - not used with -o opiton in auto_cv */
-#define CV_X_INFILE     "x_euviA_171_200701l.01" /* cv initial solution - not used with -i opiton in auto_cv */
+#define CV_X_OUTFILE    "" /* cv solution (code adds _auto_cv suffix) - not used with -o opiton in auto_cv */
+#define CV_X_INFILE     "" /* cv initial solution - not used with -i opiton in auto_cv */
 #define AMOEBA_ITMAX 12			/* max number of fcn evals */
 #define MIN_LAMBDA 1.e-6  /* min and max lambda (used by brent) */
 #define MAX_LAMBDA 1.e-4
