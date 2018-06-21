@@ -5,8 +5,8 @@
 // #define C3BUILD
 // #define C2BUILD 
 // #define WISPRIBUILD
-   #define WISPROBUILD
-// #define KCORBUILD
+// #define WISPROBUILD
+   #define KCORBUILD
 // #define COMPBUILD
 
 /* Not using this for now
@@ -102,9 +102,9 @@ typedef float PB_IMTYPE;
 #define IMSIZE       620	    /* size of COMP images (pixels) */
 #define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/comp/1079/CR2198/"
-#define CONFSTRING DATADIR"list_total_intensity.txt"
-#define A_OUTFILE         "comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
+#define CONFSTRING DATADIR"list_total_intensity_Dt2.txt"
+#define A_OUTFILE         "comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
 #define RMIN   2.0            /* innner radius (hollow  sphere)   */

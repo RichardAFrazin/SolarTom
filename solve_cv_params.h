@@ -2,14 +2,14 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 3                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NMATS 2                        /* total number of matrices: A1, possibly A2, plus Reg1,... */  
 #define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
 #define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object differenrce required to exit */
 #define MINIMUM_VALUE 0 	/* min value assigned to a pixel intensity */
 #define ITMAX 5000		/* max no. calls to minimizer fcn */
-#define NSUBIT 1000		/* number of suberiteration per call only used for CG algorithm */
+#define NSUBIT 100		/* number of suberiteration per call only used for CG algorithm */
 
 #define PRINT_FILE_INFO		/* prints file info */
 
@@ -20,11 +20,11 @@
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
-#define LAMBDA  {1.,5.e-5,5.e-5}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
-#define HUBER_FLAG {0,0,0}
-#define FILESTR0 "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg"
+#define LAMBDA  {1.,5.e-5}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define HUBER_FLAG {0,0}
+#define FILESTR0 ""
 #define FILESTR1 "hlaplac_295_90_180"
-#define FILESTR2 "d2r_295_90_180"      // Must always be specified.
+//#define FILESTR2 "d2r_50_90_180"      // Must always be specified.
 //#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
 //#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
 //#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
@@ -32,8 +32,8 @@
 //#define FILESTR2 "d2r_100_90_180"      // Must always be specified.
 //#define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
 //#define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
-#define MAIN_X_INFILE  "x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1"
-#define MAIN_X_OUTFILE "x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1"
+#define MAIN_X_INFILE  ""
+#define MAIN_X_OUTFILE ""
 
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
@@ -52,8 +52,8 @@
 #define CV_X_OUTFILE    "" /* cv solution (code adds _auto_cv suffix) - not used with -o opiton in auto_cv */
 #define CV_X_INFILE     "" /* cv initial solution - not used with -i opiton in auto_cv */
 #define AMOEBA_ITMAX 12			/* max number of fcn evals */
-#define MIN_LAMBDA 1.e-6  /* min and max lambda (used by brent) */
-#define MAX_LAMBDA 1.e-4
+#define MIN_LAMBDA 1.e-6   /* min and max lambda (used by brent) */
+#define MAX_LAMBDA 1.e-3
 #define BRENT_TOL (0.01*MAX_LAMBDA) /* brent tollerance (in x) for stopping */
 #define AMOEBA_LAMBDA {{7.e-5},{1.e-4}}   /* only used for amoeba */
 
