@@ -33,14 +33,14 @@ int main( int argc, char **argv)
 	totalB = 0; /* for testing scattering calculation */
 
 	//------------These specific values are to be used by Albert-----------------
-	sun_ob1[0] = 0.*RSUN;
+	sun_ob1[0] = 0.*RSUN;  //so1=[0, 9.04594, 4.26275] Rs
         sun_ob1[1] = 9.0459371*RSUN;
         sun_ob1[2] = 4.2627482*RSUN;
 	carlong    = M_PI; /* in radians */
 	/* enter the projected radius of the ray in Rsun */
 	rho1 =  9.75149;
 	/* enter the position angle of ray in solar image */
-	eta1 = (270.-1.) * M_PI/180.; 
+	eta1 = (270.+1.) * M_PI/180.; 
 	//---------------------------------------------------------------------------
 	
 #ifdef GEOMTEST_OUT
@@ -57,8 +57,12 @@ int main( int argc, char **argv)
 	dsun = sqrt(dsun);
 
 	/* calculate the angle  (NOT IN ORIGINAL CODE) */
-	rho1 = atan( rho1 / dsun );
-
+	//OLD CODE BY RICH----------------------------------------------------------
+	//rho1 = atan( rho1 / dsun );
+        //REPLACED BY NEW CODE BY ALBERT:
+	rho1 = asin( rho1 / dsun );
+	//A similar correction was applied in build_suba.c
+	
         /*  use this when rho1 is in radians */
         /* rho1 = 0.0175295299447; */
 
