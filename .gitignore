@@ -27,3 +27,6 @@ compare_nostatic_WISPRI
 compare_nostatic_WISPRO
 scaling.of.lambda.txt
 test.pro
+auto_cv_brent_*
+*out
+test*
