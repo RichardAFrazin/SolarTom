@@ -6,8 +6,8 @@
 // #define C2BUILD 
 // #define WISPRIBUILD
 // #define WISPROBUILD
-   #define KCORBUILD
-// #define COMPBUILD
+// #define KCORBUILD
+   #define COMPBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)
@@ -87,7 +87,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/kcor/CR2198/AvgNoOffset_Images/"
 #define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg" /* suffix of A matrix ouput files */
 
 #elif defined COMPBUILD
 #define RMIN   1.00         /* innner radius (hollow  sphere)   */
