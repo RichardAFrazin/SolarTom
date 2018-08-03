@@ -22,7 +22,7 @@ void rad_bin_boundaries(int bin, double *s){ // s is bin boundary array = [outer
 */
   int j;
   double q1, q2, p, drmin = 0.25, drmax = 4.0;
-  fprintf(stdout,"Entering subroutine rad-bin_boundaries.\n"); fflush(stdout);
+  //fprintf(stdout,"Entering subroutine rad-bin_boundaries.\n"); fflush(stdout);
   if ((bin < 0) || (bin >= NRAD)){
     fprintf(stderr, "rad_boundaries: invalid bin value.\n");
       exit(-1);
@@ -36,7 +36,7 @@ void rad_bin_boundaries(int bin, double *s){ // s is bin boundary array = [outer
   }
   s[0] = q2; //outer
   s[1] = q1; //inner
-  fprintf(stderr,"s0,s1=%g,%g\n",s[0],s[1]);
+  //fprintf(stderr,"s0,s1=%g,%g\n",s[0],s[1]);
   return(s);
   //return;  
 }

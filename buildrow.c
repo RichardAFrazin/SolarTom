@@ -262,6 +262,7 @@
      binrmin = rad_bin_number(impact);
   }
 #ifdef RAYDIAGNOSE
+  fprintf(stderr,"impact= %g Rsun.\n : ",impact);
   fprintf(stderr,"RADIAL Bins: binrmin= %d, bin crossings: ",binrmin);
   fflush(stderr);
 #endif
