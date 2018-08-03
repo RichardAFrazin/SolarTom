@@ -193,10 +193,92 @@ nohup ./cs_KCOR.bf2.295_90_180_hlaplac x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_In
 nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l5e-5 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l5e-5 2>&1 &
 nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac-d2r_l5e-5 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac-d2r_l5e-5 2>&1 &
 
-KCOR CV Study:
+CV Study:
+
+1) hlaplac-2dr:  Los r1w1 tienen normx=-nan, los r3w1 tinen normx finito, ante la duda los finalicé todos.
 
 nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
 -i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1
 > termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 2>&1 &
 
--m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_droppneg 
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r3w1 -r3 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r3w1
+> termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_r3w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 -r1 -w1 -m comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 -o x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1
+> termout_auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 -r3 -w1 -m comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 -o x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1
+> termout_auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 -r1 -w1 -m comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 -o x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1
+> termout_auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 -r3 -w1 -m comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 -o x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1
+> termout_auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r3w1 2>&1 &
+
+----------------------------------------------------------------
+2) hlaplac: los dos de COMP terminaron, el de KCOR toma mucho tiempo.
+            notar que todos los valores de comp dan 1., y el rango que se le dio fue 0.1 a 1.0
+	    por ello voy a recorrerlos con 0.1 a 10.0, label:  V2
+
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1
+> termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 -r1 -w1 -m comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 -o x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1
+> termout_auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 -r1 -w1 -m comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 -o x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1
+> termout_auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1 2>&1 &
+
+V3): con r1w1 y r3w1:  The r1w1 experiments finished, the r3w1 do not.
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -r1 -w1 -m comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -o x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2
+> termout_auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -r1 -w1 -m comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -o x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2
+> termout_auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 -r3 -w1 -m comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 -o x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2
+> termout_auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 -r3 -w1 -m comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 -o x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2
+> termout_auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r3w1_V2 2>&1 &
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+nohup ./bAcomp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 > termout.bAcomp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 2>&1 &
+nohup ./bAcomp1074.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 > termout.bAcomp1074.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 2>&1 &
+nohup ./bAcomp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 > termout.bAcomp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 2>&1 &
+nohup ./bAcomp1079.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 > termout.bAcomp1079.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 2>&1 &
+
+nohup ./cs.comp.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 5.e-1 > termout.x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 2>&1 &
+nohup ./cs.comp.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180 x.comp1074.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 comp1074.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 5.e-1 > termout.x.comp1074.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 2>&1 &
+nohup ./cs.comp.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 5.e-1 > termout.x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 2>&1 &
+nohup ./cs.comp.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180 x.comp1079.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 comp1079.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180 5.e-1 > termout.x.comp1079.dynamics.Dt8_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 2>&1 &
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+V3): comp  r1w1 pero usando los Dt2. 
+
+nohup ./auto_cv_brent_x_comp1074.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1_V3
+> termout_auto_cv_brent_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1_V3 2>&1 &
+
+nohup ./auto_cv_brent_x_comp1079.dynamics.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_r1w1_V2 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180
+-i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1 -o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1_V3
+> termout_auto_cv_brent_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_5e-1_V3 2>&1 &
+
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1_NSUBIT100 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1_NSUBIT100 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1_NSUBIT100
+> termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1_NSUBIT100 2>&1 &
+
