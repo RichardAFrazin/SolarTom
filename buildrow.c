@@ -212,7 +212,8 @@
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
+  //  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
+  fprintf(stderr,"exit phi = %g deg, ==> wrap = %d\n",ptmp*180/M_PI, wrap);
 #endif
   // Compute Longitude [rad] of vector los1
   rtmp = atan2(los1[1], los1[0]);
