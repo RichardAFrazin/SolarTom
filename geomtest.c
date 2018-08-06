@@ -40,7 +40,7 @@ int main( int argc, char **argv)
 	/* enter the projected radius of the ray in Rsun */
 	rho1 =  9.75149;
 	/* enter the position angle of ray in solar image */
-	eta1 = (270.+1.) * M_PI/180.; 
+	eta1 = (270.-1.) * M_PI/180.; 
 	//---------------------------------------------------------------------------
 	
 #ifdef GEOMTEST_OUT
