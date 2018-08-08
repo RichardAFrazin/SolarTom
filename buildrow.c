@@ -373,6 +373,8 @@ for (jij = 0; jij < NTHETA/2 + 1; jij++) {
 	}
 	// ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
         ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
+
+	exit(0);
     if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
