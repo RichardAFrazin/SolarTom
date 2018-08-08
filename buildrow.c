@@ -203,17 +203,18 @@
   // Compute Latitude [rad] of vector los1
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
   // Compute Theta bin of vector los1, taking theta=0 as the South pole,  theta=Pi as the North pole.
-  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );  // assumes uniform theta grid
-  
+  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );  // assumes uniform theta grid  
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry theta = %g deg, ",rtmp*180./M_PI);
 #endif
+
   // Same Latitude/Theta computations for vector los2:
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
+  fprintf(stderr,"exit theta = %g deg\n",rtmp*180./M_PI);
 #endif
+
   // Compute Longitude [rad] of vector los1
   rtmp = atan2(los1[1], los1[0]);
   if (rtmp < 0.)
@@ -223,6 +224,7 @@
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry phi = %g deg, ",rtmp*180./M_PI);
 #endif
+
   // Same Longitude/Phi computations for vector los2:
   ptmp = atan2(los2[1], los2[0]);
   if (ptmp < 0.)
@@ -285,7 +287,6 @@
     */
     dtpr = rad_bin_boundaries(jij);
     rtmp = *dtpr; // outer boundary of cell jij.
-
     
     // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
     // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.
@@ -351,15 +352,17 @@
   fflush(stderr);
 #endif
 
-  for (jij = 0; jij < NTHETA/2 + 1; jij++) {
-	gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
+for (jij = 0; jij < NTHETA/2 + 1; jij++) {
+        gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. ); // Note this assumes regular grid in theta.
 	gam = gam*gam;
 	vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
 	vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
 	sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
-    //ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+        // ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);        
 	ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
-		 
+	fprintf(stderr,"vdhB^2 = %g, 4.*vdhA*sgam = %g\n)",vdhB*vdhB , 4.*vdhA*sgam );
+	exit(0);
+
 	if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
@@ -367,10 +370,9 @@
       fprintf(stderr,"(%d, %g deg, %g)", jij, (jij+1)*180./((double) NTHETA) - 90., ttmp);
             fflush(stderr);
 #endif
-    }  
-
-    //ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-    ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
+	}
+	// ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+        ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
     if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
@@ -379,7 +381,7 @@
       fflush(stderr);
 #endif
     }
-  }
+ }
 
   /* azimuthal bin crossings */
 
