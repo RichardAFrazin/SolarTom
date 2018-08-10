@@ -116,9 +116,9 @@
 	case_num    = 23 ;
     } else if (impact < RMIN && impact > 1. && t3 > 0.) {
 	case_num    = 24 ;
-    } else if (impact < 1. && t3 < 0.) { 
+    } else if (impact <= 1. && t3 < 0.) { 
 	case_num    = 25 ;
-    } else if (impact < 1. && t3 > 0.) { 
+    } else if (impact <= 1. && t3 > 0.) { 
 	case_num    = 26 ;
     } else {
         fprintf(stderr, "buildrow: unrecognized case 2? of spacecraft position.\n");
@@ -352,16 +352,15 @@
   fflush(stderr);
 #endif
 
-for (jij = 0; jij < NTHETA/2 + 1; jij++) {
-        gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. ); // Note this assumes regular grid in theta.
-	gam = gam*gam;
+  for (jij = 0; jij < NTHETA/2 + 1; jij++) { // ?? WHY "/2"?
+    //for (jij = 0; jij < NTHETA; jij++) {
+        gam  = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. ); // Note this assumes regular grid in theta.
+	gam  = gam*gam;
 	vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
 	vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
 	sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
         // ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);        
 	ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
-	fprintf(stderr,"vdhB^2 = %g, 4.*vdhA*sgam = %g\n)",vdhB*vdhB , 4.*vdhA*sgam );
-	exit(0);
 
 	if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
@@ -374,7 +373,6 @@ for (jij = 0; jij < NTHETA/2 + 1; jij++) {
 	// ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
         ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
 
-	exit(0);
     if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
@@ -391,6 +389,7 @@ for (jij = 0; jij < NTHETA/2 + 1; jij++) {
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
   fflush(stderr);
 #endif
+  exit(0);
   // Here wrap is used in hollow sphere  
   if (wrap == 0) {
     for (jij = MIN(binbin[4], binbin[5]);
