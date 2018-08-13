@@ -352,8 +352,7 @@
   fflush(stderr);
 #endif
 
-  for (jij = 0; jij < NTHETA/2 + 1; jij++) { // ?? WHY "/2"?
-    //for (jij = 0; jij < NTHETA; jij++) {
+  for (jij = 0; jij < NTHETA/2 + 1; jij++) {
         gam  = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. ); // Note this assumes regular grid in theta.
 	gam  = gam*gam;
 	vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
@@ -389,7 +388,6 @@
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
   fflush(stderr);
 #endif
-  exit(0);
   // Here wrap is used in hollow sphere  
   if (wrap == 0) {
     for (jij = MIN(binbin[4], binbin[5]);
@@ -458,7 +456,7 @@
   // Find index0 such that t[index0]=t3
   index0 = 0;
   while (t[index0] < t3) index0++;
-  //  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
+    fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
   // If case_num NE 2? then index0 = index0 + 1, to exclude spacecraft location.
   // OLD CODE: if (strcmp(case_str,"1") == 0 || strcmp(case_strb,"3") == 0) index0++;
@@ -477,7 +475,7 @@
   //  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
-  // fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
+   fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
@@ -487,7 +485,7 @@
   fprintf(stderr,"\nVoxel Numbers: ");
   fflush(stderr);
 #endif
-
+  exit(0);
     /* calculate the matrix elements */
 
   for (jij = 1; jij < tdex; jij++) {    // Loop through all voxels threaded by the LOS.
