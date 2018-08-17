@@ -382,7 +382,7 @@
     }
  }
 
-  /* azimuthal bin crossings */
+/* azimuthal bin crossings */
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
@@ -472,7 +472,7 @@
   }
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
-  //  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
+    fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
    fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
@@ -482,10 +482,10 @@
   for (jij = 0;jij < tdex;jij++)
     fprintf(stderr,"%g ",t[jij]);
 
-  fprintf(stderr,"\nVoxel Numbers: ");
+  fprintf(stderr,"\nVoxel Numbers (index[0],index[1],index[2],ardex), time, rad, rad_index: \n ");
   fflush(stderr);
 #endif
-  exit(0);
+
     /* calculate the matrix elements */
 
   for (jij = 1; jij < tdex; jij++) {    // Loop through all voxels threaded by the LOS.
@@ -591,7 +591,8 @@
 #endif
 
 #ifdef RAYDIAGNOSE
-    fprintf(stderr,"(%d,%d,%d, %d)",index[0],index[1],index[2],ardex);
+    fprintf(stderr,"(%d,%d,%d, %d) ",index[0],index[1],index[2],ardex);
+    fprintf(stderr, "time = %g.  r = %g.  rad_index = %d.  arclength = %g\n",ttmp,r,index[0],arclength);      
     fflush(stderr);
 #ifdef GEOMTEST_OUT /*see geomtest.c */
     fwrite(&ttmp, sizeof(double), 1, fid_geomtest);
@@ -602,6 +603,7 @@
 
     } /*tdex loop */
 
+  exit(0);
 
 salida:/* exit point for LOS's that miss the compution grid */
 
