@@ -369,7 +369,7 @@ comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2.65 > termout_cs_x.com
 nohup ./cs_comp1074_26_90_180_r3D x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65
 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2.65 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_L2.65 2>&1 &
 
-
+ 
 
 
 RUNNING:
