@@ -317,3 +317,61 @@ nohup ./cs_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2
 
 nohup ./cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_1.89 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_1.89 2>&1 &
 nohup ./cs_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85 > termout_cs_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85 2>&1 &
+
+nohup ./callsolve_cg x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 2.65 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65 2>&1 &
+
+CHECKING DIEGO'S RESULTS:
+
+DONE:
+nohup ./ba.euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet.Albert         > termout_ba.euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet.Albert         2>&1 &
+nohup ./ba.euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet.Hollow1.Albert > termout_ba.euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet.Hollow1.Albert 2>&1 &
+nohup ./ba.euviA.195.cr2082.ri.98-ro1.02.DECON.OldSet.Albert         > termout_ba.euviA.195.cr2082.ri.98-ro1.02.DECON.OldSet.Albert         2>&1 &
+nohup ./ba.euviA.195.cr2082.ri.00-ro1.02.DECON.OldSet.Hollow1.Albert > termout_ba.euviA.195.cr2082.ri.00-ro1.02.DECON.OldSet.Hollow1.Albert 2>&1 &
+
+RUNNING:
+
+NEWSETS:
+nohup ./cs_NewSet_FullDisk_r2D x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet_r2D.Albert euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet.Albert 0.75 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet_r2D.Albert 2>&1 &
+nohup ./cs_NewSet_FullDisk_r3D x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet_r3D.Albert euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet.Albert 0.75 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet_r3D.Albert 2>&1 &
+nohup ./cs_NewSet_Hollow_r2D x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet_r2D.Albert euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet.Hollow1.Albert 0.225 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet_r2D.Albert 2>&1 &
+nohup ./cs_NewSet_Hollow_r3D x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet.d2r x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet_r3D.Albert euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet.Hollow1.Albert 0.225 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet_r3D.Albert 2>&1 &
+
+OLDSETS:
+nohup ./cs_OldSet_FullDisk_r2D x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_OldSet_r2D.Albert euviA.195.cr2082.ri.98-ro1.02.DECON.OldSet.Albert 0.75 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_OldSet_r2D.Albert 2>&1 &
+nohup ./cs_OldSet_FullDisk_r3D x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_OldSet_r3D.Albert euviA.195.cr2082.ri.98-ro1.02.DECON.OldSet.Albert 0.75 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_OldSet_r3D.Albert 2>&1 &
+nohup ./cs_OldSet_Hollow_r2D x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet     x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_OldSet_r2D.Albert euviA.195.cr2082.ri.00-ro1.02.DECON.OldSet.Hollow1.Albert 0.225 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_OldSet_r2D.Albert 2>&1 &
+nohup ./cs_OldSet_Hollow_r3D x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet.d2r x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_OldSet_r3D.Albert euviA.195.cr2082.ri.00-ro1.02.DECON.OldSet.Hollow1.Albert 0.225 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_OldSet_r3D.Albert 2>&1 &
+
+
+nohup ./cs_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75-l.075_DECON_NewSet_hlpalac-2dr-.Albert > termout_cs_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75-l.075_DECON_NewSet_hlpalac-2dr-.Albert 2>&1 & 
+nohup ./cs_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225-l.0225_DECON.H1_NewSet_hlpalac-d2r.Albert > termout_cs_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225-l.0225_DECON.H1_NewSet_hlpalac-d2r.Albert 2>&1 &
+
+nohup ./cs_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75-l.075_DECON_OldSet_hlpalac-d2r.Albert > termout_cs_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75-l.075_DECON_OldSet_hlpalac-d2r.Albert 2>&1 &
+nohup ./cs_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225-l.0225_DECON.H1_OldSet_hlpalac-d2r.Albert > termout_cs_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225-l.0225_DECON.H1_OldSet_hlpalac-d2r.Albert 2>&1 &
+
+NEWSET2:
+
+DONE:
+nohup ./ba.euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet2.Hollow1.Albert > termout_ba.euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet2.Hollow1.Albert 2>&1 &
+nohup ./ba.euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet2.Albert         > termout_ba.euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet2.Albert         2>&1 &
+
+nohup ./cs_EUVI_50_90_180_NewSet2 x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet_r2D.Albert x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet2_r2D.Albert
+euviA.195.cr2082.ri.00-ro1.02.DECON.NewSet2.Hollow1.Albert 0.225 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.00_ro1.02_l.225_DECON.H1_NewSet2_r2D.Albert 2>&1 &
+
+nohup ./cs_EUVI_50_90_180_NewSet2 x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet_r2D.Albert x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet2_r2D.Albert
+euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet2.Albert 0.75 > termout_x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet2_r2D.Albert 2>&1 &
+
+nohup ./bAcomp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 > termout.bAcomp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2>&1 &
+
+nohup ./cs_comp1074_26_90_180_r2D x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac_2.65_NEW x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r2D_2.65
+comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2.65 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r2D_L2.65 2>&1 &
+
+nohup ./cs_comp1074_26_90_180_r3D x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65
+comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2.65 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_L2.65 2>&1 &
+
+
+
+
+RUNNING:
+
+TO BE RAN:
