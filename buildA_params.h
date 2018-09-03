@@ -5,9 +5,9 @@
 // #define C3BUILD
 // #define C2BUILD 
 // #define WISPRIBUILD
-// #define WISPROBUILD
+   #define WISPROBUILD
 // #define KCORBUILD
-   #define COMPBUILD
+// #define COMPBUILD
 
 /* Not using this for now
    #if (defined WISPIRIBUILD || defined WISPROBUILD)

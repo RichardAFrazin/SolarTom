@@ -34,13 +34,13 @@ int main( int argc, char **argv)
 
 	//------------These specific values are to be used by Albert-----------------
 	sun_ob1[0] = 0.*RSUN;  //so1=[0, 9.04594, 4.26275] Rs
-        sun_ob1[1] = 9.0459371*RSUN;
-        sun_ob1[2] = 4.2627482*RSUN;
-	carlong    = M_PI; /* in radians */
+        sun_ob1[1] = 9.0459371*RSUN*3./10.;
+        sun_ob1[2] = 4.2627482*RSUN*3./10.;
+	carlong    = 0. * M_PI/180.; /* in radians */
 	/* enter the projected radius of the ray in Rsun */
-	rho1 =  9.75149;
+	rho1 =  2.12132;//9.75149;
 	/* enter the position angle of ray in solar image */
-	eta1 = (270.+1.) * M_PI/180.; 
+	eta1 = 0.;//(270.-0.) * M_PI/180.; 
 	//---------------------------------------------------------------------------
 	
 #ifdef GEOMTEST_OUT

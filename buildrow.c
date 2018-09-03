@@ -116,9 +116,9 @@
 	case_num    = 23 ;
     } else if (impact < RMIN && impact > 1. && t3 > 0.) {
 	case_num    = 24 ;
-    } else if (impact < 1. && t3 < 0.) { 
+    } else if (impact <= 1. && t3 < 0.) { 
 	case_num    = 25 ;
-    } else if (impact < 1. && t3 > 0.) { 
+    } else if (impact <= 1. && t3 > 0.) { 
 	case_num    = 26 ;
     } else {
         fprintf(stderr, "buildrow: unrecognized case 2? of spacecraft position.\n");
@@ -203,17 +203,18 @@
   // Compute Latitude [rad] of vector los1
   rtmp = atan( los1[2] / sqrt( los1[0]*los1[0] + los1[1]*los1[1]) );
   // Compute Theta bin of vector los1, taking theta=0 as the South pole,  theta=Pi as the North pole.
-  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );  // assumes uniform theta grid
-  
+  binbin[2] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );  // assumes uniform theta grid  
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry theta = %g deg, ",rtmp*180./M_PI);
 #endif
+
   // Same Latitude/Theta computations for vector los2:
   rtmp = atan( los2[2] / sqrt( los2[0]*los2[0] + los2[1]*los2[1]) );
   binbin[3] =  floor( (rtmp + M_PI/2.)*((double) NTHETA)/ M_PI );
 #ifdef RAYDIAGNOSE
-  fprintf(stderr,"exit theta = %g deg\n",rtmp*180/M_PI, wrap); // Here wrap has not been assigned a value yet. 
+  fprintf(stderr,"exit theta = %g deg\n",rtmp*180./M_PI);
 #endif
+
   // Compute Longitude [rad] of vector los1
   rtmp = atan2(los1[1], los1[0]);
   if (rtmp < 0.)
@@ -223,6 +224,7 @@
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"entry phi = %g deg, ",rtmp*180./M_PI);
 #endif
+
   // Same Longitude/Phi computations for vector los2:
   ptmp = atan2(los2[1], los2[0]);
   if (ptmp < 0.)
@@ -285,7 +287,6 @@
     */
     dtpr = rad_bin_boundaries(jij);
     rtmp = *dtpr; // outer boundary of cell jij.
-
     
     // Compute here the absolute value of the crossing time at rtmp, naming it ttmp.
     // For cases 1, 2, 3, decide when to assign it negative sign or positive sign, or take both when appropriate.
@@ -352,14 +353,14 @@
 #endif
 
   for (jij = 0; jij < NTHETA/2 + 1; jij++) {
-	gam = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. );
-	gam = gam*gam;
+        gam  = tan( (jij+1)*M_PI/((double) NTHETA) - M_PI/2. ); // Note this assumes regular grid in theta.
+	gam  = gam*gam;
 	vdhA = gam*(unit[0]*unit[0] + unit[1]*unit[1]) - unit[2]*unit[2];
 	vdhB = 2.*( gam*(unit[0]*nrpt[0] + unit[1]*nrpt[1]) - unit[2]*nrpt[2]);
 	sgam = gam*(nrpt[0]*nrpt[0] + nrpt[1]*nrpt[1]) - nrpt[2]*nrpt[2];
-    //ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+        // ttmp =  (- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);        
 	ttmp =  GridDivision(- vdhB - sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
-		 
+
 	if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
@@ -367,10 +368,10 @@
       fprintf(stderr,"(%d, %g deg, %g)", jij, (jij+1)*180./((double) NTHETA) - 90., ttmp);
             fflush(stderr);
 #endif
-    }  
+	}
+	// ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
+        ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
 
-    //ttmp =  (- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam))/(2.*vdhA);
-    ttmp =  GridDivision(- vdhB + sqrt(vdhB*vdhB - 4.*vdhA*sgam), 2.*vdhA);
     if ((ttmp > t1) && (ttmp < t2)) {
 	  t[tdex] = ttmp;
 	  tdex++;
@@ -379,9 +380,9 @@
       fflush(stderr);
 #endif
     }
-  }
+ }
 
-  /* azimuthal bin crossings */
+/* azimuthal bin crossings */
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\nPHI Bins: bin crossings: ");
@@ -455,7 +456,7 @@
   // Find index0 such that t[index0]=t3
   index0 = 0;
   while (t[index0] < t3) index0++;
-  //  fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
+    fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
   // If case_num NE 2? then index0 = index0 + 1, to exclude spacecraft location.
   // OLD CODE: if (strcmp(case_str,"1") == 0 || strcmp(case_strb,"3") == 0) index0++;
@@ -471,17 +472,17 @@
   }
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
-  //  fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
+    fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
-  // fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
+   fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
   for (jij = 0;jij < tdex;jij++)
     fprintf(stderr,"%g ",t[jij]);
 
-  fprintf(stderr,"\nVoxel Numbers: ");
+  fprintf(stderr,"\nVoxel Numbers (index[0],index[1],index[2],ardex), time, rad, rad_index: \n ");
   fflush(stderr);
 #endif
 
@@ -590,7 +591,8 @@
 #endif
 
 #ifdef RAYDIAGNOSE
-    fprintf(stderr,"(%d,%d,%d, %d)",index[0],index[1],index[2],ardex);
+    fprintf(stderr,"(%d,%d,%d, %d) ",index[0],index[1],index[2],ardex);
+    fprintf(stderr, "time = %g.  r = %g.  rad_index = %d.  arclength = %g\n",ttmp,r,index[0],arclength);      
     fflush(stderr);
 #ifdef GEOMTEST_OUT /*see geomtest.c */
     fwrite(&ttmp, sizeof(double), 1, fid_geomtest);
@@ -601,6 +603,7 @@
 
     } /*tdex loop */
 
+  exit(0);
 
 salida:/* exit point for LOS's that miss the compution grid */
 
