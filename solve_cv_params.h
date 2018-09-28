@@ -2,7 +2,7 @@
 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 3                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NMATS 2                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
 #define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
@@ -20,11 +20,12 @@
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
-#define LAMBDA  {1.,5.85,5.85}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define LAMBDA  {1.,0.75,0.075}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0,0}
-#define FILESTR0 "comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180"
-#define FILESTR1 "hlaplac_50_90_180"
-#define FILESTR2 "d2r_50_90_180"      // Must always be specified.
+#define FILESTR0 "euviA.195.cr2082.ri.98-ro1.02.DECON.NewSet.Albert"
+#define FILESTR1 "r3_26_90_180"
+//#define FILESTR1 "hlaplac_26_90_180"
+//#define FILESTR2 "d2r_50_90_180"      // Must always be specified.
 //#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
 //#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
 //#define FILESTR2 "hlaplac_100_90_180"      // Must always be specified.
@@ -32,8 +33,8 @@
 //#define FILESTR2 "d2r_100_90_180"      // Must always be specified.
 //#define FILESTR3 "d2theta_100_90_180"      // Must always be specified.
 //#define FILESTR4 "d2phi_100_90_180"      // Must always be specified.
-#define MAIN_X_INFILE  "x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_8.19"
-#define MAIN_X_OUTFILE "x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85"
+#define MAIN_X_INFILE  "x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75_DECON_NewSet"
+#define MAIN_X_OUTFILE "x_euvi.A.195.cr2082.50x90_bf4_ri.98_ro1.02_l.75-l.075_DECON_NewSet_hlpalac-d2r.Albert"
 
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
