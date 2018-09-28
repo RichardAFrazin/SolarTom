@@ -1,0 +1,149 @@
+
+Scaling of the regularization level LAMBDA when changing from DISK tom to HOLLOW tomography.
+by A.M. Vásquez. Feb-9-2018.
+
+******************************************************************************
+The cost function of the tomography code is:
+
+Phi(x) = (A*x - y)^T*(A*x - y) + (lambda^2) x^T*R*x.
+
+In the codes:
+
+normd = (A*x - y)^T*(A*x - y),
+normx = x^T*R*x,
+normt = normd + (lambda^2) * normx.
+
+Now, normd is the sum of NPIXELS terms, where NPIXELS is the number of elements of vector y, or number of rows of matrix A, while normx is the sum of NVOXELS terms. When we change from DISK tomography to HOLLOW tomography, we keep fixed NVOXELS while we decrease NPIXELS.
+
+Given the optimal value of the regularization parameter for DISK tomography: lambda_disk, we propose two different scaling laws to determine lambda_hollow:
+
+1) lambda^2 \propto Npixels.
+
+2) lambda^2 \propto normd.
+
+Below, we explore both possibilities.
+
+**********************************************************************************
+Npixels (number of elements of vector y, or number of rows of A) for various tomographic FBE reconstructions, all of them using hlaplac with lambda=0.75 and NODECON images:
+
+Note: FullHollow is a hollow tomography using 1 full solar rotation of data. HalfHollow1 and 2 are hollow tomographies using 1/2 solar rotation of data, in one case the first half rotation and in the other case the second half.
+
+--------------------------------------------------------------------
+ Band	Disk		FullHollow	HalfHollow1	HalfHollow2
+--------------------------------------------------------------------
+ EUVI-A of CR2081
+ 171	3192728         1173043		591351		592661
+ 195	3222618         1184024		591352		592672
+ 284	3115874		1077280		535847		541433
+--------------------------------------------------------------------
+ EIT of CR-1915. Note that FIRST column is: HOLLLOWTEST (which gives a DISK tom output CUIDADO!!!)
+ 171 	4104495		1493157		772828		735276
+ 195	4520514		1643968		818092		825876
+ 284	4066229		1478750		758454		720296
+--------------------------------------------------------------------
+
+Ratio of Npixels of the different tomographies compared to the Disk one:
+
+--------------------------------------------------------------------
+ Band	Disk		FullHollow	HalfHollow1	HalfHollow2
+--------------------------------------------------------------------
+ EUVI-A of CR2081
+ 171	1               0.367411	0.185218	0.185628
+ 195	1          	0.367411	0.183500	0.183910
+ 284	1          	0.345739	0.171973	0.173766
+--------------------------------------------------------------------
+ EIT of CR-1915
+ 171 	1		0.363786	0.188288	0.179139
+ 195	1		0.363668     	0.180973     	0.182695
+ 284	1		0.363666     	0.186525     	0.177141
+--------------------------------------------------------------------
+
+Note that in all cases Npixels diminishes by ~1/3 for FullHollow, and ~1/6 for HalfHollow. This is expected from a simple estimate. Let us call b=1.25 to INSTR_RMAX and a=1.0 the blocking radius for hollow tom. Then when changing from Disk to FullHollow the number of pixels is expected to decreace by ~ factor = (b²-a²)/b² = 0.36. When changing from FullHollow to HalfHollow Npixels dimishes another 1/2 factor.
+
+Then, if we scale lambda^2 \propto Npixels, or lambda \propto Sqrt(Npixels), we get:
+
+lambda_fullhollow = lambda_disk * Sqrt(0.36)
+                  = lambda_disk * 0.60
+
+lambda_halfhollow = lambda_disk * Sqrt(0.36/2)
+                  = lambda_disk * 0.42
+
+
+*********************************************************************************
+Final values of NORMD for the various cases:
+
+--------------------------------------------------------------------
+ Band	Disk		FullHollow	HalfHollow1	HalfHollow2
+--------------------------------------------------------------------
+EUVI-A of CR2081
+ 171	2.16600e+07     2.08831e+06	6.03094e+05	5.30076e+05
+ 195	1.52452e+07	1.66873e+06	5.41822e+05	3.22807e+05
+ 284	5.06382e+06	5.73096e+05	3.64311e+05	4.95211e+04
+--------------------------------------------------------------------
+ EIT of CR-1915
+ 171 	1.50028e+07	1.72987e+06	3.99426e+05	3.59540e+05
+ 195	1.47979e+07	2.06326e+06	4.72979e+05	3.46509e+05
+ 284	4.60430e+07	7.03672e+06	2.31112e+06	1.09875e+06
+--------------------------------------------------------------------
+ 
+Ratio of NORMD of the different tomographies compared to the Disk one:
+
+--------------------------------------------------------------------
+ Band	Disk		FullHollow	HalfHollow1	HalfHollow2
+--------------------------------------------------------------------
+ EUVI-A of CR2081
+ 171	1               0.096413	0.0278437	0.0244726
+ 195	1          	0.109459	0.0355405	0.0211743
+ 284	1          	0.113175	0.0719439	0.0097794
+--------------------------------------------------------------------
+ EIT of CR-1915
+ 171	1		0.115303	0.0266234	0.0239649
+ 195	1		0.139429    	0.0319626    	0.0234161
+ 284	1		0.152829    	0.0501948    	0.0238636
+--------------------------------------------------------------------
+
+EUVI CR-2081: note that for FullHollow normd diminished an average factor ~0.105, while for HalfHollow1,2 it diminished an average factor of ~0.032.
+
+EIT CR1915: note that for FullHollow normd diminished an average factor ~0.136, while for HalfHollow1,2 it diminished an average factor of ~0.030.
+
+Results for both EUVI and EIT are very similar, let us average them so that for FullHollow normd diminished an average factor ~0.121, while for HalfHollow1,2 diminished an average factor of ~0.031.  
+
+Then, if we scale lambda^2 \propto normd, or lambda \propto Sqrt(Npixels), we get:
+
+lambda_fullhollow = lambda_disk * Sqrt(0.121)
+                  = lambda_disk * 0.35
+
+lambda_halfhollow = lambda_disk * Sqrt(0.031)
+                  = lambda_disk * 0.18
+
+******************************************************************************************
+CONCLUSION:
+
+The two scaling laws give similar results, although with a tendency of the normd scaling to give smaller values. Now, normd depends on the solution, which in turn depends on its regularization level, but it weights the values of each of its Npixel terms. On the other hand, Npixels is a hard estimate which does not weight the values of each term at all. I propose then to use a scaling intermediate to both results, by simply taking the average of the factors obtained through both scalings:
+
+lambda_fullhollow = lambda_disk * Mean(0.60,0.35)
+                  = lambda_disk * 0.5
+
+lambda_halfhollow = lambda_disk * Mean(0.42,0.18)
+                  = lambda_disk * 0.3
+
+******************************************************************************************
+
+CONCLUSION 2:
+
+Should we use only 1 hollow image per day, i.e. going from 110 down to 14 images, using the Npixel scaling law:
+
+lambda_halfhollow_1perday = lambda_disk * Sqrt(0.36 * 14/110)
+                          ~ lambda_disk * 0.2
+
+For lambda_disk = 0.75 we get: lambda_halfhollow_1perday = 0.15
+
+Now. In th study above the normd scaling ended up giving always factors ~1/2 those given by the NPIXEL scaling law, and we took their average. Assuming the same behavior here, we would get:
+
+lambda_halfhollow_1perday = lambda_disk * Mean(0.2,0.1)
+			  = lambda_disk * 0.15
+
+For lambda_disk = 0.75 we get: lambda_halfhollow_1perday ~ 0.1
+
+******************************************************************************************
+			 
