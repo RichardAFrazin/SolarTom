@@ -25,7 +25,6 @@ comp_O_CircOrbit01
 compare.c_STATIC
 compare_nostatic_WISPRI
 compare_nostatic_WISPRO
-scaling.of.lambda.txt
 test.pro
 auto_cv_brent_*
 *out
