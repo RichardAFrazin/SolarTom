@@ -4,8 +4,8 @@
 // #define EITBUILD
 // #define C3BUILD
 // #define C2BUILD 
-// #define WISPRIBUILD
-   #define WISPROBUILD
+   #define WISPRIBUILD
+// #define WISPROBUILD
 // #define KCORBUILD
 // #define COMPBUILD
 
@@ -31,46 +31,46 @@
    
 #if (defined C2BUILD || defined C3BUILD)
 // #define NRL            // use for NRL        calibration 
-z#define MARSEILLES     // use for Marseilles calibration
+#define MARSEILLES     // use for Marseilles calibration
 #endif
 
 #ifdef WISPRIBUILD
 #define RMIN  2.0             /* RMIN reached by the grid */
-#define RMAX 214.5            /* RMAX reached by the grid */
+#define RMAX  214.5        //14.//14.196949// 214.5            /* RMAX reached by the grid */
 #define NZ     130
 #define NCELLS  90	     /* cartesian: object has NCELLS^3 elements */
-#define NRAD   100
+#define NRAD    100         //48//20//100
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version*/
 #define BINFAC    4	     /* binning factor for WISPRI images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN  1.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
-#define INSTR_RMAX  1000. // 90.    
+#define INSTR_RMIN  2.0    /* Set as the range of radii over the whole image series over a full 0.5AU->0.5AU orbit*/
+#define INSTR_RMAX  1000.     //1000. // 90.    
 #define PIXSIZE     (66.621094*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprI/CR2082_UnifLong/"
-#define CONFSTRING  DATADIR"list.wisprI.Synth.CR2082.UnifLong.SciOrb01.txt"
-#define A_OUTFILE               "wisprI.Synth.CR2082.UnifLong.SciOrb01.bf4_TEST"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprI.Synth.CR2082.UnifLong.SciOrb12.txt"
+#define A_OUTFILE               "wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4"     /* suffix of A matrix ouput files */
 
 #elif defined WISPROBUILD
 #define RMIN 2.0             /* RMIN and RMAX set as in WISPRIBUILD, see notes above */
-#define RMAX 214.5            
-#define NZ     130
+#define RMAX 214.5     //14.//14.196949//214.5            
+#define NZ     130 
 #define NCELLS  90   	     /* cartesian: object has NCELLS^3 elements */
-#define NRAD   100 
+#define NRAD    100            //48//20//100 
 #define NTHETA  90           /* polar angle bins */
 #define NPHI (NTHETA * 2)    /* azimuthal angle bins */
 #define IMSIZE    512	     /* size of WISPR images (pixels), expanded 1920->2048 in height to make them square in first version */
 #define BINFAC    4	     /* binning factor for WISPRO images (pixels) */
 #define DELTA     0.0	     /* delta vector */
-#define INSTR_RMIN   1.   //7.0
-#define INSTR_RMAX   1000.   //110. 
+#define INSTR_RMIN   2.0       //7.0
+#define INSTR_RMAX   1000.   //1000.   //110. 
 #define PIXSIZE     (96.679680*2048/IMSIZE)  /* arcsec per pixel */
 typedef float PB_IMTYPE;
 #define DATADIR     TOMROOT"DATA/wisprO/CR2082_UnifLong/"
-#define CONFSTRING  DATADIR"list.wisprO.Synth.CR2082.UnifLong.SciOrb01.txt"
-#define A_OUTFILE               "wisprO.Synth.CR2082.UnifLong.SciOrb01.bf4"     /* suffix of A matrix ouput files */
+#define CONFSTRING  DATADIR"list.wisprO.Synth.CR2082.UnifLong.SciOrb12.txt"
+#define A_OUTFILE               "wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4"     /* suffix of A matrix ouput files */
 
 #elif defined KCORBUILD
 #define RMIN   1.05          /* innner radius (hollow  sphere)   */
@@ -87,7 +87,7 @@ typedef float PB_IMTYPE;
 typedef float PB_IMTYPE;
 #define DATADIR    TOMROOT"DATA/kcor/CR2198/AvgNoOffset_Images/"
 #define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg" /* suffix of A matrix ouput files */
 
 #elif defined COMPBUILD
 #define RMIN   1.00         /* innner radius (hollow  sphere)   */

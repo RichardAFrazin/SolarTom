@@ -18,7 +18,6 @@ nohup ./compOBK_Orbit01 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_
 nohup ./compOBK_Orbit12 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_Orbit12_BK.txt  2>&1 &
 nohup ./compOBK_Orbit24 x_AWSOM_CR2081run5_WISPR_sphere_2.dat > termout.compare_wisprO_512_Orbit24_BK.txt  2>&1 &
 
-
 nohup ./bA_WI_Orb24_60imgs > termout.bA_WI_Orb24_60imgs.txt  2>&1 &
 nohup ./bA_WO_Orb24_60imgs > termout.bA_WO_Orb24_60imgs.txt  2>&1 &
 
@@ -54,7 +53,7 @@ As a frist step, I re-ran in NALAI builda on WISPR-I Orbit-01 with hlaplac.
 The results have same md5sum than those from the run in PYWFS:
 nohup ./bA_WI_Orb01_60imgs_NALAI  > termout.bA_WI_Orb01_60imgs_NALAI.txt  2>&1 &
 
-Had to re-dom  ALL experiments involving WISPR-O, because in PYWFS I incorrectly used the BLANK images!!!
+Had to re-do  ALL experiments involving WISPR-O, because in PYWFS I incorrectly used the BLANK images!!!
 
 nohup ./bA_WO_Orb24_60imgs > termout.bA_WO_Orb24_60imgs.txt  2>&1 &
 nohup ./bA_WO_Orb12_60imgs > termout.bA_WO_Orb12_60imgs.txt  2>&1 &
@@ -304,7 +303,7 @@ nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_
 
 nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l1.3e-4 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac-d2r_l1.3e-4 2>&1 &
 
-nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l9.6e-5
++nohup ./cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l9.6e-5
 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l9.6e-5
 KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 9.6e-5 > termout_cs_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l9.6e-5 9.6e-5 2>&1 &
 
@@ -370,8 +369,107 @@ nohup ./cs_comp1074_26_90_180_r3D x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.
 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 2.65 > termout_cs_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_L2.65 2>&1 &
 
  
+I recreated the hlaplac295_90_180 matrices, which ended up havingng an md5sum value DIFFERENT from what it used to be. I then wonder: were all the 295x90x180 runs correct? I am running the experiment below to asses this. The input and output solutions should be EQUAL. If they differ then I should delete ANY 295x90x180 experiment ran before these two auto_cv_brents and callsolve_cg.
 
+nohup ./cs_KCOR.bf2.295_90_180_hlaplac x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l1e-4_V2
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l1e-4_V2 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_hlaplac x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac_l1e-4_V2
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac_l1e-4_V2 2>&1 &
+
+RESULTS:
+1) the old hlaplac_295_90_180 matrices were fine.
+2) dropneg keepneg give virtually same results.
+
+nohup ./bA_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg > termout_bA_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg  2>&1 &
+
+
+DONE, TASKS!!
+
+Ver estas soluciones como comparan con las 295x90x180!!!;
+
+nohup ./cs_KCOR.bf2.95_90_180_r2D x_zero_95_90_180 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r2D_l1e-4
+KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r2D_l1e-4 2>&1 &
+
+nohup ./cs_KCOR.bf2.95_90_180_r3D x_zero_95_90_180 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r3D_l1e-4
+KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r3D_l1e-4 2>&1 &
+
+Ver primero las soluciones wisprIO que deje corriendo abajom y luego quiza largar las que corresponden a estas dos matrices que siguen (ya hechas).
+nohup ./bA_wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.10Rs > termout_bA_wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.10Rs 2>&1 &
+nohup ./bA_wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.10Rs > termout_bA_wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.10Rs 2>&1 &
+
+
+nohup ./ba.wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs > termout_ba.wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs 2>&1 &
+nohup ./ba.wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs > termout_ba.wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs 2>&1 &
+
+nohup ./ba.wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs > termout_ba.wisprI.Synth.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs 2>&1 &
+nohup ./ba.wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs > termout_ba.wisprO.Synth.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs 2>&1 &
+
+nohup ./bA.wisprO.Synth.CR2082.UnifLong.SciOrb01.bf4 > termout_bA.wisprO.Synth.CR2082.UnifLong.SciOrb01.bf4  2>&1 &
+
+In the previous experiment the lambda was always close to 1.e-4 so I re-compile it using a searbch range"[1.e-5,1.e-3] in solve_cv_params.h
+
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r3_r1w1 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r3_r1w1>
+termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg_r3_r1w1 2>&1 &
+
+nohup ./auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3_r1w1 -r1 -w1 -m KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg
+-i x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_r1w1 -o x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3_r1w1>
+termout_auto_cv_brent_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3_r1w1 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_hlaplac_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_hlaplac_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_r3D_l1e-4
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg 1.e-4 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_keepneg_r3D_l1e-4 2>&1 &
+
+nohup ./cs_wisprIO_CR2081_UnifLong_SciOrb24_hlaplac_100_90_180_L1e-6 > termout_cs_wisprIO_CR2081_UnifLong_SciOrb24_hlaplac_100_90_180_L1e-6 2>&1 & DONE
+nohup ./cs_wisprIO_CR2081_UnifLong_SciOrb24_r3_100_90_180_L1e-6      > termout_cs_wisprIO_CR2081_UnifLong_SciOrb24_r3_100_90_180_L1e-6      2>&1 &
+
+Estas cuatro corridas están dando resultados muy malos:
+nohup ./cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs_r2D_l1e-6 > termout_cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs_r2D_l1e-6 2>&1 & DONE
+nohup ./cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs_r3D_l1e-6 > termout_cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.Uniform_48_90_180.10Rs_r3D_l1e-6 2>&1 & DONE
+nohup ./cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs_r2D_l1e-6 > termout_cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs_r2D_l1e-6  2>&1 & DONE
+nohup ./cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs_r3D_l1e-6 > termout_cs.x_wisprIO.512.CR2081.UnifLong.SciOrb24.bf4.NonUniform_20_90_180.10Rs_r3D_l1e-6  2>&1 & DONE
+
+INSPECCIONAR TODAS ESTAS Y DECIDIR CUALES USAR:
+NSUBIT 100
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb01_hlaplac_100_90_180_L1e-6 > termout_cs_wisprIO_CR2082_UnifLong_SciOrb01_hlaplac_100_90_180_L1e-6 2>&1 & DONE, da lo mismo que las originales y que la NSUBIT1000 de abajo.
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb01_r3_100_90_180_L1e-6      > termout_cs_wisprIO_CR2082_UnifLong_SciOrb01_r3_100_90_180_L1e-6      2>&1 & THIS ONE IS GOING SOMEWHERE INTERESTING!
+NSUBIT 1000
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb01_hlaplac_100_90_180_L1e-6_NSUBIT1000 > termout_cs_wisprIO_CR2082_UnifLong_SciOrb01_hlaplac_100_90_180_L1e-6_NSUBIT1000 2>&1 & DONE
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb01_r3_100_90_180_L1e-6_NSUBIT1000      > termout_cs_wisprIO_CR2082_UnifLong_SciOrb01_r3_100_90_180_L1e-6_NSUBIT1000      2>&1 & THIS ONE IS GOING SOMEWHERE INTERESTING!
 
 RUNNING:
 
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l5e-3
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 5.e-3 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_5e-3 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-3
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 1.e-3 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_1e-3 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l5e-5
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 5.e-5 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_5e-5 2>&1 &
+
+nohup ./cs_KCOR.bf2.295_90_180_r3D x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_l1e-5
+KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg 1.e-5 > termout_x_KCOR.CR2198.13imgs.bf2.ri1.05.ro4.00_Inst_1.09_2.00_295_90_180_dropneg_r3D_1e-5 2>&1 &
+
+
+nohup ./bA.wisprI.Synth.CR2082.UnifLong.SciOrb24.bf4 > termout_bA.wisprI.Synth.CR2082.UnifLong.SciOrb24.bf4  2>&1 &
+nohup ./bA.wisprO.Synth.CR2082.UnifLong.SciOrb24.bf4 > termout_bA.wisprO.Synth.CR2082.UnifLong.SciOrb24.bf4  2>&1 &
+
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb24_hlaplac_100_90_180_L1e-6 > termout_cs_wisprIO_CR2082_UnifLong_SciOrb24_hlaplac_100_90_180_L1e-6 2>&1 &
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb24_r3_100_90_180_L1e-6      > termout_cs_wisprIO_CR2082_UnifLong_SciOrb24_r3_100_90_180_L1e-6      2>&1 &
+
+nohup ./cs_wisprIO.Synth.CR2082.Circular-120_r3_100_90_180_L1e-6      > termout_cs_wisprIO.Synth.CR2082.Circular-120_r3_100_90_180_L1e-6      2>&1 &
+
+nohup ./bA.wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4 > termout_bA.wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4  2>&1 &
+nohup ./bA.wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4 > termout_bA.wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4  2>&1 &
+
+RUNNING:
+
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb12_hlaplac_100_90_180_L1e-6 > termout_cs_wisprIO_CR2082_UnifLong_SciOrb12_hlaplac_100_90_180_L1e-6 2>&1 &
+nohup ./cs_wisprIO_CR2082_UnifLong_SciOrb12_r3_100_90_180_L1e-6      > termout_cs_wisprIO_CR2082_UnifLong_SciOrb12_r3_100_90_180_L1e-6      2>&1 &
+
 TO BE RAN:
+
