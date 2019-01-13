@@ -13,6 +13,8 @@
 #include <string.h>
 #include "buildA_params.h"
 
+#define QEPS 1.e-4
+
 #ifdef NONUNIFORMRAD
 
 double* rad_bin_boundaries(int bin){ // Returns the height [Rs] of the two boundaries of given radial bin.
@@ -21,7 +23,7 @@ static  double s[2];  // [outer, inner]
 void rad_bin_boundaries(int bin, double *s){ // s is bin boundary array = [outer, inner]
 */
   int j;
-  double q1, q2, p, drmin = 0.25, drmax = 4.0;
+  double q1, q2, p, drmin = 0.25, drmax = 4.0; // 0.969697;//4.0;
   //fprintf(stdout,"Entering subroutine rad-bin_boundaries.\n"); fflush(stdout);
   if ((bin < 0) || (bin >= NRAD)){
     fprintf(stderr, "rad_boundaries: invalid bin value.\n");
@@ -56,7 +58,12 @@ int rad_bin_number(double dist){  // Returns the radial bin index of given dista
   }
   if (dist == RMIN)
     bin = 0;
+  if (dist < RMIN){
+    bin = 0;
+    fprintf(stderr, "dist = %g.\n",dist);
+  }
   if (bin == -1){
+    fprintf(stderr, "dist = %g.\n",dist);
     fprintf(stderr, "rad_bin_number: invalid bin.\n");
     exit(-1);
   }

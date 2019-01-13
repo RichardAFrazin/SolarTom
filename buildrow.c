@@ -456,7 +456,7 @@
   // Find index0 such that t[index0]=t3
   index0 = 0;
   while (t[index0] < t3) index0++;
-    fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
+  //    fprintf(stderr, "t[%d] = %g.  t3 = %g.  t[%d] = %g.\n",index0,t[index0],t3,index0+1,t[index0+1]);
   
   // If case_num NE 2? then index0 = index0 + 1, to exclude spacecraft location.
   // OLD CODE: if (strcmp(case_str,"1") == 0 || strcmp(case_strb,"3") == 0) index0++;
@@ -472,10 +472,10 @@
   }
   
   // Redefine array t as the elements of the original array with index >= index0, and adjust tdex.
-    fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
+  //    fprintf(stderr, "Old t[0] = %g. Old tdex = %d. Old t[tdex-1] = %g.\n"  ,t[0],tdex,t[tdex-1]);
   for (jij=index0 ; jij < tdex; jij++) t[jij-index0]  = t[jij];
   tdex   = tdex - index0;
-   fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
+  //   fprintf(stderr, "New t[0] = %g. New tdex = %d. New t[tdex-1] = %g.\n\n",t[0],tdex,t[tdex-1]);      
 
 #ifdef RAYDIAGNOSE
   fprintf(stderr,"\ntimes: ");
@@ -603,7 +603,7 @@
 
     } /*tdex loop */
 
-  exit(0);
+  //  exit(0);
 
 salida:/* exit point for LOS's that miss the compution grid */
 
