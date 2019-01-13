@@ -29,3 +29,4 @@ test.pro
 auto_cv_brent_*
 *out
 test*
+Makefile
