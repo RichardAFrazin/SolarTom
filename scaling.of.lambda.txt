@@ -108,7 +108,7 @@ EIT CR1915: note that for FullHollow normd diminished an average factor ~0.136, 
 
 Results for both EUVI and EIT are very similar, let us average them so that for FullHollow normd diminished an average factor ~0.121, while for HalfHollow1,2 diminished an average factor of ~0.031.  
 
-Then, if we scale lambda^2 \propto normd, or lambda \propto Sqrt(Npixels), we get:
+Then, if we scale lambda^2 \propto normd, or lambda \propto Sqrt(normd), we get:
 
 lambda_fullhollow = lambda_disk * Sqrt(0.121)
                   = lambda_disk * 0.35
