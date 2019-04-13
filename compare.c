@@ -1,9 +1,9 @@
 /*  compare.c  rewritten by Richard Frazin summer 2008
  *
- *   This goes through a list of list of .fts files (set by 
- * CONFSTRING in buildA_params.h) and uses the spacecraft
- * coordinates derived from each to create synthetic intensities
- * as determined from a 3D reconstruction (in an input file).
+ *  This goes through a list of list of .fts files (set by 
+ *  CONFSTRING in buildA_params.h) and uses the spacecraft
+ *  coordinates derived from each to create synthetic intensities
+ *  as determined from a 3D reconstruction or model (in an input file).
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
@@ -328,7 +328,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
+	    	  pBval[i][jj] *= 1.e+10; // Change from [Bsun] units to [1.e-10 Bsun] units.
 #endif 
 
 #ifdef DROP_NEG_PB

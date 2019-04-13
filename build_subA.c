@@ -271,7 +271,7 @@ for (i = 0; i < imsize; i++) {
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
+	    pBval[i][jj] *= 1.e+10; // Change from [Bsun] units to [1.e-10 Bsun] units.
 #elif (defined COMPBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.0; // Keep units of the data
