@@ -78,37 +78,55 @@ nohup ./bA.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1
 
 Solutions with both grids but blocking at INSTR_RMIN 1.09, using same lambda_opt as with usual blocking (which was 1.05).
 
-nohup ./cs_comp_26_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_INSTR_RMIN_1.09 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09.txt 2>&1 &
+nohup ./cs_comp_26_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09
+        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_INSTR_RMIN_1.09 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09.txt 2>&1 &
 
-nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65  x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09.txt 2>&1 &
+nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65  x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09
+        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09.txt 2>&1 &
 
 Just a test:
-nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.60_IRMIN_1.09 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2.60 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.60_IRMIN_1.09.txt 2>&1 &
-
+nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.60_IRMIN_1.09
+        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2.60 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.60_IRMIN_1.09.txt 2>&1 &
 
 RUNNNING:
 
 AUTO-CVs  for CoMP-1074 with r3d and Two Grids:
 
-nohup ./auto_cv_brent_comp_26_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180 -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65 -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_autocv > termout_auto_cv_brent_comp_26_90_180 2>&1 &
+--------------------------------THESE AUTO-CVs INCORRECTLY USED THE INCORRECT MATRIXES BLOCKED AT 1.05
+                                BUT THEY WERE USED ONLY TO FIND A REFERENCE LAMBDA. SOLUTIONS BELOW
+				WHERE FOUND USING THE RIGHT MATRIXES BLOCKED AT 1.09-------------------------------------------------------------
+nohup ./auto_cv_brent_comp_26_90_180 -r1 -w1
+        -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180
+	-i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65
+        -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_autocv > termout_auto_cv_brent_comp_26_90_180 2>&1 &
 v=[1.74758, 2.2265, 1.89316, 2.84017, 1.74758, 0.912249, 0.578915, 0.912249, 0.578915, 0.578915, 0.912249, 1.41425, 1.41425]
 print,median(v),mean(v),stdev(v)
      1.41425      1.36592     0.704957
 
+RUNNING!!!!!!!!!!!!!  -- BELOW THE CORRECTED RUN FOR  50X90X180 USING THE MATRIX BLOCKED AT 1.09 --
+nohup ./auto_cv_brent_comp_50_90_180 -r1 -w1
+       -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
+       -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
+       -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv  > termout_auto_cv_brent_comp_50_90_180_CORRECTED 2>&1 &
 
-nohup ./auto_cv_brent_comp_50_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180 -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3_2.65  -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_autocv > termout_auto_cv_brent_comp_50_90_180 2>&1 &
+-------***********------------
+THESE VALUES WERE NOT RIGHT, AS I HAD USED THE MATRIX BLOCKED AT 1.05 RSUN.
 v=[1.74758, 4.07647, 3.02868, 2.2265, 1.74758, 0.578915, 0.912249, 0.912249, 0.578915, 0.578915, 1.74758, 1.89316]
 print,median(v),mean(v),stdev(v)
       1.74758      1.66907      1.07595
+-------***********------------
+CORRECTED VALUES:
+v=[]
+print,median(v),mean(v),stdev(v)
+
 
 OPTIMAL SOLUTIONS:
 
 nohup ./cs_comp_26_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09
        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_INSTR_RMIN_1.09 1.4 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09.txt 2>&1 &
 
-nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_1.7_IRMIN_1.09
-      comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 1.7 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_1.7_IRMIN_1.09.txt 2>&1 &
-
+nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
+      comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
 
 ----------------------------CoMP-1074, NEW GRID---------------------------------
 
@@ -116,13 +134,9 @@ nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90
 A-Matrix with new Grid: Rmin 1.0, Rmax 1.3, Nrad 30, INSTR_RMAX 1.26
 nohup ./bA.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 > termout_bA.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26.txt 2>&1 &
 
-RUNNING:
-
 Create a first solution:
 nohup ./cs_comp_30_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65
 comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65 2>&1 &
-
-TO BE RAN:
 
 Cross-validation:
 nohup ./auto_cv_brent_comp_30_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65
@@ -137,6 +151,36 @@ OPTIMAL SOLUTION:
 
 nohup ./cs_comp_30_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L1.8
        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 1.8 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L1.8 2>&1 &
+
+
+---------------------CoMP-1079, NEW GRID, Using the best-performing setup for 1074: 50x90x180, Rmin/Rmax 1.0/1.5, INSTR_Rmin/INSTR_Rmax 1.09/1.30-----------------------------------------------------
+
+A-Matrix
+
+nohup ./bA.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 > termout_bA.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2>&1 &
+
+Solutions with both grids but blocking at INSTR_RMIN 1.09, using same lambda_opt as with usual blocking (which was 1.05).
+
+nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 5.85 > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09.txt 2>&1 &
+
+AUTO-CV
+
+cp x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
+
+RUNNING!!!!!!!!!!!!!
+nohup ./auto_cv_brent_comp1079_50_90_180 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
+      -o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv > termout_auto_cv_brent_comp1079_50_90_180.txt 2>&1 &
+
+v = []
+print,median(v),mean(v),stdev(v)
+
+
+OPTIMAL SOLUTION:
+
+nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
+      comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
+
+
 
 ---------------------TEST H1 171 NS vs OS
 
@@ -156,7 +200,7 @@ nohup ./cs_aia_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Old
 nohup ./cs_aia_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45 aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.45 > termout.x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45 2>&1 &
 
 
-----------------------------KCOR CR-2198 14 images-------------------
+----------------------------KCOR CR-2198 14 images y CR-2208 13 imágenes-------------------
 
 RAN
 
@@ -185,17 +229,26 @@ RUNNING
 # ESTUDIOS DE VALIDACION CRUZADA
 nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg
 -i x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv -o x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv > termout_auto_cv_kcor_120_90_180_CR2198.txt 2>&1 &
-	
+v = [ 0.000119505, 0.000138587, 0.000134281, 0.000248697, 0.000113287, 0.000106619, 5.07641e-05, 2.63574e-05, 3.10734e-05, 3.91436e-05, 3.44067e-05, 8.61799e-05, 0.000107346 ]
+print,median(v),mean(v),stdev(v)
+ 0.000106619  9.50959e-05  6.18549e-05
+ TOMO: 1.e-4.
+ 
 nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg
 -i x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv -o x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv > termout_auto_cv_kcor_120_90_180_CR2208.txt 2>&1 &
+v =[ 4.07641e-05, 0.000119185, 6.51708e-05, 0.000137038, 0.000121622, 0.00014639, 5.58709e-05, 4.07641e-05, 4.74308e-05, 2.30241e-05, 2.30241e-05, 3.63367e-05, 0.000176263 ]
+print,median(v),mean(v),stdev(v)
+ 5.58709e-05  7.94526e-05  5.28617e-05
+ TOMO: 8e-5
 
 TO BE RAN:
 
 # CALCULO DE SOLUCIONES OPTIMAS
+
+El LAMBDA_OPT dió 1.e-4, de manera que no hace falta re-calcular
 nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----
        KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg ---OPTIMAL---- > termout_x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----.txt 2>&1 &
-
-nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----
-       KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg ---OPTIMAL---- > termout_x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----.txt 2>&1 &
-
+       
+nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l8e-5
+       KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg 8.e-5 > termout_x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l8e-5.txt 2>&1 &
 
