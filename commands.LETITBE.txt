@@ -1,3 +1,4 @@
+
 nohup ./builda_test_remote > termout.builda_test_remote.txt 2>&1 &
 
 ------------------------------TESTING NEW GRID FOR DEMT---------------------------------------------------
@@ -6,22 +7,30 @@ nohup ./ba_AIA_CR2209_171b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.
 nohup ./ba_AIA_CR2209_193b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.ba_AIA_CR2209_193b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4.txt 2>&1 &
 nohup ./ba_AIA_CR2209_211b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.ba_AIA_CR2209_211b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4.txt 2>&1 &
 
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9_expanded x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9 AIA_CR2209_171b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.9 > termout_x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9 2>&1 &
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5_expanded x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 AIA_CR2209_193b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.5 > termout_x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 2>&1 &
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5_expanded x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 AIA_CR2209_211b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.5 > termout_x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 2>&1 &
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9_expanded x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9
+        AIA_CR2209_171b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.9 > termout_x_AIA_CR2209_171b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.9 2>&1 &
+
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5_expanded x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5
+        AIA_CR2209_193b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.5 > termout_x_AIA_CR2209_193b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 2>&1 &
+
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5_expanded x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5
+        AIA_CR2209_211b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.5 > termout_x_AIA_CR2209_211b_h1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.5 2>&1 &
 
 nohup ./ba_AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.ba_AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4.txt 2>&1 &
 nohup ./ba_AIA_CR2209_193b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.ba_AIA_CR2209_193b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4.txt 2>&1 &
 nohup ./ba_AIA_CR2209_211b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 > termout.ba_AIA_CR2209_211b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4.txt 2>&1 &
 
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_expanded x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85 AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.85 > termout_x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85 2>&1 &
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_expanded x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85
+        AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.85 > termout_x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85 2>&1 &
 
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80_expanded x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80 AIA_CR2209_193b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.80 > termout_x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80 2>&1 &
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80_expanded x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80
+        AIA_CR2209_193b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.80 > termout_x_AIA_CR2209_193b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.80 2>&1 &
 
-nohup ./cs_30_90_180_r3d x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60_expanded x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60 AIA_CR2209_211b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.60 > termout_x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60 2>&1 &
+nohup ./cs_30_90_180_r3d x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60_expanded x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60
+        AIA_CR2209_211b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.60 > termout_x_AIA_CR2209_211b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.60 2>&1 &
 
-nohup ./cs_30_90_180_r3d_B x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85 x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_B AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.85 > termout_x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_B 2>&1 &
-
+nohup ./cs_30_90_180_r3d_B x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85 x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_B
+        AIA_CR2209_171b_FD_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4 0.85 > termout_x_AIA_CR2209_171b_fd_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_r3d_B_L0.85_B 2>&1 &
 
 ------------------------------TESTING NEW GRID FOR DEMT to be compared with KCOR---------------------------------------------------
 
@@ -29,13 +38,23 @@ nohup ./ba_aia.171.cr2198.ri.00-ro1.09.Newset.H1.Albert > termout.ba_aia.171.cr2
 nohup ./ba_aia.193.cr2198.ri.00-ro1.09.Newset.H1.Albert > termout.ba_aia.193.cr2198.ri.00-ro1.09.Newset.H1.Albert.txt  2>&1 &
 nohup ./ba_aia.211.cr2198.ri.00-ro1.09.Newset.H1.Albert > termout.ba_aia.211.cr2198.ri.00-ro1.09.Newset.H1.Albert.txt  2>&1 &
 
-nohup ./cs_20_90_180_r3d x_AIA_CR2198_171_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_171_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.8 aia.171.cr2198.ri.00-ro1.09.Newset.H1.Albert 0.8 > termout_x_AIA_CR2198_171_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.8.txt 2>&1 &
-nohup ./cs_20_90_180_r3d x_AIA_CR2198_193_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_193_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L1.0 aia.193.cr2198.ri.00-ro1.09.Newset.H1.Albert 1.0 > termout_x_AIA_CR2198_193_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L1.0.txt 2>&1 &
-nohup ./cs_20_90_180_r3d x_AIA_CR2198_211_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_211_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.9 aia.211.cr2198.ri.00-ro1.09.Newset.H1.Albert 0.9 > termout_x_AIA_CR2198_211_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.9.txt 2>&1 &
+nohup ./cs_20_90_180_r3d x_AIA_CR2198_171_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_171_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.8
+        aia.171.cr2198.ri.00-ro1.09.Newset.H1.Albert 0.8 > termout_x_AIA_CR2198_171_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.8.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.8 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 1.0 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.9 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d.txt 2>&1 &
+nohup ./cs_20_90_180_r3d x_AIA_CR2198_193_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_193_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L1.0
+        aia.193.cr2198.ri.00-ro1.09.Newset.H1.Albert 1.0 > termout_x_AIA_CR2198_193_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L1.0.txt 2>&1 &
+
+nohup ./cs_20_90_180_r3d x_AIA_CR2198_211_h1_Rmin1.09_Rmax1.26_Nr26_InstRmax1.26_bf4_r3d_r5w1 x_AIA_CR2198_211_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.9
+        aia.211.cr2198.ri.00-ro1.09.Newset.H1.Albert 0.9 > termout_x_AIA_CR2198_211_h1_Rmin1.07_Rmax1.27_Nr20_InstRmin-max_1.09-1.26_bf4_r3d_L0.9.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.8 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 1.0 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.9 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d.txt 2>&1 &
 
 
 TO BE RAN:
@@ -46,28 +65,49 @@ RUNNING:
 
 H1:
 
-nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d.txt 2>&1 &
+nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d_NSUBIT1000 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000 aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000.txt 2>&1 &
+nohup ./cs_26_90_180_r3d_NSUBIT1000 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d_NSUBIT1000_BTOL0.001 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000_BTOL0.001 aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000_BTOL0.001.txt 2>&1 &
+nohup ./cs_26_90_180_r3d_NSUBIT1000_BTOL0.001 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000_BTOL0.001
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.65 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.65_h1_Oldset_r3d_NSUBIT1000_BTOL0.001.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.35_h1_Oldset_r3d aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.35 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.35_h1_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.52 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d.txt 2>&1 &
+nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.35_h1_Oldset_r3d
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.35 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.35_h1_Oldset_r3d.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.98_h1_Oldset_r3d aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.98 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.98_h1_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.52 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.81_h1_Oldset_r3d aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.81 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.81_h1_Oldset_r3d.txt 2>&1 &
+nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.52 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.8_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.98_h1_Oldset_r3d
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.98 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.98_h1_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.0_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.52 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.52_h1_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.9_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.81_h1_Oldset_r3d
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.81 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.81_h1_Oldset_r3d.txt 2>&1 &
 
 H1-reduced (13 images):
 
-nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l0.75_h1_OldSet_r3d_reduced aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.75 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.75_h1-reduced_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l0.94_h1_OldSet_r3d_reduced aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.94 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.94_h1-reduced_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l0.85_h1_OldSet_r3d_reduced aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.85 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.85_h1-reduced_Oldset_r3d.txt 2>&1 &
+nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l0.75_h1_OldSet_r3d_reduced
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.75 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l0.75_h1-reduced_Oldset_r3d.txt 2>&1 &
 
-nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l1.00_h1_OldSet_r3d_reduced aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.00 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l1.00_h1-reduced_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l1.34_h1_OldSet_r3d_reduced aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.34 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.34_h1-reduced_Oldset_r3d.txt 2>&1 &
-nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l1.19_h1_OldSet_r3d_reduced aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.19 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l1.19_h1-reduced_Oldset_r3d.txt 2>&1 &
+nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l0.94_h1_OldSet_r3d_reduced
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.94 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l0.94_h1-reduced_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l0.85_h1_OldSet_r3d_reduced
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.85 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l0.85_h1-reduced_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.02_l1.00_h1_OldSet_r3d_reduced
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.00 > termout_x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l1.00_h1-reduced_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.02_l1.34_h1_OldSet_r3d_reduced
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.34 > termout_x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l1.34_h1-reduced_Oldset_r3d.txt 2>&1 &
+
+nohup ./cs_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l.2_h1_OldSet_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.02_l1.19_h1_OldSet_r3d_reduced
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 1.19 > termout_x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l1.19_h1-reduced_Oldset_r3d.txt 2>&1 &
 
 ----------------------CoMP-1074 with Two Grids --------------------------
 
@@ -95,17 +135,16 @@ AUTO-CVs  for CoMP-1074 with r3d and Two Grids:
 --------------------------------THESE AUTO-CVs INCORRECTLY USED THE INCORRECT MATRIXES BLOCKED AT 1.05
                                 BUT THEY WERE USED ONLY TO FIND A REFERENCE LAMBDA. SOLUTIONS BELOW
 				WHERE FOUND USING THE RIGHT MATRIXES BLOCKED AT 1.09-------------------------------------------------------------
-nohup ./auto_cv_brent_comp_26_90_180 -r1 -w1
-        -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180
+nohup ./auto_cv_brent_comp_26_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180
 	-i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65
         -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_autocv > termout_auto_cv_brent_comp_26_90_180 2>&1 &
 v=[1.74758, 2.2265, 1.89316, 2.84017, 1.74758, 0.912249, 0.578915, 0.912249, 0.578915, 0.578915, 0.912249, 1.41425, 1.41425]
 print,median(v),mean(v),stdev(v)
      1.41425      1.36592     0.704957
 
-RUNNING!!!!!!!!!!!!!  -- BELOW THE CORRECTED RUN FOR  50X90X180 USING THE MATRIX BLOCKED AT 1.09 --
-nohup ./auto_cv_brent_comp_50_90_180 -r1 -w1
-       -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
+RUNNING!!!!!!!!!!!!!
+-- BELOW THE CORRECTED RUN FOR  50X90X180 USING NOW THE MATRIX BLOCKED AT 1.09 --
+nohup ./auto_cv_brent_comp_50_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
        -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
        -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv  > termout_auto_cv_brent_comp_50_90_180_CORRECTED 2>&1 &
 
@@ -125,6 +164,7 @@ OPTIMAL SOLUTIONS:
 nohup ./cs_comp_26_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09
        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_INSTR_RMIN_1.09 1.4 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09.txt 2>&1 &
 
+TO BE RAN!!!!!!!!!!!
 nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
       comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
 
@@ -136,13 +176,12 @@ nohup ./bA.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.2
 
 Create a first solution:
 nohup ./cs_comp_30_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65
-comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65 2>&1 &
+        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 2.65 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65 2>&1 &
 
 Cross-validation:
-nohup ./auto_cv_brent_comp_30_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65
--o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_autocv > termout_auto_cv_brent_comp_30_90_180 2>&1 &
-
-
+nohup ./auto_cv_brent_comp_30_90_180 -r1 -w1 -m comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26
+        -i x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L2.65
+        -o x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_autocv > termout_auto_cv_brent_comp_30_90_180 2>&1 &
 v=[1.41425,4.74899,2.69923,4.17479, 2.2265, 0.578915, 0.578915, 0.912249, 0.578915, 0.578915, 1.74758, 1.41425, 1.41425]
 print,median(v),mean(v),stdev(v)
        1.41425      1.77444      1.36990
@@ -159,24 +198,26 @@ A-Matrix
 
 nohup ./bA.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 > termout_bA.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 2>&1 &
 
-Solutions with both grids but blocking at INSTR_RMIN 1.09, using same lambda_opt as with usual blocking (which was 1.05).
+Solution blocking at INSTR_RMIN 1.09, using same lambda_opt as with usual blocking (which was 1.05).
 
-nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 5.85 > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09.txt 2>&1 &
+nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_5.85 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09
+        comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 5.85 > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09.txt 2>&1 &
 
 AUTO-CV
 
 cp x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
 
 RUNNING!!!!!!!!!!!!!
-nohup ./auto_cv_brent_comp1079_50_90_180 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
-      -o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv > termout_auto_cv_brent_comp1079_50_90_180.txt 2>&1 &
+nohup ./auto_cv_brent_comp1079_50_90_180 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
+        -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
+	-o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv > termout_auto_cv_brent_comp1079_50_90_180.txt 2>&1 &
 
 v = []
 print,median(v),mean(v),stdev(v)
 
 
 OPTIMAL SOLUTION:
-
+TO BE RAN!!!!!!!!!!!!!!!!
 nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
       comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
 
@@ -184,21 +225,29 @@ nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_5
 
 ---------------------TEST H1 171 NS vs OS
 
-
 -rw-r--r-- 1 tom tom 312218208 Feb 17 17:51 vaia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego
 -rw-rw-r-- 1 tom tom  75220976 Feb 17 17:47 vaia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced
 
 -rw-r--r-- 1 tom tom 1684800 Feb 17 17:45 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d
 -rw-rw-r-- 1 tom tom 1684800 Feb 17 17:44 x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced 
 
-nohup ./cs_aia_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.70 aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.70 > termout.x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.70 2>&1 &
-nohup ./cs_aia_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.90 > termout.x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 2>&1 &
-nohup ./cs_aia_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.90 > termout.x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 2>&1 &
+nohup ./cs_aia_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.70
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.70 > termout.x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.70 2>&1 &
 
-nohup ./cs_aia_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.50 aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.50 > termout.x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.50 2>&1 &
-nohup ./cs_aia_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.35 aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.35 > termout.x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.35 2>&1 &
-nohup ./cs_aia_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45 aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.45 > termout.x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45 2>&1 &
+nohup ./cs_aia_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.90 > termout.x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 2>&1 &
 
+nohup ./cs_aia_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.09_h1_Oldset_r3d_reduced x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego.reduced 0.90 > termout.x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_reduced_L0.90 2>&1 &
+
+nohup ./cs_aia_26_90_180_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.50
+        aia.171.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.50 > termout.x_aia.171.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.50 2>&1 &
+
+nohup ./cs_aia_26_90_180_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.35
+        aia.193.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.35 > termout.x_aia.193.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.35 2>&1 &
+
+nohup ./cs_aia_26_90_180_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_l.39_h1_Oldset_r3d x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45
+        aia.211.cr2198.ri.00-ro1.09.Oldset.H1.Diego 0.45 > termout.x_aia.211.cr2198.26x90_bf4_ri.00_ro1.09_h1_Oldset_r3d_L0.45 2>&1 &
 
 ----------------------------KCOR CR-2198 14 images y CR-2208 13 imágenes-------------------
 
@@ -235,7 +284,8 @@ print,median(v),mean(v),stdev(v)
  TOMO: 1.e-4.
  
 nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg
--i x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv -o x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv > termout_auto_cv_kcor_120_90_180_CR2208.txt 2>&1 &
+        -i x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv
+	-o x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv > termout_auto_cv_kcor_120_90_180_CR2208.txt 2>&1 &
 v =[ 4.07641e-05, 0.000119185, 6.51708e-05, 0.000137038, 0.000121622, 0.00014639, 5.58709e-05, 4.07641e-05, 4.74308e-05, 2.30241e-05, 2.30241e-05, 3.63367e-05, 0.000176263 ]
 print,median(v),mean(v),stdev(v)
  5.58709e-05  7.94526e-05  5.28617e-05
