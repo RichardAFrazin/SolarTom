@@ -211,16 +211,19 @@ RUNNING!!!!!!!!!!!!!
 nohup ./auto_cv_brent_comp1079_50_90_180 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
         -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
 	-o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv > termout_auto_cv_brent_comp1079_50_90_180.txt 2>&1 &
-
-v = []
+v = [31.0927, 47.9618, 16.4424, 4.96341, 0.902466, 1.72034, 1.90773, 2.7566, 1.387, 2.38875, 3.62901, 3.02274, 7.72195]
 print,median(v),mean(v),stdev(v)
-
+3.02274      9.68438      14.2812
+If we discard the first 3 values of v then the median and mean are both ~ 3.0
+RUNNING!!!  (iterations-and-precision dependence test)
+nohup ./auto_cv_brent_comp1079_50_90_180_NSUBIT500_TOL1E-3 -r1 -w1 -m comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09
+        -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv
+        -o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv > termout_auto_cv_brent_comp1079_50_90_180_NSUBIT500_TOL1E-3.txt 2>&1 &
 
 OPTIMAL SOLUTION:
 TO BE RAN!!!!!!!!!!!!!!!!
 nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
       comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
-
 
 
 ---------------------TEST H1 171 NS vs OS
