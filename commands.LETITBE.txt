@@ -154,9 +154,10 @@ v=[1.74758, 4.07647, 3.02868, 2.2265, 1.74758, 0.578915, 0.912249, 0.912249, 0.5
 print,median(v),mean(v),stdev(v)
       1.74758      1.66907      1.07595
 -------***********------------
-CORRECTED VALUES:
-v=[]
+CORRECTED VALUES: No difieren sustancialmente.
+v=[1.74758, 4.81264, 3.87407, 2.55983, 0.578915, 0.578915, 0.578915, 0.912249, 0.578915, 0.578915, 2.2265, 1.89316, 1.41425]
 print,median(v),mean(v),stdev(v)
+      1.41425      1.71807      1.36788
 
 
 OPTIMAL SOLUTIONS:
@@ -164,9 +165,8 @@ OPTIMAL SOLUTIONS:
 nohup ./cs_comp_26_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09
        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_INSTR_RMIN_1.09 1.4 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.26_26_90_180_r3D_1.4_IRMIN_1.09.txt 2>&1 &
 
-TO BE RAN!!!!!!!!!!!
-nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
-      comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
+nohup ./cs_comp_50_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_2.65_IRMIN_1.09 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_1.7_IRMIN_1.09
+       comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 1.7 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_1.7_IRMIN_1.09.txt 2>&1 &
 
 ----------------------------CoMP-1074, NEW GRID---------------------------------
 
@@ -192,7 +192,7 @@ nohup ./cs_comp_30_90_180 x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90
        comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26 1.8 > termout_x.comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.30_30_90_180_IRad1.09-1.26_L1.8 2>&1 &
 
 
----------------------CoMP-1079, NEW GRID, Using the best-performing setup for 1074: 50x90x180, Rmin/Rmax 1.0/1.5, INSTR_Rmin/INSTR_Rmax 1.09/1.30-----------------------------------------------------
+---------------------CoMP-1079, NEW GRID, Using the best-performing setup for 1074: 50x90x180, Rmin/Rmax 1.0/1.5, INSTR_Rmin/INSTR_Rmax 1.09/1.30----------------------------------------------------
 
 A-Matrix
 
@@ -227,10 +227,30 @@ nohup ./auto_cv_brent_comp1079_50_90_180_NSUBIT100_TOL1E-3 -r1 -w1 -m comp1079.d
         -i x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_IRMIN_1.09_autocv_C
         -o x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_IRMIN_1.09_r3D_autocv_C > termout_auto_cv_brent_comp1079_50_90_180_NSUBIT100_TOL1E-3.txt 2>&1 &
 
+
+$ grep 'function' termout_auto_cv_brent_comp1079_50_90_180_NSUBIT500_TOL1E-3.txt
+v = [ 26.6175, 49.9637, 14.4861, 4.70995, 0.989692, 1.45411, 1.85296, 2.80655, 1.49447, 2.11165, 3.22567, 2.95096, 8.52413]
+print,median(v),mean(v),stdev(v)
+      2.95096      9.32211      14.2011      
+albert@letitbe:/data1/tomography_dev/SolarTom/
+$ grep 'function' termout_auto_cv_brent_comp1079_50_90_180_NSUBIT500_TOL1E-2.txt
+v = [ 26.6175, 49.7642, 14.7233, 4.65391, 0.902466, 1.55367, 1.88729, 2.85509, 1.55367, 2.20487, 3.25854, 3.02274, 8.52413]
+print,median(v),mean(v),stdev(v)
+      3.02274      9.34780      14.1483
+albert@letitbe:/data1/tomography_dev/SolarTom/
+$ grep 'function' termout_auto_cv_brent_comp1079_50_90_180_NSUBIT100_TOL1E-3.txt
+v = [ 31.0927, 47.941, 16.4424, 4.96341, 0.986811, 1.66097, 1.90773, 2.90482, 1.57034, 2.38875, 3.62901, 3.27521, 7.84]
+print,median(v),mean(v),stdev(v)
+      3.27521      9.73870      14.2492
+      
 OPTIMAL SOLUTION:
 TO BE RAN!!!!!!!!!!!!!!!!
-nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09
-      comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 ---OPTIMAL--- > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_---OPTIMAL---_IRMIN_1.09.txt 2>&1 &
+
+nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_L3.0_IRMIN_1.09
+      comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 3.0 > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_L3.0_IRMIN_1.09.txt 2>&1 &
+
+nohup ./cs_comp1079_50_90_180 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_5.85_IRMIN_1.09 x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_L9.0_IRMIN_1.09
+      comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09 9.0 > termout_x.comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_r3D_L9.0_IRMIN_1.09.txt 2>&1 &
 
 
 ---------------------TEST H1 171 NS vs OS
