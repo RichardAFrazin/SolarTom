@@ -1,10 +1,8 @@
 ----------------------------KCOR CR-2198 and CR-2208------------------
-
 RUNNING
 
 # MATRICES
 
-RUNNING!!!
 nohup ./bA_KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg > termout_bA_KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg 2>&1 &
 
 nohup ./bA_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg > termout_bA_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg 2>&1 &
