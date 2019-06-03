@@ -38,26 +38,35 @@ nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2198.13imgs-reduced.bf2.ri
        -o x_autocv
         > termout_auto_cv_kcor_120_90_180_CR2198_reduced.txt  2>&1 &
 
+v = [ 0.000123472, 0.000128394, 0.000128797, 0.000274171, 0.000113093, 0.000111449, 6.51708e-05, 0.000104587, 8.6713e-05, 5.85041e-05, 8.75408e-05, 0.000110153, 9.18636e-05 ]
+print,mean(v),median(v),stdev(v)
+  0.000114147  0.000110153  5.29779e-05
+
 nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg
        -i x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv
        -o x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv
         > termout_auto_cv_kcor_120_90_180_CR2198.txt  2>&1 &
+
+
+v = [ 0.000119505, 0.000138587, 0.000134281, 0.000248697, 0.000113287, 0.000106619, 5.07641e-05, 2.63574e-05, 3.10734e-05, 3.91436e-05, 3.44067e-05, 8.61799e-05, 0.000107346, 9.08749e-05]
+print,mean(v),median(v),stdev(v)
+    9.47944e-05  0.000106619  5.94390e-05
+
 
 nohup ./auto_cv_kcor_120_90_180_r3d -r1 -w1 -m KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg
        -i x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv
        -o x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_autocv
         > termout_auto_cv_kcor_120_90_180_CR2208.txt  2>&1 &
 
+v = [ 4.07641e-05, 0.000119185, 6.51708e-05, 0.000137038, 0.000121622, 0.00014639, 5.58709e-05, 4.07641e-05, 4.74308e-05, 2.30241e-05, 2.30241e-05, 3.63367e-05, 0.000176263]
+print,mean(v),median(v),stdev(v)
+  7.94526e-05  5.58709e-05  5.28617e-05
+
+
 # CALCULO DE SOLUCIONES OPTIMAS
 
-nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----
-       KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg ---OPTIMAL---- > termout_x_KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----.txt 2>&1 &
-
-nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----
-       KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg ---OPTIMAL---- > termout_x_KCOR.CR2198.14imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----.txt 2>&1 &
-
-nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l1e-4 x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----
-       KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg ---OPTIMAL---- > termout_x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l---OPTIMAL----.txt 2>&1 &
+nohup ./cs_kcor_120_90_180_r3d x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l8e-5 x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l6.e-5
+       KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg 6.e-5 > termout_x_KCOR.CR2208.13imgs.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg_r3D_l6e-5.txt 2>&1 &
 
 
 
