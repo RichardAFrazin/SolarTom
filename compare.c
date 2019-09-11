@@ -177,7 +177,7 @@ int main(int argc, char **argv){
     /* Get the roll angle offset b/c North may not be at the top 
      *   of the image */
 
-#if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
+#if (defined C2BUILD || defined C3BUILD)  /* INITANG1 used to be in the Marseilles files, not in their newest version. */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
     assert(hgetr8(header,"R_SOHO",&dsun_obs));
     dsun_obs = dsun_obs*(RSUN*1.e3);//km
@@ -198,9 +198,11 @@ int main(int argc, char **argv){
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #endif
 
-#ifdef MARSEILLES /* we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore */ 
-    roll_offset -= 0. ;  /* 0.5; */
+/*
+#ifdef MARSEILLES // we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore
+    roll_offset -= 0.5;
 #endif
+*/
 
     totalB = 0; /*this avoids unused variable warning*/
     
@@ -213,7 +215,7 @@ int main(int argc, char **argv){
   strncpy(BpBcode, idstring + 3, 2); 
 #endif
 #ifdef MARSEILLES
-  strncpy(BpBcode, idstring + 8, 2);
+  strncpy(BpBcode, idstring + 3, 2);
 #endif
 fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
   if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)

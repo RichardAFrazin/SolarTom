@@ -1,9 +1,9 @@
 /* the various build definitions need to be set in builA_params.h */
-
+ 
 /*====  DEFINES FOR SOLVE AND FRIENDS ====*/
 
-#define NMATS 3                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
-#define NUMBER_OF_DATA_MATRICES 2	/* number observation matrices */
+#define NMATS 2                         /* total number of matrices: A1, possibly A2, plus Reg1,... */  
+#define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
 #define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object differenrce required to exit */
@@ -17,14 +17,16 @@
 // LAMBDA, FILESTRO (data), FILESTR1 (reg matrix) can be specified in the calling sequence.
 // In that case any values provided below are overwritten.
 //
+
 // If running with NMATS > 2 then all inputs must be specified below and the calling sequence has no parameters.
 
 #if (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
-#define LAMBDA  {1.,1.,1.e-6}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
-#define HUBER_FLAG {0,0,0}
-#define FILESTR0 "wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4"
-#define FILESTR1 "wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4"
-#define FILESTR2 "r3_100_90_180"
+#define LAMBDA  {1.,1.e-6}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
+#define HUBER_FLAG {0,0}
+#define FILESTR0 "xxx"
+#define FILESTR1 "r3_60_60_120"
+//#define FILESTR0 "wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4"
+//#define FILESTR1 "wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4"
 //#define FILESTR2 "d2r_50_90_180"      // Must always be specified.
 //#define FILESTR0 "wisprI.512.CircularOrbit01.60images"                        // A_outfile of first A matrix
 //#define FILESTR1 "wisprO.512.CircularOrbit01.60images"                        // A_outfile of second A matrix, or first Reg matrix
@@ -39,7 +41,7 @@
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
 #define FILESTR0 A_OUTFILE " "
-#define FILESTR1 "hlaplac_60_60"
+#define FILESTR1 "r3_60_60_120"
 #define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
 #define MAIN_X_OUTFILE " "
 #define LAMBDA  { 1.0 , 1.e-6}
@@ -53,8 +55,8 @@
 #define CV_X_OUTFILE    "x_comp1079.dynamics.Dt2.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1" /* cv solution (code adds _auto_cv suffix) - not used with -o opiton in auto_cv */
 #define CV_X_INFILE     "x_comp1079.dynamics.Dt2.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1" /* cv initial solution - not used with -i opiton in auto_cv */
 #define AMOEBA_ITMAX 12			/* max number of fcn evals */
-#define MIN_LAMBDA 1.e-5  /* min and max lambda (used by brent) */
-#define MAX_LAMBDA 1.e-3
+#define MIN_LAMBDA 1.e-5    /* min and max lambda (used by brent) */
+#define MAX_LAMBDA 1.e-3  
 #define BRENT_TOL (0.01*MAX_LAMBDA) /* brent tollerance (in x) for stopping */
 #define AMOEBA_LAMBDA {{7.e-5},{1.e-4}}   /* only used for amoeba */
 

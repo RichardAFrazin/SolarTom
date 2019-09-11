@@ -74,7 +74,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   strncpy(BpBcode, idstring + 3, 2); 
 #endif
 #ifdef MARSEILLES
-  strncpy(BpBcode, idstring + 8, 2);
+  strncpy(BpBcode, idstring + 3, 2);
 #endif
 fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
   if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
@@ -146,7 +146,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     /* Get the roll angle offset (in deg) b/c North may not be at the top 
      *   of the image */
 
-#if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
+#if (defined C2BUILD || defined C3BUILD) /* INITANG1 used to be in the Marseilles files, not in their newest version. */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
     assert(hgetr8(header,"R_SOHO",&dsun_obs));
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
@@ -186,10 +186,12 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     */
 #endif
 
-#ifdef MARSEILLES /* CROTA1 = INITANG1 - 0.5  (.5 deg offset) */ 
+/*
+#ifdef MARSEILLES // we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore
     roll_offset -= 0.5;
 #endif
-
+*/
+       
     // Get the sun --> observer vector in J2000 GCI (CS-1) in [km]
     // and the sub-spacecraft Carrington longitude in [deg].
     get_orbit(idstring, sun_ob1, &carlong, &mjd);

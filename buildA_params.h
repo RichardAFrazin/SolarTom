@@ -3,8 +3,8 @@
 // #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-// #define C2BUILD 
-   #define WISPRIBUILD
+   #define C2BUILD 
+// #define WISPRIBUILD
 // #define WISPROBUILD
 // #define KCORBUILD
 // #define COMPBUILD
@@ -21,7 +21,7 @@
 #define BAND_WIDTH_PX 100
 #endif
 
-#define NONUNIFORMRAD // Set if radial grid is not uniform.
+// #define NONUNIFORMRAD // Set if radial grid is not uniform.
 
 #ifdef NONUNIFORMRAD
 #define GRID_FILENAME "non_uniform_grid.txt"
@@ -74,8 +74,8 @@ typedef float PB_IMTYPE;
 
 #elif defined KCORBUILD
 #define RMIN   1.05          /* innner radius (hollow  sphere)   */
-#define RMAX   4.00          /* outer radius of computation ball */
-#define NRAD    295
+#define RMAX   2.25          /* outer radius of computation ball */
+#define NRAD    120
 #define NTHETA   90         /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE  1024	    /* size of C2 images (pixels) */
@@ -85,9 +85,9 @@ typedef float PB_IMTYPE;
 #define INSTR_RMAX      2.00
 #define PIXSIZE     (5.643*1024/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/kcor/CR2198/AvgNoOffset_Images/"
-#define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "KCOR.CR2198.13imgs.bf2.ri1.05.ro2.00_Inst_1.09_2.00_95_90_180_dropneg" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/kcor/CR2198/10MinAvg/"
+#define CONFSTRING DATADIR"list_new_reduced.txt"
+#define A_OUTFILE         "KCOR.CR2198.13imgs-reduced.bf2.ri1.05.ro2.25_Inst_1.09_2.00_120_90_180_dropneg" /* suffix of A matrix ouput files */
 
 #elif defined COMPBUILD
 #define RMIN   1.00         /* innner radius (hollow  sphere)   */
@@ -97,28 +97,28 @@ typedef float PB_IMTYPE;
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define BINFAC    2	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
-#define INSTR_RMIN      1.05
+#define INSTR_RMIN      1.09
 #define INSTR_RMAX      1.30
 #define IMSIZE       620	    /* size of COMP images (pixels) */
 #define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
+#define DATADIR    TOMROOT"DATA/comp/1079/CR2198/"
 #define CONFSTRING DATADIR"list_total_intensity_Dt2.txt"
-#define A_OUTFILE         "comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
-#define RMIN   2.0            /* innner radius (hollow  sphere)   */
-#define RMAX   12.0 //214.5 //10.            /* outer radius of computation ball */
-#define NZ     130
-#define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
-#define NRAD   200  
-#define NTHETA 180          /* polar angle bins */
+#define RMIN        2.5            /* innner radius (hollow  sphere)   */
+#define RMAX        8.5            /* outer radius of computation ball */
+#define INSTR_RMIN  2.5
+#define INSTR_RMAX  6.3
+//#define NZ     130
+//#define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
+#define NRAD   60  
+#define NTHETA 60           /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
 #define BINFAC    4	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
-#define INSTR_RMIN      2.1
-#define INSTR_RMAX      6.3
 #define PIXSIZE  (23.8*512/IMSIZE)   /* arcsec per pixel */
 #ifdef NRL
 typedef float PB_IMTYPE;
@@ -126,9 +126,9 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2/CR2082/"
-#define CONFSTRING DATADIR"list.txt"
-#define A_OUTFILE         "c2.CR2081.LAM.test...." /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/c2/CR2208/"
+#define CONFSTRING DATADIR"list"
+#define A_OUTFILE         "C2_CR2208_14Imgs_Rmin2.5_Rmax8.5_Ri2.5_Ro6.3_60x60x120" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
@@ -219,24 +219,24 @@ typedef float PB_IMTYPE;
 			  
 #elif defined AIABUILD
 #define RING_REJECT  /* don't accept data between INNER_REJECT_RAD and OUTER_REJECT_RAD (due to optical depth) */
-#define RMAX 1.26
-#define RMIN 1.0
+#define NRAD         26
+#define RMAX       1.26
+#define RMIN       1.00
+#define INSTR_RMAX 1.26
 #ifdef RING_REJECT 
-#define INNER_REJECT_RAD 0.
-#define OUTER_REJECT_RAD 1.015
+#define INNER_REJECT_RAD 0.00
+#define OUTER_REJECT_RAD 1.02
 #endif
-#define NRAD 26
 #define NTHETA 90 
-#define NPHI (NTHETA * 2)
+#define NPHI   (NTHETA * 2)
 #define IMSIZE 1024
 #define DELTA 0.0
-#define INSTR_RMAX 1.26
 #define PIXSIZE (0.6*4096./IMSIZE)  
 #define BINFAC 4
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/AIA/094/" 
-#define CONFSTRING DATADIR"list.094.processed.binned.txt"        
-#define A_OUTFILE         "AIA.CR2106.094.nr26.irm1.26"
+#define DATADIR    TOMROOT"DATA/aia/CR2209/171/" 
+#define CONFSTRING DATADIR"list.171.processed.selected_full.b_H1"
+#define A_OUTFILE         "AIA_CR2209_171b_H1_Rmin1.00_Rmax1.30_Nr30_InstRmax1.26_bf4_TEST"
 
 #else
 #error No build that is currently understood specified
