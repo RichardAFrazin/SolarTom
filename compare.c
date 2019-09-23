@@ -179,8 +179,10 @@ int main(int argc, char **argv){
 
 #if (defined C2BUILD || defined C3BUILD)  /* INITANG1 used to be in the Marseilles files, not in their newest version. */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
-    assert(hgetr8(header,"R_SOHO",&dsun_obs));
-    dsun_obs = dsun_obs*(RSUN*1.e3);//km
+  //assert(hgetr8(header,"R_SOHO",&dsun_obs)); THIS WAS THE KEYWORD FOR NRL LASCO C2, WE SWITCH TO THE NEXT MARSEILLE KEYWORD:
+  //dsun_obs = dsun_obs*(RSUN*1.e3);// now in [m]
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
     assert(hgetr8(header,"CROTA2",&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
@@ -382,11 +384,11 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
 
-  // If dealing with KCOR data R12, spol2 and sun_ob2 above are crap.
+  // If dealing with KCOR or COMP or LASCO-C2 (MARSEILLE) data R12, spol2 and sun_ob2 above are crap.
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
   // Earth-Sun distance, which are both known from the KCOR header:
-#if defined KCORBUILD
+#if (defined KCORBUILD || defined COMPBUILD || defined C2BUILD)
     tilt     = obslat*M_PI/180.0;
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;

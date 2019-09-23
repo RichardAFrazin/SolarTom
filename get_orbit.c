@@ -54,7 +54,7 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
 	 *  N, vs. equatorial N (celestial pole).  Therefore these coords.
 	 *  need to rotated about the x-axis. 
 	 */ 
-#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD)
+#if (defined CORBUILD || defined EUVIBUILD || defined AIABUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD || defined C2BUILD)
  {
   char *header, *fitsdate;
   int lhead, nbhead;
@@ -83,8 +83,8 @@ void get_orbit(char *idstring, double *sun_ob, double *carlong, double *mjd) {
   /* the J2000.0 angle between the Ecliptic and mean Equatorial planes
    * is 23d26m21.4119s - From Allen's Astrophysical Quantities, 4th ed. (2000) */ 
 
-#if (defined KCORBUILD || defined COMPBUILD)
-  // If dealing with KCOR or CoMP data, do NOT rotate,
+#if (defined KCORBUILD || defined COMPBUILD || defined C2BUILD)
+  // If dealing with KCOR or CoMP or LASCO-C2 (MARSEILLE) data, do NOT rotate,
   // simply set: sun_ob = HAE_OBS, which was set to DSUN [1,0,0] in the [kcor/comp]_prep.pro routines,
   // as it is only used in build_subA (or compare.c) to get DSUN from its norm.
   r3eq(sun_ob,c);
