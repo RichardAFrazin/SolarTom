@@ -4,12 +4,12 @@ TOMROOT_HEADER = tomroot.h
  CC = gcc    # for Linux systems
 
 DEFINES =
- CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -L/data1/tomography/wcstools-3.7.0/libwcs
-#CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.9.5/libwcs -L/data1/tomography/wcstools-3.9.5/libwcs
+ CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.7.0/libwcs -std=gnu99 -L/data1/tomography/wcstools-3.7.0/libwcs
+#CFLAGS = -Wall -O3 -I/data1/tomography/wcstools-3.9.5/libwcs -std=gnu99 -L/data1/tomography/wcstools-3.9.5/libwcs
 
 #################################-I/usr/include/sys
 
-LIBS = -lm  -lwcs
+LIBS = -lm -lwcs
 
 MEX = mex
 MEX_FLAGS = -argcheck -g -O -outdir ./matlab/

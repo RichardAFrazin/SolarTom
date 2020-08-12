@@ -1,2 +1,2 @@
-#define TOMROOT "/data1/tomography/"
+#define TOMROOT "/media/Data1/data1/tomography/"
 

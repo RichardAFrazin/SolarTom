@@ -117,7 +117,7 @@ typedef float PB_IMTYPE;
 #define NTHETA 60           /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
-#define BINFAC    4	    /* binning factor for C2 images (pixels) */
+#define BINFAC    1	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
 #define PIXSIZE  (23.8*512/IMSIZE)   /* arcsec per pixel */
 #ifdef NRL
@@ -126,9 +126,9 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2/CR2208/"
-#define CONFSTRING DATADIR"list"
-#define A_OUTFILE         "C2_CR2208_14Imgs_Rmin2.5_Rmax8.5_Ri2.5_Ro6.3_60x60x120" /* suffix of A matrix ouput files */
+#define DATADIR    TOMROOT"DATA/c2/CR2209/"
+#define CONFSTRING DATADIR"list_prep.txt"
+#define A_OUTFILE         "C2_CR2209_14Imgs_Rmin2.5_Rmax8.5_Ri2.5_Ro6.3_60x60x120_BINFAC1" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
