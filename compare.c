@@ -25,6 +25,11 @@
 #define QEPS 1.e-4 /*this is used by buildrow.c */
 
 
+/* pB and CoMP units may be expected to be different for each instrument, see bellow.
+ * All of the ray computations are done in units of Rsun (6.96e5 km) 
+ */
+
+
 char *fitsrhead(char *, int *, int *);
 char *fitsrimage(char *, int, char *);
 
@@ -317,12 +322,12 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 #endif
         } else {
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
-          /* the .79 factor is to convert from units of mean brightness
-           *    to 1.e10*(center brightness)           */
+          /* the .79 factor is to convert from units of disk-mean brightness to disk-center brightness
+           * the 1.e10 factor changes units from [Bsun] to [1E-10*Bsun] when appropriate (center brightness) */
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
-	       1.e10 * 0.79;
+	      1.e10 * 0.79;    /* NRL scaling */
 #elif (defined MARSEILLES)
   	       0.79; /* Marseilles scaling */ 
 #endif
@@ -332,7 +337,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    	  pBval[i][jj] *= 1.e+10; // Change from [Bsun] units to [1.e-10 Bsun] units.
+	    	  pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
 #endif 
 
 #ifdef DROP_NEG_PB
