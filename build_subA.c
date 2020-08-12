@@ -32,8 +32,8 @@
 #define M_PI 3.14159265358979
 #endif
  
-/* pB's are assumed to be units of 1e-10 Bsun
- * all of the ray computations are done in units of Rsun (6.96e5 km) 
+/* pB and CoMP units may be expected to be different for each instrument, see bellow.
+ * All of the ray computations are done in units of Rsun (6.96e5 km) 
  */
 
 void build_subA(char *idstring, rcs_llist *rcs,
@@ -261,14 +261,14 @@ for (i = 0; i < imsize; i++) {
 #endif
         } else {
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
-          /* the .79 factor is to convert from units of mean brightness
-           * to 1.e10*(center brightness)           */
+          /* the .79 factor is to convert from units of disk-mean brightness to disk-center brightness
+           * the 1.e10 factor changes units from [Bsun] to [1E-10*Bsun] when appropriate (center brightness) */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
-	       1.e10 * 0.79;
+	      1.e10 * 0.79;    /* NRL scaling */ 
 #elif (defined MARSEILLES)
-  	       0.79; /* Marseilles scaling */ 
+  	       0.79;           /* Marseilles scaling */ 
 #endif
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
@@ -276,7 +276,7 @@ for (i = 0; i < imsize; i++) {
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e+10; // Change from [Bsun] units to [1.e-10 Bsun] units.
+	    pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
 #elif (defined COMPBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.0; // Keep units of the data
