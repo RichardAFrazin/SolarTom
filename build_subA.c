@@ -74,7 +74,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   strncpy(BpBcode, idstring + 3, 2); 
 #endif
 #ifdef MARSEILLES
-  strncpy(BpBcode, idstring + 3, 2);
+  strncpy(BpBcode, idstring + 25, 2);
 #endif
 fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
   if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
