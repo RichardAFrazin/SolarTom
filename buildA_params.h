@@ -102,22 +102,22 @@ typedef float PB_IMTYPE;
 #define IMSIZE       620	    /* size of COMP images (pixels) */
 #define PIXSIZE     (4.350*620/IMSIZE)     /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/comp/1079/CR2198/"
+#define DATADIR    TOMROOT"DATA/comp/1074/CR2198/"
 #define CONFSTRING DATADIR"list_total_intensity_Dt2.txt"
-#define A_OUTFILE         "comp1079.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09_ABBEY" /* suffix of A matrix ouput files */
 
 #elif defined C2BUILD
-#define RMIN        2.5            /* innner radius (hollow  sphere)   */
-#define RMAX        8.5            /* outer radius of computation ball */
+#define RMIN        2.0            /* innner radius (hollow  sphere)   */
+#define RMAX        8.0            /* outer radius of computation ball */
 #define INSTR_RMIN  2.5
-#define INSTR_RMAX  6.3
+#define INSTR_RMAX  6.0
 //#define NZ     130
 //#define NCELLS  90	/* cartesian: object has NCELLS^3 elements */
-#define NRAD   60  
-#define NTHETA 60           /* polar angle bins */
+#define NRAD        60  
+#define NTHETA      90      /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
-#define BINFAC    1	    /* binning factor for C2 images (pixels) */
+#define BINFAC    4	    /* binning factor for C2 images (pixels) */
 #define DELTA     0.0	    /* delta vector */
 #define PIXSIZE  (23.8*512/IMSIZE)   /* arcsec per pixel */
 #ifdef NRL
@@ -126,9 +126,9 @@ typedef float PB_IMTYPE;
 #ifdef MARSEILLES
 typedef double PB_IMTYPE;
 #endif
-#define DATADIR    TOMROOT"DATA/c2/CR2209/"
+#define DATADIR    TOMROOT"DATA/c2/CR2219/"
 #define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "C2_CR2209_14Imgs_Rmin2.5_Rmax8.5_Ri2.5_Ro6.3_60x60x120_BINFAC1" /* suffix of A matrix ouput files */
+#define A_OUTFILE         "LASCO-C2-pB_56imgs_Rmin2.0_Rmax8.0_IRmin2.5_IRmax6.0_60x90x180_BF4" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */

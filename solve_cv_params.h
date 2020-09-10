@@ -24,7 +24,7 @@
 #define LAMBDA  {1.,1.e-6}             // LAMBDA and HUBER_FLAG should have NMATS elements. Extra elements are ignored.
 #define HUBER_FLAG {0,0}
 #define FILESTR0 "xxx"
-#define FILESTR1 "r3_60_60_120"
+#define FILESTR1 "r3_60_90_180"
 //#define FILESTR0 "wisprI.Synth.CR2082.UnifLong.SciOrb12.bf4"
 //#define FILESTR1 "wisprO.Synth.CR2082.UnifLong.SciOrb12.bf4"
 //#define FILESTR2 "d2r_50_90_180"      // Must always be specified.
@@ -40,8 +40,8 @@
 
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
-#define FILESTR0 A_OUTFILE " "
-#define FILESTR1 "r3_60_60_120"
+#define FILESTR0 "xxx"
+#define FILESTR1 "r3_60_90_180"
 #define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
 #define MAIN_X_OUTFILE " "
 #define LAMBDA  { 1.0 , 1.e-6}
