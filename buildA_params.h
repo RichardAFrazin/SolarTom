@@ -3,7 +3,7 @@
 // #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-   #define C2BUILD 
+   #define C2BUILD
 // #define WISPRIBUILD
 // #define WISPROBUILD
 // #define KCORBUILD
