@@ -6,7 +6,7 @@
 #define NUMBER_OF_DATA_MATRICES 1	/* number observation matrices */
 #define START_TOL 1.e-5	                /* beginning iteration tolerance */
 #define CHANGETOL_FACTOR 5.0	        /* divide tolerance by this factor once it's been reached */
-#define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object differenrce required to exit */
+#define FRACTIONAL_CHANGE_TOL 0.01	/* mean fractional object difference required to exit */
 #define MINIMUM_VALUE 0 	        /* min value assigned to a pixel intensity */
 #define ITMAX 5000		        /* max no. calls to minimizer fcn */
 #define NSUBIT 1000		        /* number of suberiteration per call only used for CG algorithm */
@@ -55,9 +55,9 @@
 #define CV_X_OUTFILE    "x_comp1079.dynamics.Dt2.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1" /* cv solution (code adds _auto_cv suffix) - not used with -o opiton in auto_cv */
 #define CV_X_INFILE     "x_comp1079.dynamics.Dt2.CR2198.bf2.ri1.00.ro1.50_50_90_180_hlaplac-d2r_r1w1" /* cv initial solution - not used with -i opiton in auto_cv */
 #define AMOEBA_ITMAX 12			/* max number of fcn evals */
-#define MIN_LAMBDA 1.e-6    /* min and max lambda (used by brent) */
-#define MAX_LAMBDA 1.e-4  
-#define BRENT_TOL  0.01*MAX_LAMBDA /* brent tollerance (in x) for stopping */
+#define MIN_LAMBDA 1.e-7    /* min and max lambda (used by brent) */
+#define MAX_LAMBDA 1.e-3
+#define BRENT_TOL  1.e-2*MIN_LAMBDA /* brent tolerance (in x) for stopping */
 #define AMOEBA_LAMBDA {{7.e-5},{1.e-4}}   /* only used for amoeba */
 
 /*#define AMOEBA_LAMBDA { {1.05e-7, 2.46e-6, 2.22e-7},	\

@@ -127,8 +127,8 @@ typedef float PB_IMTYPE;
 typedef double PB_IMTYPE;
 #endif
 #define DATADIR    TOMROOT"DATA/c2/CR2219/"
-#define CONFSTRING DATADIR"list_prep.txt"
-#define A_OUTFILE         "LASCO-C2-pB_56imgs_Rmin2.0_Rmax8.0_IRmin2.5_IRmax6.0_60x90x180_BF4" /* suffix of A matrix ouput files */
+#define CONFSTRING DATADIR"list_prep_CR2219_24hrCadence.txt"
+#define A_OUTFILE         "LASCO-C2-CR2219-pB_24hr-cadence_Rmin2.0_Rmax8.0_IRmin2.5_IRmax6.0_60x90x180_BF4" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
