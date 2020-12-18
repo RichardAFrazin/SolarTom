@@ -44,7 +44,7 @@
 #define CONST 1.2497e-15	/* (3/16)*(1e10 * Thompson X-section) */
 #define ALPHApo (286.13 * M_PI/180.0)	/* J2000 solar pole coords */
 #define DELTApo (63.87 * M_PI/180.0)
-#define MAXPATH 256		/* max string size */
+#define MAXPATH 512		/* max string size */
 #define MAX_NUMBER_OF_IMAGES 1000  
 
 
