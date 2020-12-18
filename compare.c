@@ -29,10 +29,8 @@
  * All of the ray computations are done in units of Rsun (6.96e5 km) 
  */
 
-
 char *fitsrhead(char *, int *, int *);
 char *fitsrimage(char *, int, char *);
-
 
 void usage(char *arg0) {
   printf("usage: %s <x_infile> [k]\n", arg0);
