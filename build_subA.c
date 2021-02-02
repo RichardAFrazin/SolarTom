@@ -174,6 +174,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     if (roll_offset != 0.) {
       fprintf(stderr,"KCOR roll_offset = %g\n",roll_offset);
       exit(0);
+    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #elif defined METISVLBUILD
