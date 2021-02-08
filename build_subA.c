@@ -8,6 +8,7 @@
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
  *  Changes to handle CoMP, by Alberto Vásquez, May 2018
+ *  Changes to handle Metis, by Alberto Vásquez, Dec 2020, Feb 2021
  *
  */
 
@@ -149,7 +150,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     center_y -= 1.; 
 
     /* Get the roll angle offset (in deg) b/c North may not be at the top 
-     *   of the image */
+     * of the image */
 
 #if (defined C2BUILD || defined C3BUILD) /* INITANG1 used to be in the Marseilles files, not in their newest version. */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
@@ -288,6 +289,7 @@ for (i = 0; i < imsize; i++) {
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
+	  //fprintf(stderr, " pB value = %g \n", pBval[i][jj]);
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
 #elif (defined METISVLBUILD)
@@ -297,7 +299,7 @@ for (i = 0; i < imsize; i++) {
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.0; // Keep units of the data
 #endif
-	  
+
 #ifdef DROP_NEG_PB
           if (pBval[i][jj] < 0)
             pBval[i][jj] = -999.0;
@@ -365,7 +367,7 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
 
-  // If dealing with KCOR or COMP or LASCO-C2 (MARSEILLE) or METIS-VL data: R12, spol2 and sun_ob2 above are crap.
+  // If dealing with KCOR or COMP or LASCO-C2 (MARSEILLE) or METISVL data: R12, spol2 and sun_ob2 above are crap.
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
   // Observer-Sun distance, which are both known from the header:

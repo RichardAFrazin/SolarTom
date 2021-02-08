@@ -26,11 +26,10 @@
 #define WGETCOMMAND "/usr/bin/wget --quiet -P"  /* put the wget binary and path */
 #endif
 
-
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined METISVLBUILD)
 #define THOMSON		/* VdH Thomson scattering calculation */
-#elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined COMPBUILD)
-#define RADON      /* unweighted LOS integral for EUV emissivity */
+#elif (defined EITBUILD || defined EUVIBUILD || defined AIABUILD || defined COMPBUILD || METISLyaBUILD)
+#define RADON           /* unweighted LOS integral for EUV emissivity */
 #else
 #error Undefined LOS weighting!
 #endif
@@ -44,10 +43,8 @@
 #define CONST 1.2497e-15	/* (3/16)*(1e10 * Thompson X-section) */
 #define ALPHApo (286.13 * M_PI/180.0)	/* J2000 solar pole coords */
 #define DELTApo (63.87 * M_PI/180.0)
-#define MAXPATH 512		/* max string size */
+#define MAXPATH 256		/* max string size */
 #define MAX_NUMBER_OF_IMAGES 1000  
-
-
 
 /*==== THIS IS THE MAIN DATA STRUCTURE FOR SOLVE ====*/
 /*
