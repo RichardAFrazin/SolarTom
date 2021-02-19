@@ -277,24 +277,28 @@ for (i = 0; i < imsize; i++) {
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
           /* the .79 factor is to convert from units of disk-mean brightness to disk-center brightness
            * the 1.e10 factor changes units from [Bsun] to [1E-10*Bsun] when appropriate (center brightness) */
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
 	      1.e10 * 0.79;    /* NRL scaling */ 
 #elif (defined MARSEILLES)
   	       0.79;           /* Marseilles scaling */ 
 #endif
+	       fprintf(stderr, " pB value = %g \n", pBval[i][jj]);}
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.;
 #elif (defined KCORBUILD)
-	  //fprintf(stderr, " pB value = %g \n", pBval[i][jj]);
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
+  	    // fprintf(stderr, " pB value = %g \n", pBval[i][jj]); // test if image reading is okay.
+	    }
 #elif (defined METISVLBUILD)
-	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 0.79; // METIS-VL images are expected in units of 1.e-10*<Bsun>
+	    // fprintf(stderr, " pB value = %g \n", pBval[i][jj]);  // test if image reading is okay.
+	    }
 #elif (defined COMPBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.0; // Keep units of the data

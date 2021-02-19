@@ -8,6 +8,7 @@
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
+ *  Changes to handle Metis, by Alberto Vásquez, Feb 2021
  *
  */
 
@@ -201,6 +202,22 @@ int main(int argc, char **argv){
     assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+#elif defined METISVLBUILD
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"METIS roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+#elif defined COMPBUILD
+    assert(hgetr8(header,"CROTA1"   ,&roll_offset));
+    if (roll_offset != 0.) {
+      fprintf(stderr,"CoMP roll_offset = %g\n",roll_offset);
+      exit(0);
+    }
+    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
+    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #endif
 
 /*
@@ -215,6 +232,10 @@ int main(int argc, char **argv){
     totalB = 1;
 #endif
 
+#if (defined METISVLBUILD) // I am assuming only pB images from Metis.
+    totalB = 0;
+#endif
+    
 #ifdef C2BUILD  /*for C2, is it pB or total B ?*/
 #ifdef NRL
   strncpy(BpBcode, idstring + 3, 2); 
@@ -295,7 +316,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
       for (jj = 0; jj < imsize; jj++) {
 #endif
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD || defined METISVLBUILD)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -336,6 +357,12 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 #elif (defined KCORBUILD)
 	  if (abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    	  pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
+#elif (defined METISVLBUILD)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 0.79; // METIS-VL images are expected in units of 1.e-10*<Bsun>
+#elif (defined COMPBUILD)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.0; // Keep units of the data
 #endif 
 
 #ifdef DROP_NEG_PB
@@ -391,7 +418,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
   // Earth-Sun distance, which are both known from the KCOR header:
-#if (defined KCORBUILD || defined COMPBUILD || defined C2BUILD)
+#if (defined KCORBUILD || defined COMPBUILD || defined C2BUILD || defined METISVLBUILD)
     tilt     = obslat*M_PI/180.0;
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
