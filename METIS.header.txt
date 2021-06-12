@@ -1,0 +1,7 @@
+
+These are the METIS header keywords required by the tom codes.
+
+CRPIX1 (assumed both to use the FITS file start-at-1 convention)
+CRPIX2
+
+

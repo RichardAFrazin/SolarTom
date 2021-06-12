@@ -1,0 +1,8 @@
+
+build_subA.c and compare.c:
+
+* reading of CRPIX1,2 from header should be conditioned to NOT COMPBUILD
+
+get_orbit.c:
+
+

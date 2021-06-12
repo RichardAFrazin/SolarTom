@@ -65,7 +65,7 @@ LLIST.C:
 A. inspect SPICE kernels
 
 CODES TO TOUCH:
-headers.h, buildA_params.h: will need a new section for WISPR, plus other settings maybe.
+headers.h, buildA_params.h, get_orbit: will need a new section for WISPR, plus other settings maybe.
 build_subA.c: will need to deal with WISPR headers.
 buildrow.c: will need to account for LOS starting point at the instrument when inside the comp. ball.
 

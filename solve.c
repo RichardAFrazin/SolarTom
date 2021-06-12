@@ -258,7 +258,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
     }
     fclose(matrices[i].fid_y);
     
-
     strcpy(filestring, BINDIR);
     strcat(filestring, "delta_");
     strcat(filestring, matrices[i].file_id);
@@ -274,7 +273,6 @@ int solve(float *regularization_parameter, const int *huber_flag,
       exit(96);
     }
     fclose(matrices[i].fid_delta);
-
 
     /* rescale delta vector */
     for (jj = 0; jj < matrices[i].nf; jj++)
@@ -292,10 +290,9 @@ int solve(float *regularization_parameter, const int *huber_flag,
     exit(2);
   }
 
-
 #ifdef PRINT_FILE_INFO
   fprintf(stderr, "reading %s\n", filestring);
-  // Added by Albert to make sure from start that the output setting has been set right, to avoid mistakes.
+  // Added by Albert to make sure from start that the output name has been set right, to avoid mistakes.
   strcpy(filestring2, BINDIR);
   strncat(filestring2, x_outfile, MAXPATH);
   fprintf(stderr, "Output will be written in: %s\n", filestring2);
@@ -407,13 +404,12 @@ int solve(float *regularization_parameter, const int *huber_flag,
     for (i = 0; i < matrices[fil].nf; i++)
       matrices[fil].r[i] += (*(rr + i));
 
-
-  }				/*end fil loop */
+  }   /*end fil loop */
 
   /*
         * matrices[*].y has the data 
         * matrices[*].r has lambda*Ax,
-        * rescale by matrices[*].y by lambda and  
+        * rescale matrices[*].y by lambda and  
         * put lambda*(Ax - y) into matrices[*].r 
         */
 

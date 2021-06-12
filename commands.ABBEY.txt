@@ -21,3 +21,17 @@ convert -delay 60 -loop 0 comp*AWSOM_CR2082*WISPR_O_2025*UniformLong_BK.gif     
 
 nohup ./compare_nostatic_WISPRI x_AWSOM_CR2082_sphere_WISPR.dat > termout.compare_nostatic_WISPRI 2>&1 &
 nohup ./compare_nostatic_WISPRO x_AWSOM_CR2082_sphere_WISPR.dat > termout.compare_nostatic_WISPRO 2>&1 &
+
+
+nohup ./compare x_AWSOM_CR2082_sphere_WISPR.dat > termout.compare.x_AWSOM_CR2082_sphere_WISPR.dat_3  2>&1 &
+nohup ./compare x_spherical_WISPR_grid          > termout.compare.x_spherical_WISPR_grid_3           2>&1 &
+nohup ./compare x_cylindrical_WISPR_grid        > termout.compare.x_cylindrical_WISPR_grid_3         2>&1 &
+
+
+convert -delay 60 -loop 0 171/*1024.fts.gif CR2198.AIA-171.1hr-cadence.gif
+convert -delay 60 -loop 0 193/*1024.fts.gif CR2198.AIA-193.1hr-cadence.gif
+convert -delay 60 -loop 0 211/*1024.fts.gif CR2198.AIA-211.1hr-cadence.gif
+convert -delay 60 -loop 0 335/*1024.fts.gif CR2198.AIA-335.1hr-cadence.gif
+
+nohup ./builda_kcor_abbey > termout_builda_kcor_abbey.txt  2>&1 &
+nohup ./builda_aia_abbey  > termout_builda_aia_abbey.txt   2>&1 &

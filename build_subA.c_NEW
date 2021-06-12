@@ -1,15 +1,13 @@
 /*
  *    build_subA:
- *  build the submatrix associated with each 2D image.
+ * build the submatrix associated with each 2D image.
  * 
  *  by Paul Janzen and Richard Frazin Summer/Fall 1999
  *
  *  Changes to include WISPRI/O by Alberto Vásquez, Fall 2017
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
- *  Changes to handle CoMP, by Alberto Vásquez, May 2018
- *  Changes to handle Metis, by Alberto Vásquez, Dec 2020, Feb 2021
- *  New changes to handle LAM LASCO-C2 new rollangl convention, oposite to CROTA in EUV, June-2021
+ *
  */
 
 /* WARNING!!!
@@ -33,8 +31,8 @@
 #define M_PI 3.14159265358979
 #endif
  
-/* pB and CoMP units may be expected to be different for each instrument, see bellow.
- * All of the ray computations are done in units of Rsun (6.96e5 km) 
+/* pB's are assumed to be units of 1e-10 Bsun
+ * all of the ray computations are done in units of Rsun (6.96e5 km) 
  */
 
 void build_subA(char *idstring, rcs_llist *rcs,
@@ -47,28 +45,24 @@ void build_subA(char *idstring, rcs_llist *rcs,
   static float eta[IMSIZE][IMSIZE];
   float pB1, n_los;
   double sun_ob1[3], sun_ob2[3], spol1[3], sob[3], spol2[3], r3tmp[3];
-  double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset;
+  double dsun, pang, rho1, eta1, carlong, mjd, covar_factor, roll_offset, wavelength;
   double dsun_obs, ddat, J2k_OBS[3], obslat, sun_ob3[3],tilt;// Extra variables added by Albert, mainly for testing purposes, but also sun_ob3 serves to determine sign of t3, the "time" of the spacecraft.
   Rot R12, R23, Rtmp;
   Rot *Rx, *Ry, *Rz;
   int i, jj, kk, ll, k, l, modnum, mmm, hasdata, yn, totalB;
-  static float Arow_long[NBINS];// no-static causes seg fault /* i loop over columns */ near the end of this code
+  float Arow_long[NBINS];
   const int nc3 = NBINS;
   const int imsize = IMSIZE;
   const int binfac = BINFAC;
   double center_x, center_y;
   const double pixsize = PIXSIZE;
-
+  
   /* initialization stuff */
 
   totalB = 0;
 
 #if (defined WISPRIBUILD || defined WISPROBUILD)
     totalB = 1;
-#endif
-
-#if (defined METISVLBUILD) // I am assuming only pB images from Metis.
-    totalB = 0;
 #endif
 
   strcpy(filename, DATADIR);
@@ -79,8 +73,7 @@ void build_subA(char *idstring, rcs_llist *rcs,
   strncpy(BpBcode, idstring + 3, 2); 
 #endif
 #ifdef MARSEILLES
-  strncpy(BpBcode, idstring + 25, 2); // for new files
-//strncpy(BpBcode, idstring + 20, 2); // for old files (CR-2208)
+  strncpy(BpBcode, idstring + 8, 2);
 #endif
 fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
   if ( strcmp(BpBcode,"PB") == 0 || strcmp(BpBcode,"pB") == 0)
@@ -117,7 +110,7 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     float dist;
     FILE *fid_test;
     float x_image[IMSIZE], y_image[IMSIZE];
-
+    
     /* test for existence of the data file */
     fid_test = NULL;
     fid_test = fopen(filename,"r");
@@ -141,25 +134,32 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     }
 
     pbvector = (PB_IMTYPE *) image;
-
+    /*
+    When deleting IMSIZE and PIXSIZE from buildA_params.h,
+    code here the declaration of:
+    x_image
+    y_image
+     pBval[IMSIZE][IMSIZE];
+      rho[IMSIZE][IMSIZE];
+      eta[IMSIZE][IMSIZE];
+    assert(hgetr8(header,"NAXIS1",&imsize));
+    x_image = (float *) malloc(imsize*sizeof(float))
+    */
+   
    /* get the center pixel, XSUN and YSUN are in the Marseilles files */
-
     assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN", &center_x));
     assert(hgetr8(header, "CRPIX2", &center_y) || hgetr8(header, "YSUN", &center_y));
     center_x -= 1.; /* CRPIX(1,2), (XY)SUN use the start-at-1 convention */ 
     center_y -= 1.; 
 
     /* Get the roll angle offset (in deg) b/c North may not be at the top 
-     * of the image */
+     *   of the image */
 
-#if (defined C2BUILD || defined C3BUILD) /* INITANG1 used to be in the Marseilles files, not in their newest version. */
+#if (defined C2BUILD || defined C3BUILD)  /* INITANG1 is in the Marseilles files */
     assert(hgetr8(header,"CROTA1",&roll_offset) || hgetr8(header, "INITANG1", &roll_offset) ||  hgetr8(header, "ROLLANGL", &roll_offset));
-  //assert(hgetr8(header,"R_SOHO",&dsun_obs)); THIS WAS THE KEYWORD FOR NRL LASCO C2, WE SWITCH TO THE NEXT MARSEILLE KEYWORD:
-  //dsun_obs = dsun_obs*(RSUN*1.e3);// now in [m]
-    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
-    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
+    assert(hgetr8(header,"R_SOHO",&dsun_obs));
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
-    assert(hgetr8(header,"CROTA2"  ,&roll_offset));
+    assert(hgetr8(header,"CROTA"   ,&roll_offset));
     assert(hgetr8(header,"DSUN_OBS",&dsun_obs));
     assert(hgetr8(header,"J2kX_OBS",&ddat));   J2k_OBS[0]=ddat;
     assert(hgetr8(header,"J2kY_OBS",&ddat));   J2k_OBS[1]=ddat;
@@ -170,44 +170,21 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 #elif (defined EUVIBUILD || defined CORBUILD || defined AIABUILD)
     assert(hgetr8(header,"CROTA2" ,&roll_offset));
     /*fprintf(stdout,"CROTA2 = %g\n",roll_offset); fflush(stdout);*/
-#elif defined KCORBUILD
-    assert(hgetr8(header,"INST_ROT" ,&roll_offset));
-    if (roll_offset != 0.) {
-      fprintf(stderr,"KCOR roll_offset = %g\n",roll_offset);
-      exit(0);
-    }
-    assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
-    assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
-#elif defined METISVLBUILD
-    assert(hgetr8(header,"INST_ROT" ,&roll_offset));
-    if (roll_offset != 0.) {
-      fprintf(stderr,"METIS roll_offset = %g\n",roll_offset);
-      exit(0);
-    }
+#elif defined KCOR
+    assert(hgetr8(header,"INST_ROT" ,&roll_offset)); // Check KEYWORD meaning with Joan! (Albert)
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #elif defined COMPBUILD
     assert(hgetr8(header,"CROTA1"   ,&roll_offset));
-    if (roll_offset != 0.) {
-      fprintf(stderr,"CoMP roll_offset = %g\n",roll_offset);
-      exit(0);
-    }
     assert(hgetr8(header,"DSUN"     ,&dsun_obs));    // [m]
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
-    /*
-    assert(hgetr8(header,"CRLN_OBS" ,&carlong));     // [deg] 
-    fprintf(stderr,"Header roll_offset: %e\n",roll_offset);
-    fprintf(stderr,"Header DSUN:        %e\n",dsun_obs   );
-    fprintf(stderr,"Header CRLT_OBS:    %e\n",obslat     );
-    fprintf(stderr,"Header CRLN_OBS:    %e\n",carlong    );
-    */
+    assert(hgetr8(header,"WAVELENG" ,&wavelength));
 #endif
-    
-#ifdef MARSEILLES // LAM uses for their hdr.rollangl keyword the opposite convention to the one expected by this code
-    roll_offset *= -1.;
+
+#ifdef MARSEILLES /* CROTA1 = INITANG1 - 0.5  (.5 deg offset) */ 
+    roll_offset -= 0.5;
 #endif
-    fprintf(stderr,"Header roll_offset: %e\n",roll_offset);
-    
+
     // Get the sun --> observer vector in J2000 GCI (CS-1) in [km]
     // and the sub-spacecraft Carrington longitude in [deg].
     get_orbit(idstring, sun_ob1, &carlong, &mjd);
@@ -216,18 +193,15 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     dist    = sun_ob1[0] * sun_ob1[0] + sun_ob1[1] * sun_ob1[1] + sun_ob1[2] * sun_ob1[2];
     dist    = sqrt(dist);
 
-    /*  
+    // Albert test printout:
     fprintf(stderr,"Computed dist: %3.10g Rsun\n",dist/RSUN);
-    fprintf(stderr,"Header DSUN:   %3.10g Rsun\n",dsun_obs/RSUN/1.e3);    
-    exit(0);
-    */
 
     for (i = 0; i < imsize; i++)
     {
       x_image[i] = pixsize * ((float) i - center_x);
       y_image[i] = pixsize * ((float) i - center_y);
     }
-
+ 
     /* when the observed image has solar north rotated clockwise from the top,
        CROTA (for EUVI) is positive.   I assume that the same convention
        holds for SC_ROLL and CROTA1 */
@@ -243,13 +217,15 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
     for ( i = 0;  i < imsize;  i++) {
     for (jj = 0; jj < imsize; jj++) {
 	pBval[i][jj] = (float) *(pbvector + imsize * jj + i) ;
-    }
-    }
+    
 
+    }
+    }
+    
 for (i = 0; i < imsize; i++) {
   for (jj = 0; jj < imsize; jj++) {
 	/* Keep only data within certain radius range  */
-#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCORBUILD || defined COMPBUILD || defined METISVLBUILD)
+#if (defined C2BUILD || defined C3BUILD || defined CORBUILD || defined WISPRIBUILD || defined WISPROBUILD || defined KCOR || defined COMPBUILD)
 	//OLD CODE BY RICH----------------------------------------------------------
 	//        if (( tan(ARCSECRAD * rho[i][jj]) * dist > INSTR_RMAX * RSUN ) ||
 	//            ( tan(ARCSECRAD * rho[i][jj]) * dist < INSTR_RMIN * RSUN )) {
@@ -274,36 +250,27 @@ for (i = 0; i < imsize; i++) {
 #endif
         } else {
 #if (defined C2BUILD || defined C3BUILD || defined CORBUILD)
-          /* the .79 factor is to convert from units of disk-mean brightness to disk-center brightness
-           * the 1.e10 factor changes units from [Bsun] to [1E-10*Bsun] when appropriate (center brightness) */
-	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
+          /* the .79 factor is to convert from units of mean brightness
+           * to 1.e10*(center brightness)           */
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *=
 #ifdef NRL
-	      1.e10 * 0.79;    /* NRL scaling */ 
+	       1.e10 * 0.79;
 #elif (defined MARSEILLES)
-  	       0.79;           /* Marseilles scaling */ 
+  	       0.79; /* Marseilles scaling */ 
 #endif
-	       // fprintf(stderr, " pB value = %g \n", pBval[i][jj]);
-	  }
 #elif (defined WISPRIBUILD || defined WISPROBUILD)
           /* Add needed factor (if needed) once we decide the units of the synthetic images */
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
 	    pBval[i][jj] *= 1.;
-#elif (defined KCORBUILD)
-	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.e+10; // KCOR images are expected in units of [Bsun]
-  	    // fprintf(stderr, " pB value = %g \n", pBval[i][jj]); // test if image reading is okay.
-	    }
-#elif (defined METISVLBUILD)
-	  if ( abs(pBval[i][jj] + 999) > QEPS){  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 0.79; // METIS-VL images are expected in units of 1.e-10*<Bsun>
-	    // fprintf(stderr, " pB value = %g \n", pBval[i][jj]);  // test if image reading is okay.
-	    }
+#elif (defined KCOR)
+	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
+	    pBval[i][jj] *= 1.e+4; // Change from [1e-6 Bsun] units to [1.e-10 Bsun] units.
 #elif (defined COMPBUILD)
 	  if ( abs(pBval[i][jj] + 999) > QEPS)  /* check for -999 values (missing blocks) */
-	    pBval[i][jj] *= 1.0; // Keep units of the data
+	    pBval[i][jj] *= 1.; // Keep units from the files.
 #endif
-
+	  
 #ifdef DROP_NEG_PB
           if (pBval[i][jj] < 0)
             pBval[i][jj] = -999.0;
@@ -313,7 +280,7 @@ for (i = 0; i < imsize; i++) {
     } /* i loop over image pixels */  
    
     free(image);
- }   /* end of block */
+  }   /* end of block */
 
   dsun = 0.0;
   for (i = 0; i < 3; i++) {
@@ -371,11 +338,11 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   //-----------------R12 computed------------------------------------------------------------------------
 
-  // If dealing with KCOR or COMP or LASCO-C2 (MARSEILLE) or METISVL data: R12, spol2 and sun_ob2 above are crap.
+  // If dealing with KCOR data R12, spol2 and sun_ob2 above are crap.
   // As R12 was only needed to compute spol2 and sun_ob2, we just forget about it,
   // and simply re-compute spol2 and sun_ob2 using the sub-Earth latitude and the,
-  // Observer-Sun distance, which are both known from the header:
-#if (defined KCORBUILD || defined COMPBUILD || defined C2BUILD || defined METISVLBUILD)
+  // Earth-Sun distance, which are both known from the KCOR header:
+#if defined KCOR
     tilt     = obslat*M_PI/180.0;
     spol2[0] = sin(tilt); // Note that tilt>0 implies North-pole towards Earth.
     spol2[1] = 0.;
@@ -383,7 +350,6 @@ for (i = 0; i < imsize; i++) {
   sun_ob2[0] = dsun_obs/1.e3/RSUN; // sun_ob2 must be in Rsun units.
   sun_ob2[1] = 0.;
   sun_ob2[2] = 0.;
-  fprintf(stderr,"tilt:  %e\n",tilt);
 #endif
   
   // Calculate R23 matrix as:  R23 = Rz(CarLong) * Ry(Tilt)
@@ -410,7 +376,6 @@ for (i = 0; i < imsize; i++) {
   free(Rz);
   free(Ry);
   //-----------------R23 computed------------------------------------------------------------------------
-
 
 #if (defined C2BUILD || defined C3BUILD || defined WISPRIBUILD || defined WISPROBUILD)
   if (totalB == 1)

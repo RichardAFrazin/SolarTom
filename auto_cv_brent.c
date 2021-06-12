@@ -94,7 +94,6 @@ int main(int argc, char **argv) {
   strcat(auto_cv_norm_matrix,time_string);
   strcat(auto_cv_sys_matrix,time_string);
 
-
   jump = 1; remove_images = 1; cv_images = 1;
 
   /* process command line arguments */
@@ -227,8 +226,7 @@ int main(int argc, char **argv) {
     usage(argv[0]);
     return 1;
   }
-  
- 
+   
   printf("There are %d images.\n", n_blocks);
 
   for (k = start; k < stop + 1; k++) {

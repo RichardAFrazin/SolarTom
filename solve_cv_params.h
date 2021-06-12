@@ -41,7 +41,7 @@
 #elif (defined C2BUILD || defined CORBUILD || defined C3BUILD)
 #define HUBER_FLAG {0, 0}
 #define FILESTR0 "xxx"
-#define FILESTR1 "r3_50_90_180"
+#define FILESTR1 "r3_60_60_120"
 #define MAIN_X_INFILE  "x_AWSOM_CR2081run5_WISPR_sphere_2.dat"
 #define MAIN_X_OUTFILE " "
 #define LAMBDA  { 1.0 , 1.e-6}

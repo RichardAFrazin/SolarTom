@@ -9,6 +9,7 @@
  *  Changes to handle LAM LASCO-C2 new headers by Alberto Vásquez, Fall 2017
  *  Changes to handle KCor, by Alberto Vásquez, February 2018
  *  Changes to handle Metis, by Alberto Vásquez, Feb 2021
+ *  New changes to handle LAM LASCO-C2 new rollangl convention, oposite to CROTA in EUV, June-2021
  *
  */
 
@@ -220,11 +221,10 @@ int main(int argc, char **argv){
     assert(hgetr8(header,"CRLT_OBS" ,&obslat));      // [deg]
 #endif
 
-/*
-#ifdef MARSEILLES // we used to think CROTA1 = INITANG1 - 0.5  (.5 deg offset), but not anymore
-    roll_offset -= 0.5;
+#ifdef MARSEILLES // LAM uses for their hdr.rollangl keyword the opposite convention to the one expected by this code
+    roll_offset *= -1.;
 #endif
-*/
+    fprintf(stderr,"Header roll_offset: %e\n",roll_offset);
 
     totalB = 0; /*this avoids unused variable warning*/
     

@@ -3,12 +3,12 @@
 // #define CORBUILD
 // #define EITBUILD
 // #define C3BUILD
-// #define C2BUILD
+   #define C2BUILD
 // #define WISPRIBUILD
 // #define WISPROBUILD
 // #define KCORBUILD
 // #define COMPBUILD
-   #define METISVLBUILD
+// #define METISVLBUILD
 // #define METISLyaBUILD
 
 /* Not using this for now
@@ -109,20 +109,20 @@ typedef float PB_IMTYPE;
 #define A_OUTFILE         "comp1074.dynamics.Dt2_CR2198.bf2.ri1.00.ro1.50_50_90_180_INSTR_RMIN_1.09_ABBEY" /* suffix of A matrix ouput files */
 
 #elif defined METISVLBUILD
-#define RMIN        2.2            /* innner radius (hollow  sphere)   */
-#define RMAX        4.0            /* outer radius of computation ball */
-#define INSTR_RMIN  2.4
-#define INSTR_RMAX  3.2
-#define NRAD        18
-#define NTHETA      60      /* polar angle bins */
+#define RMIN         2.0            /* innner radius (hollow  sphere)   */
+#define RMAX        12.0            /* outer radius of computation ball */
+#define INSTR_RMIN   2.0
+#define INSTR_RMAX  10.5
+#define NRAD        200
+#define NTHETA      180      /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
-#define BINFAC    4	    /* binning factor */
+#define BINFAC    1	    /* binning factor */
 #define DELTA     0.0	    /* delta vector */
 #define PIXSIZE  (10.137*2048/IMSIZE)   /* arcsec per pixel */
 typedef float PB_IMTYPE;
-#define DATADIR    TOMROOT"DATA/metis/Perihelion_04-2023_B/"
-#define CONFSTRING DATADIR"list_12degstep_prep.txt"
+#define DATADIR    TOMROOT"DATA/metis/Perihelion_AWSoM_CR2082/"
+#define CONFSTRING DATADIR"list_Perihelion_prep.txt"
 #define A_OUTFILE         "METIS-VL-Perihelion_04-2023_12DegStep_Rmin2.2_Rmax4.0_IRmin2.4_IRmax3.2_18x60x120_BF4" /* suffix of A matrix ouput files */
 
 #elif defined METISLyaBUILD
@@ -144,12 +144,12 @@ typedef float PB_IMTYPE;
 
 // x_LASCOC2pB_CR2219_24hr-Cadence_Rmin2.25_Rmax8.25_IRmin2.5_IRmax6.0_60x60x120_BF4_r3D_l1.e-5
 #elif defined C2BUILD
-#define RMIN        2.25            /* innner radius (hollow  sphere)   */
-#define RMAX        8.25            /* outer radius of computation ball */
-#define INSTR_RMIN  2.9
-#define INSTR_RMAX  3.1
-#define NRAD        60
-#define NTHETA      60      /* polar angle bins */
+#define RMIN        2.25 //  2.0 // 2.25            /* innner radius (hollow  sphere)   */
+#define RMAX        8.25 // 12.0 // 8.25            /* outer radius of computation ball */
+#define INSTR_RMIN   2.5 // 2.3 // 2.5
+#define INSTR_RMAX   6.0 // 6.3 // 6.0
+#define NRAD        60 // 200 // 60
+#define NTHETA      60 // 180 // 60      /* polar angle bins */
 #define NPHI (NTHETA * 2)   /* azimuthal angle bins */
 #define IMSIZE    512	    /* size of C2 images (pixels) */
 #define BINFAC    4	    /* binning factor for C2 images (pixels) */
@@ -162,9 +162,8 @@ typedef float PB_IMTYPE;
 typedef double PB_IMTYPE;
 #endif
 #define DATADIR    TOMROOT"DATA/c2/CR2219/"
-#define CONFSTRING DATADIR"list_prep_CR2219_24hrCadence_comptest3.txt"
-#define A_OUTFILE         "LASCOC2-CR2208_TEST" /* suffix of A matrix ouput files */
-
+#define CONFSTRING DATADIR"list_14_prep_NorthUp-B.txt"
+#define A_OUTFILE         "LASCOC2-CR2219-BF4-NorthUp-B" /* suffix of A matrix ouput files */
 
 #elif defined C3BUILD
 #define RMAX 10.2            /* outer radius of computation ball */
