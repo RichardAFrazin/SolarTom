@@ -144,8 +144,8 @@ fprintf(stderr,"BpBcode: %s, idstring: %s\n",BpBcode, idstring);
 
    /* get the center pixel, XSUN and YSUN are in the Marseilles files */
 
-    assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN", &center_x));
-    assert(hgetr8(header, "CRPIX2", &center_y) || hgetr8(header, "YSUN", &center_y));
+    assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN_MED", &center_x));
+    assert(hgetr8(header, "CRPIX2", &center_y) || hgetr8(header, "YSUN_MED", &center_y));
     center_x -= 1.; /* CRPIX(1,2), (XY)SUN use the start-at-1 convention */ 
     center_y -= 1.; 
 
