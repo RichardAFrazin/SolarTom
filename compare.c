@@ -176,8 +176,12 @@ int main(int argc, char **argv){
 
     assert(hgetr8(header, "CRPIX1", &center_x) || hgetr8(header, "XSUN_MED", &center_x));
     assert(hgetr8(header, "CRPIX2", &center_y) || hgetr8(header, "YSUN_MED", &center_y));
-    center_x -= 1.; /* CRPIX(1,2), (XY)SUN use the start-at-1 convention */ 
+#ifndef MARSEILLES // LAM uses for their hdr.xsun keyword the start-at-0 convention
+    center_x -= 1.; /* CRPIX(1,2) use the start-at-1 convention */ 
     center_y -= 1.; 
+#endif
+    fprintf(stderr,"X-center: %e\n",center_x);
+    fprintf(stderr,"Y-center: %e\n",center_y);
 
     /* Get the roll angle offset b/c North may not be at the top 
      *   of the image */
